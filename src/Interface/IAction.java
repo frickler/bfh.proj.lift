@@ -11,8 +11,10 @@ public abstract class IAction {
 	private int peopleAmount;
 	// when the action was entered
 	private Date timestampEntered;
-	// when the elevator arrived at the startLevel
+	// when the elevator goes to the Level where the elevator was ordered
 	private Date timestampStarted;
+	// when the elevator arrived at the startLevel
+	private Date timestampPeopleLoaded;
 	// when the elevator arrived at the endLevel
 	private Date timestampEnded;
 	
@@ -69,6 +71,14 @@ public abstract class IAction {
 
 	public Date getTimestampStarted() {
 		return timestampStarted;
+	}
+
+	public void setTimestampPeopleLoaded(Date timestampPeopleLoaded) {
+		this.timestampPeopleLoaded = timestampPeopleLoaded;
+	}
+
+	public Date getTimestampPeopleLoaded() {
+		return timestampPeopleLoaded;
 	}
 
 }

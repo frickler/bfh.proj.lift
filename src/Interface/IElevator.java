@@ -1,6 +1,14 @@
 package Interface;
+import Interface.IAction;
 
-public abstract class IElevator {
+public abstract class IElevator implements Runnable {
+
+	// current Level (Stockwerk) of the elevator
+	private final double stepSize = (double) 0.1;
+	// current Level (Stockwerk) of the elevator
+	private final long timeForOneStep = (long) 200;
+	// current Level (Stockwerk) of the elevator
+	private float currentLevel;
 	// min Level (Stockwerk) the elevator can reach
 	private int minLevel;
 	// max Level (Stockwerk) the elevator can reach
@@ -17,21 +25,23 @@ public abstract class IElevator {
 	private int timeInMotion;
 	// time in second the elevator moved without any passangers.
 	private int timeInMotionEmpty;
+	// current action
+	private IAction currentAction = null;
 	
-	public IElevator(int minLevel,int maxLevel,int maxPeople) throws Exception{
+	public IElevator(int minLevel,int maxLevel,int maxPeople,float currentLevel) throws Exception{
 		if(minLevel>=maxLevel){	
 			throw new Exception("minLevel cannot be less or equal mayLevel");
 		}	
 		setMinLevel(minLevel);
 		setMaxLevel(maxLevel);
 		setMaxPeople(maxPeople);
+		setCurrentLevel(currentLevel);
 		setTransportedPeople(0);
 		setDrivenLevels(0);
 		setDrivenLevelsEmpty(0);
 		setTimeInMotion(0);
 		setTimeInMotionEmpty(0);	
 	}
-	
 	
 	public void setMaxLevel(int maxLevel) {
 		this.maxLevel = maxLevel;
@@ -80,5 +90,37 @@ public abstract class IElevator {
 	}
 	public int getTimeInMotionEmpty() {
 		return timeInMotionEmpty;
+	}
+
+	public void setCurrentLevel(float currentLevel) {
+		this.currentLevel = currentLevel;
+	}
+
+	public double getCurrentLevel() {
+		return currentLevel;
+	}
+
+	public void setCurrentAction(IAction currentAction) throws Exception {
+		this.currentAction = currentAction;
+		runAction();
+	}
+		
+	protected abstract void runAction() throws Exception;
+	protected abstract void actionDone();
+	
+	public boolean isRunning(){		
+		return (getCurrentAction() != null);
+	}
+
+	public IAction getCurrentAction() {
+		return currentAction;
+	}
+
+	public long getTimeForOneStep() {
+		return timeForOneStep;
+	}
+
+	public double getStepSize() {
+		return stepSize;
 	}
 }
