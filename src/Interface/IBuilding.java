@@ -24,6 +24,10 @@ public abstract class IBuilding {
 		elevators.remove(elevator);
 	}
 	
+	public List<IElevator> getElevators(){
+		return elevators;
+	}
+	
 	public int getMinLevel(){
 		int minLevel = 100000;
 		for(IElevator e : elevators){
@@ -37,7 +41,7 @@ public abstract class IBuilding {
 	public int getMaxLevel(){
 		int maxLevel = 0;
 		for(IElevator e : elevators){
-			if(e.getMaxLevel() < maxLevel){
+			if(e.getMaxLevel() > maxLevel){
 				maxLevel = e.getMaxLevel();
 			}
 		}
