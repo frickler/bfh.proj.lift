@@ -47,5 +47,9 @@ public abstract class IBuilding {
 		}
 		return maxLevel;
 	}
+
+	public List<IElevator> getElevators(){
+		return this.elevators;
+	}
 	
 }
