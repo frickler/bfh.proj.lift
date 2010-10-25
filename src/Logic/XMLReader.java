@@ -82,32 +82,10 @@ public class XMLReader extends IXMLReader {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
-				int startLevel = 0;
-				int endLevel = 0;
-				int peopleAmount = 0;
-				for (int i = 0; i < m.getLength(); i++) {
-					Attr att = (Attr) m.item(i);
-
-					if (att.getName() == "startLevel"
-							&& IsInteger(att.getValue())) {
-						startLevel = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					if (att.getName() == "endLevel"
-							&& IsInteger(att.getValue())) {
-						endLevel = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					if (att.getName() == "peopleAmount"
-							&& IsInteger(att.getValue())) {
-						peopleAmount = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					return new Action(startLevel, endLevel, peopleAmount);
-				}
+				int startLevel = Integer.parseInt(getValue("startLevel", m));
+				int endLevel = Integer.parseInt(getValue("endLevel", m));
+				int peopleAmount = Integer.parseInt(getValue("peopleAmount", m));
+				return new Action(startLevel, endLevel, peopleAmount);
 			}
 		} catch (Exception ex) {
 		}
@@ -118,49 +96,26 @@ public class XMLReader extends IXMLReader {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
-				int minLevel = 0;
-				int maxLevel = 0;
-				int maxPeople = 0;
-				float currentLevel = 0;
-				for (int i = 0; i < m.getLength(); i++) {
-					Attr att = (Attr) m.item(i);
 
-					if (att.getName() == "minLevel"
-							&& IsInteger(att.getValue())) {
-						minLevel = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					if (att.getName() == "maxLevel"
-							&& IsInteger(att.getValue())) {
-						maxLevel = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					if (att.getName() == "maxPeople"
-							&& IsInteger(att.getValue())) {
-						maxPeople = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-					if (att.getName() == "currentLevel"
-							&& IsInteger(att.getValue())) {
-						currentLevel = Integer.parseInt(att.getValue());
-					} else {
-						return null;
-					}
-
-					if (minLevel >= maxLevel) {
-						return null;
-					} else {
-						return new Elevator(minLevel, maxLevel, maxPeople,
-								currentLevel);
-					}
-				}
+				int minLevel = Integer.parseInt(getValue("minLevel", m));
+				int maxLevel = Integer.parseInt(getValue("maxLevel", m));
+				int maxPeople = Integer.parseInt(getValue("maxPeople", m));
+				float currentLevel = Float.parseFloat(getValue("currentLevel",m));
+				return new Elevator(minLevel, maxLevel, maxPeople, currentLevel);
 			}
 		} catch (Exception ex) {
 		}
 		return null;
+	}
+
+	private String getValue(String attributename, NamedNodeMap m)
+			throws Exception {
+		Attr a = (Attr) m.getNamedItem(attributename);
+		if (a != null) {
+			return a.getNodeValue();
+		}
+		throw new Exception("Attriubte with name " + attributename
+				+ " not declated in xml");
 	}
 
 	private boolean IsInteger(String check) {
@@ -198,5 +153,5 @@ public class XMLReader extends IXMLReader {
 		document = builder.parse(new ByteArrayInputStream(xmlStructure
 				.getBytes()));
 		processDocument();
-4	}
+	}
 }
