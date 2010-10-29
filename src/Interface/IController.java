@@ -1,5 +1,5 @@
 package Interface;
 
-public abstract class IController {
+public abstract class IController extends IActionListener  {
 
 }

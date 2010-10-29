@@ -80,5 +80,4 @@ public abstract class IAction {
 	public Date getTimestampPeopleLoaded() {
 		return timestampPeopleLoaded;
 	}
-
 }

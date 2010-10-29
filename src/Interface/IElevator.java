@@ -1,10 +1,13 @@
 package Interface;
+import java.util.HashSet;
+import java.util.Set;
+
 import Interface.IAction;
 
 public abstract class IElevator implements Runnable {
 
 	// current Level (Stockwerk) of the elevator
-	private final double stepSize = (double) 0.1;
+	private final float stepSize = (float) 0.1;
 	// current Level (Stockwerk) of the elevator
 	private final long timeForOneStep = (long) 200;
 	// current Level (Stockwerk) of the elevator
@@ -28,6 +31,16 @@ public abstract class IElevator implements Runnable {
 	// current action
 	private IAction currentAction = null;
 	
+	private Set<IActionListener> observers = new HashSet<IActionListener>();
+	
+	/**
+	 * 
+	 * @param minLevel
+	 * @param maxLevel
+	 * @param maxPeople
+	 * @param currentLevel
+	 * @throws Exception
+	 */
 	public IElevator(int minLevel,int maxLevel,int maxPeople,float currentLevel) throws Exception{
 		if(minLevel>=maxLevel){	
 			throw new Exception("minLevel cannot be less or equal mayLevel");
@@ -92,21 +105,24 @@ public abstract class IElevator implements Runnable {
 		return timeInMotionEmpty;
 	}
 
-	public void setCurrentLevel(float currentLevel) {
-		this.currentLevel = currentLevel;
+	public void setCurrentLevel(float targetLevel) {
+		this.currentLevel = targetLevel;
 	}
 
-	public double getCurrentLevel() {
+	public float getCurrentLevel() {
 		return currentLevel;
 	}
 
 	public void setCurrentAction(IAction currentAction) throws Exception {
-		this.currentAction = currentAction;
-		runAction();
+		this.currentAction = currentAction;	
 	}
 		
 	protected abstract void runAction() throws Exception;
+	
 	protected abstract void actionDone();
+	
+	protected abstract void notifyActionDone();
+	protected abstract void notityActionStarted();
 	
 	public boolean isRunning(){		
 		return (getCurrentAction() != null);
@@ -122,5 +138,17 @@ public abstract class IElevator implements Runnable {
 
 	public double getStepSize() {
 		return stepSize;
+	}
+
+	public void addObservers(IActionListener observer) {
+		this.observers.add(observer);
+	}
+	
+	public Set<IActionListener> getObservers() {
+		 return this.observers;
+	}
+
+	public void removeObservers(IActionListener observer) {
+		this.observers.remove(observer);
 	}
 }

@@ -3,6 +3,7 @@ package Logic;
 import java.util.Date;
 
 import Interface.IAction;
+import Interface.IActionListener;
 import Interface.IElevator;
 
 public class Elevator extends IElevator {
@@ -14,21 +15,26 @@ public class Elevator extends IElevator {
 	}
 
 	@Override
-	public void run() {
-		
+	public void run() {	
+		try {
+			if(this.getCurrentAction() != null){
+				notityActionStarted();
+				runAction();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void runAction() throws Exception {
+	protected void runAction() throws Exception {
 		
 		if(this.getCurrentAction()==null){
 			throw new Exception("no action defined");
 		}
-		
-		IAction a = this.getCurrentAction();
-		
+		IAction a = this.getCurrentAction();	
 		// get to the level where the button was pressed.
 		a.setTimestampStarted(new Date(System.currentTimeMillis()));
 		Move(getCurrentLevel(),a.getStartLevel());
@@ -40,23 +46,47 @@ public class Elevator extends IElevator {
 	}
 	
 
-	private void Move(double sourceLevel, double targetLevel) throws InterruptedException {
+	private void Move(float sourceLevel, float targetLevel) throws InterruptedException {
 		
 		if(sourceLevel < targetLevel){ // go up
-			for(double i = sourceLevel;i != targetLevel;i+=getStepSize()){
+			for(double i = sourceLevel;i < targetLevel;i+=getStepSize()){
 				Thread.sleep(getTimeForOneStep());
+				setCurrentLevel((float) (Math.round(i*100)/100.0));
 			}
 		}
 		if(sourceLevel > targetLevel){ // go down
-			for(double i = sourceLevel;i != targetLevel;i-=getStepSize()){
+			for(double i = sourceLevel;i > targetLevel;i-=getStepSize()){
 				Thread.sleep(getTimeForOneStep());
+				setCurrentLevel((float) (Math.round(i*100)/100.0));
 			}
 		}		
+		
+	}
+
+	@Override
+	protected void notifyActionDone() {
+		for(IActionListener e : getObservers()){
+			e.actionCompleted(this,getCurrentAction());
+		}
+		
 	}
 
 	@Override
 	protected void actionDone() {
-		// TODO Notify the controller;		
+		notifyActionDone();
+		try {
+			setCurrentAction(null);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void notityActionStarted() {
+		for(IActionListener e : getObservers()){
+			e.actionStarted(this,getCurrentAction());
+		}	
 	}
 
 }
