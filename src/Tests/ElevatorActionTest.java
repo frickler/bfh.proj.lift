@@ -1,13 +1,17 @@
 package Tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import logic.Action;
+import logic.Elevator;
 
 import org.junit.Test;
 
-import Interface.*;
-import Logic.*;
+import definition.IAction;
+import definition.IElevator;
 
-public class JUnitTestElevatorDoesAction {
+
+public class ElevatorActionTest {
 
 	//@Test
 	public void TestElevator() throws Exception {
@@ -78,7 +82,8 @@ public class JUnitTestElevatorDoesAction {
 		
 		System.out.println("Start in Level "+currentLevel+". get pepole in level "+startLevel+" and bring dem to level "+targetLevel);
 		
-		/* tut noch nicht so richtig.
+		/* 
+		 * tut noch nicht so richtig.
 		 */
 		IAction a2 = new Action(startLevel, targetLevel, 5);
 		e.setCurrentAction(a);

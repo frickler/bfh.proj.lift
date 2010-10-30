@@ -1,10 +1,11 @@
-package Interface;
+package definition;
 import java.util.HashSet;
 import java.util.Set;
 
-import Interface.IAction;
+import definition.IAction;
 
-public abstract class IElevator implements Runnable {
+
+public abstract class IElevator implements Runnable, ILiftable {
 
 	// current Level (Stockwerk) of the elevator
 	private final float stepSize = (float) 0.1;
@@ -45,6 +46,9 @@ public abstract class IElevator implements Runnable {
 		if(minLevel>=maxLevel){	
 			throw new Exception("minLevel cannot be less or equal mayLevel");
 		}	
+		/**
+		 * K: Constructor should not call overridable method
+		 */
 		setMinLevel(minLevel);
 		setMaxLevel(maxLevel);
 		setMaxPeople(maxPeople);

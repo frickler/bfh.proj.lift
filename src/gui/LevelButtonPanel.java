@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import Interface.IAction;
-import Interface.IBuilding;
-import Logic.Action;
+import logic.Action;
+
+import definition.IAction;
+import definition.IBuilding;
+
 
 public class LevelButtonPanel extends JPanel {
 	public LevelButtonPanel(int levelIndex, IBuilding building) {

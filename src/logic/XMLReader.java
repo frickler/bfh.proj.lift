@@ -1,24 +1,27 @@
-package Logic;
+package logic;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
-import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
 
-import Interface.IAction;
-import Interface.IBuilding;
-import Interface.IElevator;
-import Interface.IXMLReader;
+import definition.IAction;
+import definition.IBuilding;
+import definition.IElevator;
+import definition.IXMLReader;
+
 
 public class XMLReader extends IXMLReader {
 
@@ -118,7 +121,7 @@ public class XMLReader extends IXMLReader {
 				+ " not declated in xml");
 	}
 
-	private boolean IsInteger(String check) {
+	private boolean isInteger(String check) {
 		try {
 			int zahl = Integer.parseInt(check);
 			return true;
@@ -136,7 +139,7 @@ public class XMLReader extends IXMLReader {
 					IElevator e = getElevator(nodes_i.item(i));
 					if (e != null) {
 						if (building == null) {
-							building = new Building(e);
+							building = new Building(e);							
 						} else {
 							building.addElevator(e);
 						}

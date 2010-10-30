@@ -1,10 +1,11 @@
-package Logic;
+package logic;
 
 import java.util.Date;
 
-import Interface.IAction;
-import Interface.IActionListener;
-import Interface.IElevator;
+import definition.IAction;
+import definition.IActionListener;
+import definition.IElevator;
+
 
 public class Elevator extends IElevator {
 
@@ -87,6 +88,17 @@ public class Elevator extends IElevator {
 		for(IActionListener e : getObservers()){
 			e.actionStarted(this,getCurrentAction());
 		}	
+	}
+
+	@Override
+	public boolean isBusy() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setBusy(boolean isBusy) {
+		// TODO Auto-generated method stub		
 	}
 
 }

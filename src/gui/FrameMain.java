@@ -3,8 +3,9 @@ package gui;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 
-import Interface.IBuilding;
-import Interface.IElevator;
+import definition.IBuilding;
+import definition.IElevator;
+
 
 public class FrameMain extends JFrame {
 	public FrameMain(IBuilding building) throws Exception {

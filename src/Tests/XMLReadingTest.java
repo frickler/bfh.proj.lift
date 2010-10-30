@@ -1,19 +1,20 @@
 package Tests;
 
-import java.io.IOException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.junit.*;
-import org.xml.sax.SAXException;
+import logic.XMLReader;
 
-import Interface.IAction;
-import Interface.IBuilding;
-import Logic.Building;
-import Logic.XMLReader;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import definition.IAction;
+import definition.IBuilding;
 
-public class JUnitTestReadingXML {
+
+public class XMLReadingTest {
 
 	@Test
 	public void TestBuilding() {

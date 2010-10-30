@@ -1,8 +1,8 @@
 package gui;
 
+import logic.*;
+import definition.*;
 import gui.FrameMain;
-import Interface.*;
-import Logic.*;
 
 public class main {
 

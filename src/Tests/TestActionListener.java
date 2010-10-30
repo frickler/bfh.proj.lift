@@ -1,7 +1,7 @@
 package Tests;
-import Interface.*;
+import definition.*;
 
-public class TestActionListener extends IActionListener {
+public class TestActionListener implements IActionListener {
 
 	public boolean actionDone = false;
 	

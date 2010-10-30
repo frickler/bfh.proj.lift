@@ -5,7 +5,8 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Interface.IBuilding;
+import definition.IBuilding;
+
 
 public class LevelPanel extends JPanel {
 	public LevelPanel(IBuilding building) {
