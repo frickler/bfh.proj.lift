@@ -8,6 +8,6 @@ public interface ILiftable {
 	
 	public boolean isBusy();
 	public void setBusy(boolean isBusy);
-		
 
+	public float getCurrentLevel();
 }

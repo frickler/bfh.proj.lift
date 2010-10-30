@@ -13,7 +13,7 @@ public class SimpleElevator  implements ILiftable{
 	// current Level (Stockwerk) of the elevator
 	private final long timeForOneStep = (long) 200;
 	// current Level (Stockwerk) of the elevator
-	private int currentLevel;
+	private float currentLevel;
 	// min Level (Stockwerk) the elevator can reach
 	private int minLevel;
 	// max Level (Stockwerk) the elevator can reach
@@ -33,7 +33,7 @@ public class SimpleElevator  implements ILiftable{
 	// elevator is performing an action
 	private boolean isBusy;
 
-	public int getCurrentLevel() {
+	public float getCurrentLevel() {
 		return currentLevel;
 	}
 
