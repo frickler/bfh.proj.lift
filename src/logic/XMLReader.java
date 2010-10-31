@@ -19,7 +19,7 @@ import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 import definition.IAction;
 import definition.IBuilding;
-import definition.IElevator;
+import definition.ILiftable;
 import definition.IXMLReader;
 
 
@@ -95,7 +95,7 @@ public class XMLReader extends IXMLReader {
 		return null;
 	}
 
-	private IElevator getElevator(Node item) {
+	private ILiftable getElevator(Node item) {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
@@ -103,7 +103,7 @@ public class XMLReader extends IXMLReader {
 				int minLevel = Integer.parseInt(getValue("minLevel", m));
 				int maxLevel = Integer.parseInt(getValue("maxLevel", m));
 				int maxPeople = Integer.parseInt(getValue("maxPeople", m));
-				float currentLevel = Float.parseFloat(getValue("currentLevel",m));
+				int currentLevel = Integer.parseInt(getValue("currentLevel",m));
 				return new Elevator(minLevel, maxLevel, maxPeople, currentLevel);
 			}
 		} catch (Exception ex) {
@@ -136,7 +136,7 @@ public class XMLReader extends IXMLReader {
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			try {
 				if (nodes_i.item(i).getNodeName() == "Elevator") {
-					IElevator e = getElevator(nodes_i.item(i));
+					ILiftable e = getElevator(nodes_i.item(i));
 					if (e != null) {
 						if (building == null) {
 							building = new Building(e);							

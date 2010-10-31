@@ -54,13 +54,14 @@ public class Controller implements IController{
 
 	@Override
 	public void startController() {
-		algorithm.run();
+		Thread t = new Thread(algorithm);
+		t.start();		
 		
 	}
 
 	@Override
 	public void stopController() {
-		// ToDo: Implementation
+		algorithm.stop();
 		
 	}
 
