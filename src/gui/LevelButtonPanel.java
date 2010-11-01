@@ -11,10 +11,15 @@ import logic.Action;
 
 import definition.IAction;
 import definition.IBuilding;
+import definition.IController;
 
 
 public class LevelButtonPanel extends JPanel {
-	public LevelButtonPanel(int levelIndex, IBuilding building) {
+	private IController controller;
+	
+	public LevelButtonPanel(int levelIndex, IBuilding building, IController controller) {
+		this.controller = controller;
+		
 		this.setLayout(new GridLayout(1, 2));
 
 		JButton buttonUp = new JButton("up");
@@ -42,6 +47,7 @@ public class LevelButtonPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			controller.performAction(action);
 			//TODO: implement action
 			System.out.println("getStartLevel(): "
 					+ this.action.getStartLevel() + " getEndLevel(): "

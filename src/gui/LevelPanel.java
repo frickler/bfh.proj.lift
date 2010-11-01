@@ -6,10 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import definition.IBuilding;
+import definition.IController;
 
 
 public class LevelPanel extends JPanel {
-	public LevelPanel(IBuilding building) {
+	public LevelPanel(IBuilding building, IController controller) {
 		// create a GridLayout with the number of levels
 		this.setLayout(new GridLayout(building.getMaxLevel()
 				- building.getMinLevel() + 1, 1));
@@ -20,7 +21,7 @@ public class LevelPanel extends JPanel {
 			JPanel panelLevel = new JPanel();
 			panelLevel.setLayout(new GridLayout(2, 1));
 			panelLevel.add(new JLabel("level: " + String.valueOf(i)));
-			panelLevel.add(new LevelButtonPanel(i, building));
+			panelLevel.add(new LevelButtonPanel(i, building, controller));
 			this.add(panelLevel);
 		}
 	}
