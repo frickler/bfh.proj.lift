@@ -3,12 +3,16 @@ package logic;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.apache.log4j.Logger;
+
 import definition.IAction;
 import definition.IAlgorithm;
 import definition.IBuilding;
 import definition.ILiftable;
 
 public class FiFoAlgorithm extends IAlgorithm {
+
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	private Queue<IAction> queue = new LinkedList<IAction>();
 
@@ -19,38 +23,35 @@ public class FiFoAlgorithm extends IAlgorithm {
 	@Override
 	public void performAction(IAction action) {
 		queue.add(action);
-		System.out.println(action.toString());
+		log4j.debug("adding action. queue.size: " + queue.size() + " action: " + action);
 	}
 
 	@Override
+	/**
+	 * ToDo: Thread save
+	 */
 	public void run() {
-		setRunning(true);		
-		while (isRunning()) {		
-			System.out.println("isRunning");
+		setRunning(true);
+		while (isRunning()) {
 			while (!queue.isEmpty()) {
 				for (ILiftable i : getBuilding().getElevators()) {
-					IAction action = queue.poll();
+					IAction action = queue.peek();
 					if (action == null) {
 						break;
 					}
 					Elevator ele = (Elevator) i;
 					if (!i.isBusy()) {
-						if (ele.getCurrentLevel() != action.getStartLevel()) {
-							// Move elevator to startlevel
-							new Movement(ele, new Action(
-									(int) ele.getCurrentLevel(),
-									action.getStartLevel(), 0)).start();
-							// Move elevator to endlevel
-							new Movement(ele, action).start();
-						}
-
+						new Movement(ele, action).start();
+						// remove element from queue
+						queue.poll();
 					}
 				}
 			}
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {	}
-			
+			} catch (InterruptedException e) {
+			}
+
 		}
 
 	}

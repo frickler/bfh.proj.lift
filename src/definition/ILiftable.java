@@ -6,7 +6,7 @@ package definition;
  *
  */
 public interface ILiftable {
-	
+		
 	public int getMinLevel();
 	public int getMaxLevel();
 	public int getMaxPeople();
@@ -15,7 +15,7 @@ public interface ILiftable {
 	public int getDrivenLevels();
 	public int getDrivenLevelsEmpty();
 	public float getTimeInMotion();
-	public float getTimeInMotionEmpty();
+	public float getTimeInMotionEmpty();	
 	
 	/**
 	 * 

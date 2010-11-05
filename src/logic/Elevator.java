@@ -1,9 +1,13 @@
 package logic;
 
+import org.apache.log4j.Logger;
 import definition.IAction;
 import definition.ILiftable;
 
 public class Elevator implements ILiftable {
+	
+	// Logger
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	// time to move one level
 	private final int timeForOneLevel = 200;
@@ -93,7 +97,8 @@ public class Elevator implements ILiftable {
 				- action.getEndLevel());
 		this.timeInMotion += action.getTimestampEnded().getTime()
 				- action.getTimestampStarted().getTime();
-		this.currentLevel = action.getEndLevel();
+		this.currentLevel = action.getEndLevel();		
+		//log4j.debug("Elevator" + hashCode() + " moved " + this);		
 	}
 
 	@Override
@@ -118,7 +123,6 @@ public class Elevator implements ILiftable {
 	public int getTimeForOneLevel() {
 		return timeForOneLevel;
 	}
-
 
 
 }

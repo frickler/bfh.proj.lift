@@ -21,7 +21,7 @@ public class Action extends IAction {
 	public String toString() {
 		return "Action [getStartLevel()=" + getStartLevel()
 				+ ", getEndLevel()=" + getEndLevel() + ", getPeopleAmount()="
-				+ getPeopleAmount() + "]";
+				+ getPeopleAmount() + ", hashCode()=" + hashCode() + "]";
 	}
 
 }
