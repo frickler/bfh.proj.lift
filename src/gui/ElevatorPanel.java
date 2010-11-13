@@ -8,20 +8,20 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import definition.IBuilding;
-import definition.ILiftable;
+import definition.Building;
+import definition.HorizontalTransporter;
 
 
 public class ElevatorPanel extends JPanel {
-	private ILiftable elevator;
-	private IBuilding building;
+	private HorizontalTransporter elevator;
+	private Building building;
 	private JFrame frameMain;
 	private JLabel label;
 	
 	private int bottomPosition;
 	private int pixelPerLevel;
 	
-	public ElevatorPanel(ILiftable elevator, IBuilding building, JFrame frameMain){
+	public ElevatorPanel(HorizontalTransporter elevator, Building building, JFrame frameMain){
 		this.elevator = elevator;
 		this.building = building;
 		this.frameMain = frameMain;

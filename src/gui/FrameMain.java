@@ -7,17 +7,17 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import definition.IBuilding;
-import definition.IController;
-import definition.ILiftable;
+import definition.Building;
+import definition.Controller;
+import definition.HorizontalTransporter;
 
 
 public class FrameMain extends JFrame implements Runnable {
-	private IBuilding building;
-	private IController controller;
+	private Building building;
+	private Controller controller;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
 	
-	public FrameMain(IBuilding building, IController controller) throws Exception {
+	public FrameMain(Building building, Controller controller) throws Exception {
 		if (building == null)
 			throw new Exception("building can not be null");
 		
@@ -34,7 +34,7 @@ public class FrameMain extends JFrame implements Runnable {
 		//add a single LevelPanel and an ElevatorPanel for each elevator 
 		this.getContentPane().setLayout(new GridLayout(1, building.getElevators().size() + 1));
 		this.getContentPane().add(new LevelPanel(building, controller));
-		for(ILiftable item : building.getElevators())
+		for(HorizontalTransporter item : building.getElevators())
 		{
 			ElevatorPanel ePanel = new ElevatorPanel(item, building, this);
 			this.getContentPane().add(ePanel);

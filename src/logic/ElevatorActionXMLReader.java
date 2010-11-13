@@ -17,20 +17,20 @@ import org.xml.sax.SAXException;
 
 import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
-import definition.IAction;
-import definition.IBuilding;
-import definition.ILiftable;
-import definition.IXMLReader;
+import definition.Action;
+import definition.Building;
+import definition.HorizontalTransporter;
+import definition.XMLReader;
 
 
-public class XMLReader extends IXMLReader {
+public class ElevatorActionXMLReader extends XMLReader {
 
 	private DocumentBuilder builder;
 	private Document document;
-	private List<IAction> actions;
-	private IBuilding building;
+	private List<Action> actions;
+	private Building building;
 
-	public XMLReader() {
+	public ElevatorActionXMLReader() {
 		try {
 			builder = new DocumentBuilderFactoryImpl().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
@@ -39,12 +39,12 @@ public class XMLReader extends IXMLReader {
 		}
 	}
 
-	public IBuilding getBuilding() {
+	public Building getBuilding() {
 		return this.building;
 	}
 
 	@Override
-	public List<IAction> getActions() {
+	public List<Action> getActions() {
 		return this.actions;
 	}
 
@@ -69,11 +69,11 @@ public class XMLReader extends IXMLReader {
 	}
 
 	private void processActions(Node item) {
-		actions = new ArrayList<IAction>();
+		actions = new ArrayList<Action>();
 		NodeList nodes_i = item.getChildNodes();
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			if (nodes_i.item(i).getNodeName() == "Action") {
-				IAction a = getAction(nodes_i.item(i));
+				Action a = getAction(nodes_i.item(i));
 				if (a != null) {
 					actions.add(a);
 				}
@@ -81,21 +81,21 @@ public class XMLReader extends IXMLReader {
 		}
 	}
 
-	private IAction getAction(Node item) {
+	private Action getAction(Node item) {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
 				int startLevel = Integer.parseInt(getValue("startLevel", m));
 				int endLevel = Integer.parseInt(getValue("endLevel", m));
 				int peopleAmount = Integer.parseInt(getValue("peopleAmount", m));
-				return new Action(startLevel, endLevel, peopleAmount);
+				return new ElevatorAction(startLevel, endLevel, peopleAmount);
 			}
 		} catch (Exception ex) {
 		}
 		return null;
 	}
 
-	private ILiftable getElevator(Node item) {
+	private HorizontalTransporter getElevator(Node item) {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
@@ -136,10 +136,10 @@ public class XMLReader extends IXMLReader {
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			try {
 				if (nodes_i.item(i).getNodeName() == "Elevator") {
-					ILiftable e = getElevator(nodes_i.item(i));
+					HorizontalTransporter e = getElevator(nodes_i.item(i));
 					if (e != null) {
 						if (building == null) {
-							building = new Building(e);							
+							building = new Tower(e);							
 						} else {
 							building.addElevator(e);
 						}

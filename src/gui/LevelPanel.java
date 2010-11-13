@@ -5,12 +5,12 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import definition.IBuilding;
-import definition.IController;
+import definition.Building;
+import definition.Controller;
 
 
 public class LevelPanel extends JPanel {
-	public LevelPanel(IBuilding building, IController controller) {
+	public LevelPanel(Building building, Controller controller) {
 		// create a GridLayout with the number of levels
 		this.setLayout(new GridLayout(building.getMaxLevel()
 				- building.getMinLevel() + 1, 1));

@@ -3,30 +3,30 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import definition.IAction;
+import definition.Action;
 
 public class Statistic {
 
 	
-	private List<IAction> actions = new ArrayList<IAction>();
+	private List<Action> actions = new ArrayList<Action>();
 	
-	public void addAction(List<IAction> pactions){
+	public void addAction(List<Action> pactions){
 		actions.addAll(pactions);
 	}
 	
-	public void addAction(IAction action){
+	public void addAction(Action action){
 		actions.add(action);
 	}
 	
-	public void removeAction(IAction action){
+	public void removeAction(Action action){
 		actions.remove(action);
 	}
 	
 	public void printStatisticToConsole() throws Exception{
 		
-		consolePrint("Einteffen in der Queue bis Auftrag ausgeführt ist:",getEnteredToEnded(DateTypes.Entered,DateTypes.Ended));
+		consolePrint("Einteffen in der Queue bis Auftrag ausgefï¿½hrt ist:",getEnteredToEnded(DateTypes.Entered,DateTypes.Ended));
 		consolePrint("Eintreffen in der Etage bis zur Zieletage:",getEnteredToEnded(DateTypes.Loaded,DateTypes.Ended));
-		consolePrint("Einteffen in der Queue bis zur Ausührung:",getEnteredToEnded(DateTypes.Loaded,DateTypes.Ended));
+		consolePrint("Einteffen in der Queue bis zur Ausï¿½hrung:",getEnteredToEnded(DateTypes.Loaded,DateTypes.Ended));
 	}
 	
 	
@@ -49,7 +49,7 @@ public class Statistic {
 		int min = 99999999;
 		int sum = 0;
 		
-		for(IAction ia : this.actions){
+		for(Action ia : this.actions){
 			int spaninseconds = (int)((getDateTime(ia,to).getTime()-getDateTime(ia,from).getTime()) / 1000);
 			if(spaninseconds > max){
 				max = spaninseconds;
@@ -67,7 +67,7 @@ public class Statistic {
 		return returns;
 	}
 	
-	private Date getDateTime(IAction ia, DateTypes typ) throws Exception {
+	private Date getDateTime(Action ia, DateTypes typ) throws Exception {
 			
 		switch(typ){
 		case Started:

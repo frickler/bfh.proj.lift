@@ -2,9 +2,9 @@ package logic;
 
 import java.util.Date;
 
-import definition.IAction;
+import definition.Action;
 
-public class Action extends IAction {
+public class ElevatorAction extends Action {
 
 	/**
 	 * 
@@ -12,7 +12,7 @@ public class Action extends IAction {
 	 * @param endLevel
 	 * @param pepoleAmount
 	 */
-	public Action(int startLevel, int endLevel, int pepoleAmount) {
+	public ElevatorAction(int startLevel, int endLevel, int pepoleAmount) {
 		super(startLevel, endLevel, pepoleAmount);
 		this.setTimestampStarted(new Date());		
 	}

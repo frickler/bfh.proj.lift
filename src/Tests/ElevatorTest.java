@@ -2,13 +2,13 @@ package Tests;
 
 import java.util.Date;
 
-import logic.Action;
+import logic.ElevatorAction;
 import logic.Elevator;
 
 import org.junit.Test;
 
-import definition.IAction;
-import definition.ILiftable;
+import definition.Action;
+import definition.HorizontalTransporter;
 import static org.junit.Assert.*;
 
 
@@ -27,12 +27,12 @@ public class ElevatorTest {
 		
 		System.out.println("Start in Level "+currentLevel+". get pepole in level "+startLevel+" and bring dem to level "+targetLevel);
 		
-		IAction a = new Action(startLevel, targetLevel, 5);
-		ILiftable e = new Elevator(0, 40, 6, currentLevel);		
+		Action a = new ElevatorAction(startLevel, targetLevel, 5);
+		HorizontalTransporter e = new Elevator(0, 40, 6, currentLevel);		
 		
 		a.setTimestampStarted(new Date(System.currentTimeMillis()));		
 		a.setTimestampEnded(new Date(System.currentTimeMillis()+10));
-		e.moved(a);
+		e.move(a);
 		
 		assertEquals("Current level", e.getCurrentLevel(),targetLevel);
 		assertEquals("Moved levels", e.getDrivenLevels(),startLevel-currentLevel+(startLevel-targetLevel));

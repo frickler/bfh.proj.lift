@@ -7,17 +7,17 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import logic.Action;
+import logic.ElevatorAction;
 
-import definition.IAction;
-import definition.IBuilding;
-import definition.IController;
+import definition.Action;
+import definition.Building;
+import definition.Controller;
 
 
 public class LevelButtonPanel extends JPanel {
-	private IController controller;
+	private Controller controller;
 	
-	public LevelButtonPanel(int levelIndex, IBuilding building, IController controller) {
+	public LevelButtonPanel(int levelIndex, Building building, Controller controller) {
 		this.controller = controller;
 		
 		this.setLayout(new GridLayout(1, 2));
@@ -31,17 +31,17 @@ public class LevelButtonPanel extends JPanel {
 		if (levelIndex == building.getMaxLevel())
 			buttonUp.setEnabled(false);
 
-		buttonUp.addActionListener(new ActionCmdTargetFloor(new Action(levelIndex, levelIndex + 1, 0)));
-		buttonDown.addActionListener(new ActionCmdTargetFloor(new Action(levelIndex, levelIndex - 1, 0)));
+		buttonUp.addActionListener(new ActionCmdTargetFloor(new ElevatorAction(levelIndex, levelIndex + 1, 0)));
+		buttonDown.addActionListener(new ActionCmdTargetFloor(new ElevatorAction(levelIndex, levelIndex - 1, 0)));
 
 		this.add(buttonDown);
 		this.add(buttonUp);
 	}
 
 	private class ActionCmdTargetFloor implements ActionListener {
-		private IAction action;
+		private Action action;
 
-		public ActionCmdTargetFloor(IAction action) {
+		public ActionCmdTargetFloor(Action action) {
 			this.action = action;
 		}
 

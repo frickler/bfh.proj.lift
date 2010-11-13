@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import definition.IAction;
-import logic.Action;
+import definition.Action;
+import logic.ElevatorAction;
 import logic.Statistic;
 
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class StatisticTest {
 	@Test
 	public void TestSummary() throws Exception {
 		
-		IAction a = new Action(2,12,3);
+		Action a = new ElevatorAction(2,12,3);
 		Date date = new Date(System.currentTimeMillis());
 		a.setTimestampEntered(date);
 		date = new Date(System.currentTimeMillis()+3*1000);
@@ -26,7 +26,7 @@ public class StatisticTest {
 		date = new Date(System.currentTimeMillis()+9*1000);
 		a.setTimestampEnded(date);
 		
-		IAction b = new Action(2,12,3);
+		Action b = new ElevatorAction(2,12,3);
 		date = new Date(System.currentTimeMillis());
 		b.setTimestampEntered(date);
 		date = new Date(System.currentTimeMillis()+10*1000);
@@ -36,7 +36,7 @@ public class StatisticTest {
 		date = new Date(System.currentTimeMillis()+30*1000);
 		b.setTimestampEnded(date);
 		
-		IAction c = new Action(2,12,3);
+		Action c = new ElevatorAction(2,12,3);
 		date = new Date(System.currentTimeMillis());
 		c.setTimestampEntered(date);
 		date = new Date(System.currentTimeMillis()+5*1000);

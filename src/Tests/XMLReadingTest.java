@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import logic.XMLReader;
+import logic.ElevatorActionXMLReader;
 
 import org.junit.Test;
 
-import definition.IAction;
-import definition.IBuilding;
+import definition.Action;
+import definition.Building;
 
 
 public class XMLReadingTest {
@@ -19,12 +19,12 @@ public class XMLReadingTest {
 	@Test
 	public void TestBuilding() {
 		String strXML = getXMLString();
-		XMLReader reader = new XMLReader();
+		ElevatorActionXMLReader reader = new ElevatorActionXMLReader();
 
 		try {
 			reader.readXMLStructure(strXML);
 
-			IBuilding b = reader.getBuilding();
+			Building b = reader.getBuilding();
 			assertNotNull(b);
 			assertEquals(3, b.getElevators().size());
 			assertEquals(1, b.getElevators().get(0).getMinLevel());
@@ -44,12 +44,12 @@ public class XMLReadingTest {
 	@Test
 	public void TestActions() {
 		String strXML = getXMLString();
-		XMLReader reader = new XMLReader();
+		ElevatorActionXMLReader reader = new ElevatorActionXMLReader();
 
 		try {
 			reader.readXMLStructure(strXML);
 
-			List<IAction> a = reader.getActions();
+			List<Action> a = reader.getActions();
 			assertNotNull(a);
 			assertEquals(3, a.size());
 			assertEquals(1, a.get(0).getStartLevel());

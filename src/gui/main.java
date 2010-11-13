@@ -15,11 +15,11 @@ public class main {
 	
 	public static void testGui(){
 		try {
-			IBuilding building = new Building(new Elevator(1, 5, Integer.MAX_VALUE, 1));
+			Building building = new Tower(new Elevator(1, 5, Integer.MAX_VALUE, 1));
 			building.addElevator(new Elevator(1, 5, Integer.MAX_VALUE, 2));
 			building.addElevator(new Elevator(-3, 10, Integer.MAX_VALUE, -2));
 
-			IController controller = new Controller(building, new FiFoAlgorithm(building));
+			ElevatorController controller = new ElevatorController(building, new FiFoAlgorithm(building));
 			controller.startController();
 
 			Thread t = new Thread(new FrameMain(building, controller));
