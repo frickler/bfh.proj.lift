@@ -42,13 +42,16 @@ public class FrameMain extends JFrame implements Runnable {
 
 		//add a single LevelPanel and an ElevatorPanel for each elevator 
 		this.getContentPane().setLayout(new GridLayout(1, building.getElevators().size() + 1));
-		this.getContentPane().add(new LevelPanel(building, controller));
+		
 		for(HorizontalTransporter item : building.getElevators())
 		{
 			ElevatorPanel ePanel = new ElevatorPanel(item, building, this);
 			this.getContentPane().add(ePanel);
+		
 			elevatorPanels.add(ePanel);
 		}
+		
+		this.getContentPane().add(new LevelPanel(building, controller));
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.Window#paint(java.awt.Graphics)
