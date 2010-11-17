@@ -12,17 +12,26 @@ import definition.Controller;
 import definition.HorizontalTransporter;
 
 
+/**
+ * 
+ * @author BFH-Boys
+ *
+ */
 public class FrameMain extends JFrame implements Runnable {
-	private Building building;
-	private Controller controller;
+	private static final long serialVersionUID = -6897288117049912593L;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
 	
+	/**
+	 * @param building the building that will be visualized in this frame
+	 * @param controller the controller used for this building
+	 * @throws Exception throws an exception if arguments are null 
+	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
 		if (building == null)
 			throw new Exception("building can not be null");
-		
-		this.building = building;
-		this.controller = controller;
+
+		if(controller == null)
+			throw new Exception("controller can not be null");
 		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Wo ist mein Lift?");
@@ -41,10 +50,16 @@ public class FrameMain extends JFrame implements Runnable {
 			elevatorPanels.add(ePanel);
 		}
 	}
+	/* (non-Javadoc)
+	 * @see java.awt.Window#paint(java.awt.Graphics)
+	 */
 	public void paint(Graphics g){
 		super.paint(g);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		while(true)

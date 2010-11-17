@@ -9,7 +9,18 @@ import definition.Building;
 import definition.Controller;
 
 
+/**
+ * 
+ * @author BFH-Boys
+ *
+ */
 public class LevelPanel extends JPanel {
+	private static final long serialVersionUID = 7151223026491488177L;
+
+	/**
+	 * @param building the building this instance is created for
+	 * @param controller the controller used for this building
+	 */
 	public LevelPanel(Building building, Controller controller) {
 		// create a GridLayout with the number of levels
 		this.setLayout(new GridLayout(building.getMaxLevel()

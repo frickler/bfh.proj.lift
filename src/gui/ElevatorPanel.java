@@ -12,19 +12,29 @@ import definition.Building;
 import definition.HorizontalTransporter;
 
 
+/**
+ * 
+ * @author BFH-Boys
+ *
+ */
 public class ElevatorPanel extends JPanel {
+
+	private static final long serialVersionUID = 3356838193898117742L;
 	private HorizontalTransporter elevator;
 	private Building building;
-	private JFrame frameMain;
 	private JLabel label;
 	
 	private int bottomPosition;
 	private int pixelPerLevel;
 	
+	/**
+	 * @param elevator elevator that will be visualized in this panel
+	 * @param building building that contains the elevator
+	 * @param frameMain the main JFrame
+	 */
 	public ElevatorPanel(HorizontalTransporter elevator, Building building, JFrame frameMain){
 		this.elevator = elevator;
 		this.building = building;
-		this.frameMain = frameMain;
 
 		pixelPerLevel = (int) Math.floor((float)frameMain.getContentPane().getHeight() / (building.getMaxLevel() - building.getMinLevel() + 1));
 
@@ -39,6 +49,9 @@ public class ElevatorPanel extends JPanel {
 		bottomPosition = frameMain.getContentPane().getHeight() - icon.getIconHeight();
 		this.add(label);
 	}
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	public void paint(Graphics g){
 		super.paint(g);
 

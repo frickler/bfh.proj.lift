@@ -13,29 +13,38 @@ import definition.Action;
 import definition.Building;
 import definition.Controller;
 
-
+/**
+ * 
+ * @author BFH-Boys
+ *
+ */
 public class LevelButtonPanel extends JPanel {
+	private static final long serialVersionUID = 5928452566660481029L;
+
 	private Controller controller;
-	
-	public LevelButtonPanel(int levelIndex, Building building, Controller controller) {
+
+	/**
+	 * @param levelIndex the level of that instance
+	 * @param building the building that contains this level 
+	 * @param controller the controller used for this building
+	 */
+	public LevelButtonPanel(int levelIndex, Building building,
+			Controller controller) {
 		this.controller = controller;
-		
-		this.setLayout(new GridLayout(1, 2));
 
-		JButton buttonUp = new JButton("up");
-		JButton buttonDown = new JButton("down");
+		this.setLayout(new GridLayout(1, building.getMaxLevel()
+				- building.getMinLevel() + 1));
 
-		if (levelIndex == building.getMinLevel())
-			buttonDown.setEnabled(false);
-
-		if (levelIndex == building.getMaxLevel())
-			buttonUp.setEnabled(false);
-
-		buttonUp.addActionListener(new ActionCmdTargetFloor(new ElevatorAction(levelIndex, levelIndex + 1, 0)));
-		buttonDown.addActionListener(new ActionCmdTargetFloor(new ElevatorAction(levelIndex, levelIndex - 1, 0)));
-
-		this.add(buttonDown);
-		this.add(buttonUp);
+		for (int i = building.getMinLevel(); i <= building.getMaxLevel(); i++) {
+			JButton buttonLevel = new JButton(String.valueOf(i));
+			if (i != levelIndex) {
+				buttonLevel.addActionListener(new ActionCmdTargetFloor(
+						new ElevatorAction(levelIndex, i, 1)));
+			} else {
+				buttonLevel.setEnabled(false);
+			}
+			this.add(buttonLevel);
+		}
 	}
 
 	private class ActionCmdTargetFloor implements ActionListener {
@@ -48,7 +57,7 @@ public class LevelButtonPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			controller.performAction(action);
-			//TODO: implement action
+			// TODO: implement action
 			System.out.println("getStartLevel(): "
 					+ this.action.getStartLevel() + " getEndLevel(): "
 					+ this.action.getEndLevel());
