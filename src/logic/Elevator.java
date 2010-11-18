@@ -18,6 +18,8 @@ public class Elevator implements HorizontalTransporter {
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
+	// returns the currentPosition of the elevator
+	private double currentPosition;
 	// time to move one level
 	private final int timeForOneLevel = 200;
 	// current Level (Stockwerk) of the elevator
@@ -93,6 +95,13 @@ public class Elevator implements HorizontalTransporter {
 					Elevator.this.moved(Elevator.this.currentAction);
 					actionDone();
 				}
+
+				@Override
+				public void stepDone(Movement movement, Action action,
+						double stepSize) {
+					currentPosition += stepSize;
+
+				}
 			});
 		} else {
 			// Start with movement to startLevel and then perform action
@@ -107,19 +116,29 @@ public class Elevator implements HorizontalTransporter {
 					Elevator.this.move(Elevator.this.currentAction);
 
 				}
+
+				@Override
+				public void stepDone(Movement movement, Action action,
+						double stepSize) {
+					currentPosition += stepSize;
+				}
+
 			});
 		}
 		this.movement.start();
 	}
-	
-	private void actionDone(){
-		Elevator.this.movement = null;		
-	    notifyObserversActionPerformed(this, this.currentAction);
-	    Elevator.this.currentAction = null;	
+
+	private void actionDone() {
+		Elevator.this.movement = null;
+		notifyObserversActionPerformed(this, this.currentAction);
+		Elevator.this.currentAction = null;
 	}
 
 	public int getCurrentLevel() {
-		return currentLevel;
+		// ToDo: Floor
+		log4j.debug("CurrentPosition:" + currentPosition);
+		log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
+		return (int) Math.round(currentPosition);
 	}
 
 	public int getMinLevel() {
@@ -164,11 +183,6 @@ public class Elevator implements HorizontalTransporter {
 	}
 
 	@Override
-	public int getTimeForOneLevel() {
-		return timeForOneLevel;
-	}
-
-	@Override
 	public String toString() {
 		return "SimpleElevator [currentLevel=" + currentLevel
 				+ ", transportedPeople=" + transportedPeople
@@ -205,6 +219,21 @@ public class Elevator implements HorizontalTransporter {
 		for (ActionObserver observer : actionObservers) {
 			observer.actionPerformed(this, action);
 		}
+	}
+
+	@Override
+	public double getCurrentPosition() {
+		return currentPosition;
+	}
+
+	@Override
+	public float getAcceleration() {
+		return 0.2f;
+	}
+
+	@Override
+	public float getMaxSpeed() {		
+		return 40;
 	}
 
 }

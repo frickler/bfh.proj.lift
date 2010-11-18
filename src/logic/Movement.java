@@ -1,9 +1,6 @@
 package logic;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Queue;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +15,7 @@ public class Movement extends Thread implements MovementObserverable {
 
 	private HorizontalTransporter elevator;
 	private Action action;
-	private List<MovementObserver> movedObservers;
+	private MovementObserver movedObserver;
 	// Variable to indicate if the stopMovement-Method is called
 	private boolean move;
 
@@ -26,70 +23,130 @@ public class Movement extends Thread implements MovementObserverable {
 			MovementObserver movedObserver) {
 		super();
 		move = true;
-		movedObservers = new ArrayList<MovementObserver>();
 		this.elevator = elevator;
 		this.action = action;
-		addMovedObserver(movedObserver);
+		this.movedObserver = movedObserver;
 
 	}
 
 	@Override
 	public void run() {
 		// wait until the elevator is not busy any more
-//		while (elevator.isBusy()) {
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e) {
-//			}
-//
-//		}
+		// while (elevator.isBusy()) {
+		// try {
+		// Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// }
+		//
+		// }
 
-		log4j.debug("Moving elevator " + elevator.hashCode() 
-				+ " with " + action.getPeopleAmount() + " people from "
+		log4j.debug("Moving elevator " + elevator.hashCode() + " with "
+				+ action.getPeopleAmount() + " people from "
 				+ action.getStartLevel() + " to " + action.getEndLevel()
 				+ " action: " + action.hashCode());
 		action.setTimestampStarted(new Date(System.currentTimeMillis()));
 		move(elevator.getCurrentLevel(), action.getEndLevel());
 		action.setTimestampEnded(new Date(System.currentTimeMillis()));
 		// update statistics
-		notifyObservers(action);
+		movedObserver.moved(this, action);
 	}
 
 	private void move(int sourceLevel, int targetLevel) {
+		 
+		int totalDistance = Math.abs(targetLevel - sourceLevel) * 100;
+		double distanceAcceleration = (elevator.getMaxSpeed() * elevator
+				.getMaxSpeed()) / (2 * elevator.getAcceleration());
+		double currentSpeed = 0;
+		double milage = 0.1;
 
-		int levels = Math.abs(targetLevel - sourceLevel);
+		double sign = (double) 1;
+		if (targetLevel < sourceLevel) {
+			sign *= -1;
+		}
 
-		for (int i = 0; i < levels; i++) {
+		while (milage <= totalDistance){
+			
 			// StopMovement Method was called
 			if (!move) {
 				return;
 			}
-			// ToDo: Update elevators current level
+					
+			if ((totalDistance - milage) <= distanceAcceleration) {
+				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
+						* (totalDistance - milage));
+			} else if (milage <= distanceAcceleration) {				
+				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
+						* milage);
+
+			} else {
+				currentSpeed = elevator.getMaxSpeed();
+			}
+			milage += currentSpeed;
+			//log4j.debug((sign * currentSpeed) / 100);
+			movedObserver.stepDone(this, action, (sign * currentSpeed) / 100);
+			
 			try {
-				Thread.sleep(elevator.getTimeForOneLevel());
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 
 			}
-		}
+		}		
+
+//		boolean up = targetLevel < sourceLevel;
+//
+//		int distance = Math.abs(targetLevel - sourceLevel) * 100;
+//		float distanceAcceleration = (elevator.getMaxSpeed() * elevator.getMaxSpeed()) / 2 * elevator.getAcceleration();
+//		float currentSpeed = 0;
+//		int time = 0;
+//		
+//		log4j.debug("Distance:" + distanceAcceleration);
+//
+//		double stepSize = (double) 0.02;
+//		if (up) {
+//			stepSize *= -1;
+//		}
+//
+//		log4j.debug("StepSize: " + stepSize);
+//
+//		for (int i = 0; i < distance; i++) {
+//			// StopMovement Method was called
+//			if (!move) {
+//				return;
+//			}
+//			currentSpeed = elevator.getAcceleration() * time;
+//			log4j.debug("CurrentSpeed" + currentSpeed);
+//			
+//			if (currentSpeed > elevator.getMaxSpeed()){
+//				currentSpeed = elevator.getMaxSpeed();				
+//			}
+//			
+//			movedObserver.stepDone(this, action, stepSize);
+//
+//			try {
+//				Thread.sleep(20);
+//			} catch (InterruptedException e) {
+//
+//			}
+//		}
 	}
 
-	@Override
-	public void addMovedObserver(MovementObserver observer) {
-		movedObservers.add(observer);
-
-	}
-
-	@Override
-	public void deleteMovedObserver(MovementObserver observer) {
-		movedObservers.remove(observer);
-	}
-
-	@Override
-	public void notifyObservers(Action action) {
-		for (MovementObserver observer : movedObservers) {
-			observer.moved(this, action);
-		}
-	}
+	// @Override
+	// public void addMovedObserver(MovementObserver observer) {
+	// movedObservers.add(observer);
+	//
+	// }
+	//
+	// @Override
+	// public void deleteMovedObserver(MovementObserver observer) {
+	// movedObservers.remove(observer);
+	// }
+	//
+	// @Override
+	// public void notifyObservers(Action action) {
+	// for (MovementObserver observer : movedObservers) {
+	// observer.moved(this, action);
+	// }
+	// }
 
 	public void stopMovement() {
 		this.move = false;
