@@ -1,5 +1,7 @@
 package definition;
 
+import logic.Movement;
+
 /**
  * 
  * @author BFH-Boys
@@ -16,4 +18,12 @@ public interface MovementObserver {
 	 *            Processed action (or a part of it)
 	 */
 	public void moved(MovementObserverable object, Action action);
+	
+	/**
+	 * 
+	 * @param movement
+	 * @param action
+	 * @param stepSize
+	 */
+	public void stepDone(Movement movement, Action action, double stepSize);
 }

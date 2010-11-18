@@ -8,6 +8,14 @@ public interface HorizontalTransporter extends ActionObservable {
 
 	/**
 	 * 
+	 * @return the accelaration of the elevator
+	 */
+	public float getAcceleration();
+	
+	public float getMaxSpeed();
+	
+	/**
+	 * 
 	 * @return the lowest floor this transporter can reach
 	 */
 	public int getMinLevel();
@@ -23,6 +31,13 @@ public interface HorizontalTransporter extends ActionObservable {
 	 * @return the maximum amount of people
 	 */
 	public int getMaxPeople();
+
+	/**
+	 * 
+	 * @return the current Position of the elevator. An elevator can be between
+	 *         two levels
+	 */
+	public double getCurrentPosition();
 
 	/**
 	 * 
@@ -59,12 +74,6 @@ public interface HorizontalTransporter extends ActionObservable {
 	 * @return sum of time in motion without any people
 	 */
 	public float getTimeInMotionEmpty();
-
-	/**
-	 * 
-	 * @return The time in milliseconds for a transporter to pass one level
-	 */
-	public int getTimeForOneLevel();
 
 	/**
 	 * indicates if a transporter object is busy (moving)
