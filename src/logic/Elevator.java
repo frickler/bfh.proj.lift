@@ -136,8 +136,8 @@ public class Elevator implements HorizontalTransporter {
 
 	public int getCurrentLevel() {
 		// ToDo: Floor
-		log4j.debug("CurrentPosition:" + currentPosition);
-		log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
+//		log4j.debug("CurrentPosition:" + currentPosition);
+//		log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
 		return (int) Math.round(currentPosition);
 	}
 
