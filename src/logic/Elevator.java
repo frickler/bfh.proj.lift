@@ -80,7 +80,7 @@ public class Elevator implements HorizontalTransporter {
 		this.maxLevel = maxLevel;
 		this.maxPeople = maxPeople;
 		this.currentPosition = startLevel;
-		this.maxLevel = maxLevel;
+		this.maxSpeed = maxSpeed;
 		this.acceleration = acceleration;
 		this.actionObservers = new ArrayList<ActionObserver>();
 	}
