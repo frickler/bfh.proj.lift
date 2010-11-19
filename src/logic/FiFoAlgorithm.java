@@ -23,14 +23,15 @@ public class FiFoAlgorithm extends Algorithm {
 	@Override
 	public void performAction(Action action) {
 		queue.add(action);
-		log4j.debug("adding action. queue.size: " + queue.size() + " action: " + action);
+		log4j.debug("adding action. queue.size: " + queue.size() + " action: "
+				+ action);
 	}
 
 	/**
-	 * Do not call this method directly! Call start() instead.
+	 * Do not call this method directly!
 	 */
 	@Override
-	public void run() {		
+	public void run() {
 		setRunning(true);
 		while (isRunning()) {
 			while (!queue.isEmpty()) {
@@ -40,7 +41,11 @@ public class FiFoAlgorithm extends Algorithm {
 						break;
 					}
 					Elevator ele = (Elevator) i;
-					if (!i.isBusy()) {
+					// Look for a non-busy elevator with a fitting range
+					// (MinLevel & MaxLevel)
+					if (!i.isBusy()
+							&& ele.getMinLevel() <= action.getStartLevel()
+							&& ele.getMaxLevel() >= action.getEndLevel()) {
 						ele.move(action);
 						// remove element from queue
 						queue.poll();

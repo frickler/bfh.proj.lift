@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -112,10 +113,11 @@ public class FrameMain extends JFrame implements Runnable {
 
 		this.getContentPane().add(new LevelPanel(building, controller));
 
+		float gradient = 1;
 		for (HorizontalTransporter item : building.getElevators()) {
-			ElevatorPanel ePanel = new ElevatorPanel(item, building, this);
+			ElevatorPanel ePanel = new ElevatorPanel(item, building, this, new Color(gradient, gradient, gradient));
 			this.getContentPane().add(ePanel);
-
+			gradient -= 0.1;
 			elevatorPanels.add(ePanel);
 		}
 	}

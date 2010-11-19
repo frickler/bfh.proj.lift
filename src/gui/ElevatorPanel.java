@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -32,7 +33,7 @@ public class ElevatorPanel extends JPanel {
 	 * @param building building that contains the elevator
 	 * @param frameMain the main JFrame
 	 */
-	public ElevatorPanel(HorizontalTransporter elevator, Building building, JFrame frameMain){
+	public ElevatorPanel(HorizontalTransporter elevator, Building building, JFrame frameMain, Color backGroundColor){
 		this.elevator = elevator;
 		this.building = building;
 
@@ -41,6 +42,7 @@ public class ElevatorPanel extends JPanel {
 
 		this.setLayout(null);
 		this.add(label);
+		this.setBackground(backGroundColor);
 	}
 	
 	/**
@@ -58,8 +60,7 @@ public class ElevatorPanel extends JPanel {
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	public void paint(Graphics g){
-		super.paint(g);
-		
+		super.paint(g);		
 		pixelPerLevel = (int) Math.floor((float)this.getHeight() / (building.getMaxLevel() - building.getMinLevel() + 1));
 		
 		//if icon height isn't as expected the image will be rescaled 

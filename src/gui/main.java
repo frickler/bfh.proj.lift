@@ -28,7 +28,12 @@ public class main {
 			//TODO Auswahldialog für XML-Datei einblenden
 			Building building = new Tower(new Elevator(1, 7, Integer.MAX_VALUE, 1));
 			building.addElevator(new Elevator(1, 5, Integer.MAX_VALUE, 2));
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));				
+			building.addElevator(new Elevator(-3, 10, Integer.MAX_VALUE, -2));
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
 
 			ElevatorController controller = new ElevatorController(building, new FiFoAlgorithm(building));
 			controller.startController();

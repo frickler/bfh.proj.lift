@@ -12,6 +12,7 @@ import logic.ElevatorAction;
 import definition.Action;
 import definition.Building;
 import definition.Controller;
+import exceptions.IllegalActionException;
 
 /**
  * 
@@ -56,7 +57,12 @@ public class LevelButtonPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			controller.performAction(action);
+			try {
+				controller.performAction(action);
+			} catch (IllegalActionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// TODO: implement action
 			System.out.println("getStartLevel(): "
 					+ this.action.getStartLevel() + " getEndLevel(): "

@@ -37,8 +37,7 @@ public class ElevatorTest {
 		assertEquals("Current level", e.getCurrentLevel(),targetLevel);
 		assertEquals("Moved levels", e.getDrivenLevels(),startLevel-currentLevel+(startLevel-targetLevel));
 		assertEquals("Moved levels empty", e.getDrivenLevelsEmpty(),startLevel-currentLevel);
-		assertEquals("Moved persons", e.getTransportedPeople(),5);
-			
+		assertEquals("Moved persons", e.getTransportedPeople(),5);	
 
 	}
 //	

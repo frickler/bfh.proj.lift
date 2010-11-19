@@ -9,6 +9,9 @@ import definition.Algorithm;
 import definition.Building;
 import definition.Controller;
 import definition.HorizontalTransporter;
+import exceptions.IllegalActionException;
+import exceptions.MaxLevelActionException;
+import exceptions.MinLevelActionException;
 
 public class ElevatorController implements Controller {
 
@@ -38,8 +41,13 @@ public class ElevatorController implements Controller {
 	}
 
 	@Override
-	public void performAction(Action action) {
-		// ToDo: Etagen checken, Personen, etc.
+	public void performAction(Action action) throws IllegalActionException {
+		if (action.getStartLevel() < building.getMinLevel()) {
+			throw new MinLevelActionException(action);
+		}
+		if (action.getEndLevel() > building.getMaxLevel()) {
+			throw new MaxLevelActionException(action);
+		}
 		algorithm.performAction(action);
 	}
 
