@@ -12,6 +12,9 @@ import definition.Action;
 import definition.HorizontalTransporter;
 import definition.MovementObserver;
 import definition.MovementObserverable;
+import exceptions.ElevatorConfigException;
+import exceptions.IllegalRangeException;
+import exceptions.IllegalStartLevelException;
 
 public class Elevator implements HorizontalTransporter {
 
@@ -22,8 +25,6 @@ public class Elevator implements HorizontalTransporter {
 	private double currentPosition;
 	// time to move one level
 	private final int timeForOneLevel = 200;
-	// current Level (Stockwerk) of the elevator
-	private int currentLevel;
 	// min Level (Stockwerk) the elevator can reach
 	private int minLevel;
 	// max Level (Stockwerk) the elevator can reach
@@ -46,15 +47,18 @@ public class Elevator implements HorizontalTransporter {
 
 	private List<ActionObserver> actionObservers;
 
-	public Elevator(int minLevel, int maxLevel, int maxPeople, int currentLevel)
-			throws Exception {
+	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
+			throws ElevatorConfigException {
 		if (minLevel >= maxLevel) {
-			throw new Exception("minLevel cannot be less or equal maxLevel");
+			throw new IllegalRangeException("minLevel cannot be less or equal maxLevel");
+		}
+		if (startLevel > maxLevel || startLevel < minLevel){
+			throw new IllegalStartLevelException("startLevel is not in the range of the elevator");			
 		}
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.maxPeople = maxPeople;
-		this.currentLevel = currentLevel;
+		this.currentPosition = startLevel;
 		this.actionObservers = new ArrayList<ActionObserver>();
 	}
 
@@ -76,7 +80,7 @@ public class Elevator implements HorizontalTransporter {
 				- action.getEndLevel());
 		this.timeInMotion += action.getTimestampEnded().getTime()
 				- action.getTimestampStarted().getTime();
-		this.currentLevel = action.getEndLevel();
+		this.currentPosition = action.getEndLevel();
 		// log4j.debug("Elevator" + hashCode() + " moved " + this);
 	}
 
@@ -184,7 +188,7 @@ public class Elevator implements HorizontalTransporter {
 
 	@Override
 	public String toString() {
-		return "SimpleElevator [currentLevel=" + currentLevel
+		return "SimpleElevator [currentLevel=" + getCurrentLevel()
 				+ ", transportedPeople=" + transportedPeople
 				+ ", drivenLevels=" + drivenLevels + ", drivenLevelsEmpty="
 				+ drivenLevelsEmpty + "]";

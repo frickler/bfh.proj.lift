@@ -26,14 +26,14 @@ public class main {
 	public static void testGui(){
 		try {
 			//TODO Auswahldialog für XML-Datei einblenden
-			Building building = new Tower(new Elevator(1, 7, Integer.MAX_VALUE, 1));
-			building.addElevator(new Elevator(1, 5, Integer.MAX_VALUE, 2));
-			building.addElevator(new Elevator(-3, 10, Integer.MAX_VALUE, -2));
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));	
+			Building building = new Tower(new Elevator(-2, 3, Integer.MAX_VALUE, 1));
+			building.addElevator(new Elevator(3, 6, Integer.MAX_VALUE, 4));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+
 
 			ElevatorController controller = new ElevatorController(building, new FiFoAlgorithm(building));
 			controller.startController();

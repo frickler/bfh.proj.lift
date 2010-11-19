@@ -113,11 +113,14 @@ public class FrameMain extends JFrame implements Runnable {
 
 		this.getContentPane().add(new LevelPanel(building, controller));
 
-		float gradient = 1;
+		float gradient = 0.8f;
+		int oddEven = 1;
 		for (HorizontalTransporter item : building.getElevators()) {
 			ElevatorPanel ePanel = new ElevatorPanel(item, building, this, new Color(gradient, gradient, gradient));
 			this.getContentPane().add(ePanel);
-			gradient -= 0.1;
+			
+			gradient -= (oddEven > 0) ? 0.1 : -0.1;
+			oddEven *= -1;
 			elevatorPanels.add(ePanel);
 		}
 	}

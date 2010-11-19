@@ -45,10 +45,27 @@ public class Movement extends Thread implements MovementObserverable {
 				+ action.getStartLevel() + " to " + action.getEndLevel()
 				+ " action: " + action.hashCode());
 		action.setTimestampStarted(new Date(System.currentTimeMillis()));
+		loadPeople();
 		move(elevator.getCurrentLevel(), action.getEndLevel());
+		loadPeople();
 		action.setTimestampEnded(new Date(System.currentTimeMillis()));
+
 		// update statistics
 		movedObserver.moved(this, action);
+	}
+
+	/**
+	 * @ToDo: Überprüfen
+	 */
+	private void loadPeople() {
+		log4j.debug("People Amount:" + action.getPeopleAmount());
+		if (action.getPeopleAmount() > 0) {
+			try {
+				Thread.sleep(action.getPeopleAmount() * 2000);
+			} catch (InterruptedException e) {
+			}
+		}
+
 	}
 
 	/**
@@ -56,10 +73,10 @@ public class Movement extends Thread implements MovementObserverable {
 	 * @param targetLevel
 	 */
 	private void move(int sourceLevel, int targetLevel) {
-		
+
 		int totalDistance = Math.abs(targetLevel - sourceLevel) * 100;
-		//double distanceAcceleration = (elevator.getMaxSpeed() * elevator
-		//		.getMaxSpeed()) / (2 * elevator.getAcceleration());
+		// double distanceAcceleration = (elevator.getMaxSpeed() * elevator
+		// .getMaxSpeed()) / (2 * elevator.getAcceleration());
 		double currentSpeed = 0;
 		double milage = 0.1;
 
@@ -68,130 +85,38 @@ public class Movement extends Thread implements MovementObserverable {
 			sign *= -1;
 		}
 
-		while (milage <= totalDistance){
-			
+		while (milage <= totalDistance) {
+
 			// StopMovement Method was called
 			if (!move) {
 				return;
 			}
-			
-			double distanceToBreak = (currentSpeed *  currentSpeed) / (2 * elevator.getAcceleration());
-					
+
+			double distanceToBreak = (currentSpeed * currentSpeed)
+					/ (2 * elevator.getAcceleration());
+
 			if ((totalDistance - milage) <= distanceToBreak) {
 				// Elevator slows down
 				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
 						* (totalDistance - milage));
-			} else {			
+			} else {
 				// Elevator speeds up
 				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
 						* milage);
-				currentSpeed = (currentSpeed > elevator.getMaxSpeed()) ? elevator.getMaxSpeed() : currentSpeed;
+				currentSpeed = (currentSpeed > elevator.getMaxSpeed()) ? elevator
+						.getMaxSpeed() : currentSpeed;
 			}
 			milage += currentSpeed;
-			log4j.debug((sign * currentSpeed) / 100);
+			// log4j.debug((sign * currentSpeed) / 100);
 			movedObserver.stepDone(this, action, (sign * currentSpeed) / 100);
-			
+
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
 
 			}
-		}	
-		 
-//		int totalDistance = Math.abs(targetLevel - sourceLevel) * 100;
-//		double distanceAcceleration = (elevator.getMaxSpeed() * elevator
-//				.getMaxSpeed()) / (2 * elevator.getAcceleration());
-//		double currentSpeed = 0;
-//		double milage = 0.1;
-//
-//		double sign = (double) 1;
-//		if (targetLevel < sourceLevel) {
-//			sign *= -1;
-//		}
-//
-//		while (milage <= totalDistance){
-//			
-//			// StopMovement Method was called
-//			if (!move) {
-//				return;
-//			}
-//					
-//			if ((totalDistance - milage) <= distanceAcceleration) {
-//				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
-//						* (totalDistance - milage));
-//			} else if (milage <= distanceAcceleration) {				
-//				currentSpeed = Math.sqrt(2 * elevator.getAcceleration()
-//						* milage);
-//
-//			} else {
-//				currentSpeed = elevator.getMaxSpeed();
-//			}
-//			milage += currentSpeed;
-//			log4j.debug((sign * currentSpeed) / 100);
-//			movedObserver.stepDone(this, action, (sign * currentSpeed) / 100);
-//			
-//			try {
-//				Thread.sleep(20);
-//			} catch (InterruptedException e) {
-//
-//			}
-//		}		
-
-//		boolean up = targetLevel < sourceLevel;
-//
-//		int distance = Math.abs(targetLevel - sourceLevel) * 100;
-//		float distanceAcceleration = (elevator.getMaxSpeed() * elevator.getMaxSpeed()) / 2 * elevator.getAcceleration();
-//		float currentSpeed = 0;
-//		int time = 0;
-//		
-//		log4j.debug("Distance:" + distanceAcceleration);
-//
-//		double stepSize = (double) 0.02;
-//		if (up) {
-//			stepSize *= -1;
-//		}
-//
-//		log4j.debug("StepSize: " + stepSize);
-//
-//		for (int i = 0; i < distance; i++) {
-//			// StopMovement Method was called
-//			if (!move) {
-//				return;
-//			}
-//			currentSpeed = elevator.getAcceleration() * time;
-//			log4j.debug("CurrentSpeed" + currentSpeed);
-//			
-//			if (currentSpeed > elevator.getMaxSpeed()){
-//				currentSpeed = elevator.getMaxSpeed();				
-//			}
-//			
-//			movedObserver.stepDone(this, action, stepSize);
-//
-//			try {
-//				Thread.sleep(20);
-//			} catch (InterruptedException e) {
-//
-//			}
-//		}
+		}
 	}
-
-	// @Override
-	// public void addMovedObserver(MovementObserver observer) {
-	// movedObservers.add(observer);
-	//
-	// }
-	//
-	// @Override
-	// public void deleteMovedObserver(MovementObserver observer) {
-	// movedObservers.remove(observer);
-	// }
-	//
-	// @Override
-	// public void notifyObservers(Action action) {
-	// for (MovementObserver observer : movedObservers) {
-	// observer.moved(this, action);
-	// }
-	// }
 
 	public void stopMovement() {
 		this.move = false;
