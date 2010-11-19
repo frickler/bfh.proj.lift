@@ -8,6 +8,7 @@ import java.util.List;
 import definition.Action;
 import definition.Controller;
 import definition.HorizontalTransporter;
+import exceptions.IllegalActionException;
 
 public class SimulatorController implements Controller, Runnable {
 
@@ -57,7 +58,11 @@ public class SimulatorController implements Controller, Runnable {
 					add = true;
 				}
 				if (add) {
-					this.elevatorController.performAction(actions.get(i));
+					try {
+						this.elevatorController.performAction(actions.get(i));
+					} catch (IllegalActionException e) {
+						e.printStackTrace();
+					}
 					actions.remove(i);
 					i--;
 				}

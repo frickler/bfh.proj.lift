@@ -23,14 +23,16 @@ public class Elevator implements HorizontalTransporter {
 
 	// returns the currentPosition of the elevator
 	private double currentPosition;
-	// time to move one level
-	private final int timeForOneLevel = 200;
 	// min Level (Stockwerk) the elevator can reach
 	private int minLevel;
 	// max Level (Stockwerk) the elevator can reach
 	private int maxLevel;
 	// max people the elevator can take
 	private int maxPeople;
+	// time in second the elevator moved
+	private float acceleration;
+	// time in second the elevator moved without any passangers.
+	private float maxSpeed;
 	// sum of all transported people
 	private int transportedPeople;
 	// amount of all passed levels
@@ -48,13 +50,15 @@ public class Elevator implements HorizontalTransporter {
 	private List<ActionObserver> actionObservers;
 
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
-			throws ElevatorConfigException {
-		if (minLevel >= maxLevel) {
-			throw new IllegalRangeException("minLevel cannot be less or equal maxLevel");
-		}
-		if (startLevel > maxLevel || startLevel < minLevel){
-			throw new IllegalStartLevelException("startLevel is not in the range of the elevator");			
-		}
+			throws Exception {
+	this(minLevel,maxLevel,maxPeople,startLevel,40f,0.5f);
+	}
+		
+	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel,float maxSpeed,float acceleration)
+		throws Exception {
+		
+		checkParameters(minLevel,maxLevel,maxPeople,startLevel,maxSpeed,acceleration);
+		
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.maxPeople = maxPeople;
@@ -62,6 +66,27 @@ public class Elevator implements HorizontalTransporter {
 		this.actionObservers = new ArrayList<ActionObserver>();
 	}
 
+	private void checkParameters(int minLevel, int maxLevel, int maxPeople,
+			int startLevel, float maxSpeed, float acceleration)
+			throws Exception {
+		if (minLevel >= maxLevel) {
+			throw new IllegalRangeException("minLevel cannot be less or equal maxLevel");
+		}
+		if (startLevel > maxLevel || startLevel < minLevel){
+			throw new IllegalStartLevelException("startLevel is not in the range of the elevator");			
+		}
+		if (acceleration < 0.2 || acceleration > 4) {
+			throw new ElevatorConfigException("acceleration must be between 0.2 and 4");
+		}
+		if (maxSpeed < 20 || maxSpeed > 80) {
+			throw new ElevatorConfigException("maxSpeed must be between 20 and 80");
+		}
+		if (maxPeople < 1) {
+			throw new ElevatorConfigException("maxPeople must be bigger than 1");
+		}
+	}
+	
+	
 	/**
 	 * This method is called when an action is performed on a elevator to update
 	 * his data/statistics
@@ -232,12 +257,20 @@ public class Elevator implements HorizontalTransporter {
 
 	@Override
 	public float getAcceleration() {
-		return 0.2f;
+		return this.acceleration;
 	}
 
 	@Override
 	public float getMaxSpeed() {		
-		return 40;
+		return this.maxSpeed;
+	}
+
+	public void setAcceleration(float acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	public void setMaxSpeed(float maxSpeed) {
+		this.maxSpeed = maxSpeed;
 	}
 
 }
