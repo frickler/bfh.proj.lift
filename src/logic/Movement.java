@@ -52,8 +52,6 @@ public class Movement extends Thread implements MovementObserverable {
 	}
 
 	/**
-	 * Bug: Wenn die Strecke kürzer ist als die Beschleunigung, wird als Startwert 
-	 * die maximale Geschwindigkeit genommen
 	 * @param sourceLevel
 	 * @param targetLevel
 	 */

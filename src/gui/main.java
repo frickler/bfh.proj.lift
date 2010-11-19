@@ -1,5 +1,7 @@
 package gui;
 
+import org.apache.log4j.Logger;
+
 import logic.*;
 import definition.*;
 import gui.FrameMain;
@@ -11,6 +13,9 @@ import gui.FrameMain;
  */
 public class main {
 
+	// Logger
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
+	
 	/**
 	 * @param args
 	 */
@@ -23,7 +28,7 @@ public class main {
 			//TODO Auswahldialog für XML-Datei einblenden
 			Building building = new Tower(new Elevator(1, 7, Integer.MAX_VALUE, 1));
 			building.addElevator(new Elevator(1, 5, Integer.MAX_VALUE, 2));
-			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));
+			building.addElevator(new Elevator(-3, 3, Integer.MAX_VALUE, -2));				
 
 			ElevatorController controller = new ElevatorController(building, new FiFoAlgorithm(building));
 			controller.startController();
@@ -31,7 +36,7 @@ public class main {
 			Thread t = new Thread(new FrameMain(building, controller));
 			t.start();
 		} catch (Exception ex) {
-			System.out.println(ex.getStackTrace());
+			log4j.error(ex);
 		}
 	}
 

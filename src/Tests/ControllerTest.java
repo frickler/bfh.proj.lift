@@ -55,7 +55,7 @@ public class ControllerTest {
 		
 		int totalPeople = 0;
 		Random gen = new Random( (int) (Math.random() * 10000));		
-		for (int i = 0; i < 250; i++) {
+		for (int i = 0; i < 25; i++) {
 			int start = gen.nextInt(15) + 1;
 			int end = gen.nextInt(15) + 1;
 			int people = gen.nextInt(5) + 1;

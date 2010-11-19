@@ -70,7 +70,7 @@ public class ElevatorPanel extends JPanel {
 		int bottomPosition = this.getHeight() - icon.getIconHeight();
 
 		//zero-based level of the current elevator
-		float relativeLevel = (float) elevator.getCurrentLevel() - building.getMinLevel();
+		float relativeLevel = (float) elevator.getCurrentPosition() - building.getMinLevel();
 		int verticalPosition = bottomPosition - (int) Math.floor(relativeLevel * pixelPerLevel); 
 
 		//the elevator icon is centered within the panel
