@@ -22,7 +22,6 @@ import definition.Building;
 import definition.HorizontalTransporter;
 import definition.XMLReader;
 
-
 public class ElevatorActionXMLReader extends XMLReader {
 
 	private DocumentBuilder builder;
@@ -87,10 +86,18 @@ public class ElevatorActionXMLReader extends XMLReader {
 				NamedNodeMap m = item.getAttributes();
 				int startLevel = Integer.parseInt(getValue("startLevel", m));
 				int endLevel = Integer.parseInt(getValue("endLevel", m));
-				int peopleAmount = Integer.parseInt(getValue("peopleAmount", m));
-				return new ElevatorAction(startLevel, endLevel, peopleAmount);
+				int peopleAmount = Integer
+						.parseInt(getValue("peopleAmount", m));
+				try {
+					int delay = Integer.parseInt(getValue("delay", m));
+					return new DelayedElevatorAction(startLevel, endLevel,
+							peopleAmount, delay);
+				} catch (Exception ex) {
+					return new ElevatorAction(startLevel, endLevel,peopleAmount);
+				}
 			}
 		} catch (Exception ex) {
+			System.out.print("Error creating action " + ex.getMessage());
 		}
 		return null;
 	}
@@ -103,10 +110,16 @@ public class ElevatorActionXMLReader extends XMLReader {
 				int minLevel = Integer.parseInt(getValue("minLevel", m));
 				int maxLevel = Integer.parseInt(getValue("maxLevel", m));
 				int maxPeople = Integer.parseInt(getValue("maxPeople", m));
-				int currentLevel = Integer.parseInt(getValue("currentLevel",m));
-				return new Elevator(minLevel, maxLevel, maxPeople, currentLevel);
+				int currentLevel = Integer
+						.parseInt(getValue("currentLevel", m));
+				float maxSpeed = Float.parseFloat(getValue("maxSpeed", m));
+				float acceleration = Float.parseFloat(getValue("acceleration",
+						m));
+				return new Elevator(minLevel, maxLevel, maxPeople,
+						currentLevel, maxSpeed, acceleration);
 			}
 		} catch (Exception ex) {
+			System.out.println("Elevator not created" + ex.getMessage());
 		}
 		return null;
 	}
@@ -139,7 +152,7 @@ public class ElevatorActionXMLReader extends XMLReader {
 					HorizontalTransporter e = getElevator(nodes_i.item(i));
 					if (e != null) {
 						if (building == null) {
-							building = new Tower(e);							
+							building = new Tower(e);
 						} else {
 							building.addElevator(e);
 						}

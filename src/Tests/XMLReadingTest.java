@@ -16,6 +16,7 @@ import definition.Building;
 
 public class XMLReadingTest {
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void TestBuilding() {
 		String strXML = getXMLString();
@@ -30,10 +31,16 @@ public class XMLReadingTest {
 			assertEquals(1, b.getElevators().get(0).getMinLevel());
 			assertEquals(2, b.getElevators().get(0).getMaxLevel());
 			assertEquals(4, b.getElevators().get(0).getMaxPeople());
-
+			assertEquals(2, b.getElevators().get(0).getCurrentLevel());
+			assertEquals(20f, b.getElevators().get(0).getMaxSpeed(),0.1f);
+			assertEquals(1f, b.getElevators().get(0).getAcceleration(),0.1f);
+			
 			assertEquals(-2, b.getElevators().get(2).getMinLevel());
 			assertEquals(3, b.getElevators().get(2).getMaxLevel());
 			assertEquals(6, b.getElevators().get(2).getMaxPeople());
+			assertEquals(0, b.getElevators().get(2).getCurrentLevel());
+			assertEquals(40, b.getElevators().get(2).getMaxSpeed(),0.1f);
+			assertEquals(3, b.getElevators().get(2).getAcceleration(),0.1f);
 
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -71,9 +78,9 @@ public class XMLReadingTest {
 		String sXML = "<?xml version=\"1.0\" ?>"
 				+ "<ElevatorSettings>"
 				+ "<Building>"
-				+ "<Elevator minLevel=\"1\" maxLevel=\"2\" maxPeople=\"4\" currentLevel=\"4\" />"
-				+ "<Elevator minLevel=\"0\" maxLevel=\"10\" maxPeople=\"8\" currentLevel=\"1\" />"
-				+ "<Elevator minLevel=\"-2\" maxLevel=\"3\" maxPeople=\"6\" currentLevel=\"0\" />"
+				+ "<Elevator minLevel=\"1\" maxLevel=\"2\" maxPeople=\"4\" currentLevel=\"2\" acceleration=\"1\" maxSpeed=\"20\" />"
+				+ "<Elevator minLevel=\"0\" maxLevel=\"10\" maxPeople=\"8\" currentLevel=\"1\" acceleration=\"0.5\" maxSpeed=\"30\" />"
+				+ "<Elevator minLevel=\"-2\" maxLevel=\"3\" maxPeople=\"6\" currentLevel=\"0\" acceleration=\"3\" maxSpeed=\"40\" />"
 				+ "</Building>"
 				+ "<Actions>"
 				+ "<Action startLevel=\"1\" endLevel=\"5\" peopleAmount=\"3\" />"
