@@ -53,7 +53,24 @@ public class Elevator implements HorizontalTransporter {
 			throws Exception {
 	this(minLevel,maxLevel,maxPeople,startLevel,40f,0.5f);
 	}
-		
+	
+	/**
+	 * 
+	 * @param minLevel
+	 *            must be lower than maxLevel
+	 * @param maxLevel
+	 *            must be higher than minLevel
+	 * @param maxPeople
+	 *            must be bigger than one
+	 * @param currentLevel
+	 *            must be between minLevel and maxLevel
+	 * @param maxSpeed
+	 *            must be between 20 and 80
+	 * @param acceleration
+	 *            must be between 0.2 and 4
+	 * @throws Exception
+	 *             if an parameter is not valid
+	 */
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel,float maxSpeed,float acceleration)
 		throws Exception {
 		
@@ -63,9 +80,15 @@ public class Elevator implements HorizontalTransporter {
 		this.maxLevel = maxLevel;
 		this.maxPeople = maxPeople;
 		this.currentPosition = startLevel;
+		this.maxLevel = maxLevel;
+		this.acceleration = acceleration;
 		this.actionObservers = new ArrayList<ActionObserver>();
 	}
 
+	/**
+	 * Checks all parameter if they are valid
+	 * 
+	 */
 	private void checkParameters(int minLevel, int maxLevel, int maxPeople,
 			int startLevel, float maxSpeed, float acceleration)
 			throws Exception {
