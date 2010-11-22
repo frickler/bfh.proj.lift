@@ -27,6 +27,7 @@ public class ElevatorPanel extends JPanel {
 	private Building building;
 	private ImageIcon icon;
 	private JLabel label;
+	private JPanel background;
 
 	private int pixelPerLevel;
 
@@ -44,22 +45,13 @@ public class ElevatorPanel extends JPanel {
 		this.building = building;
 		icon = new ImageIcon();
 		label = new JLabel(icon);
+		background = new JPanel();
 
 		this.setLayout(null);
 		this.add(label);
 
-		pixelPerLevel = (int) Math.floor((float) 768
-				/ (building.getMaxLevel() - building.getMinLevel() + 1));
-
-		JPanel background = new JPanel();
 		background.setBackground(backGroundColor);
-		background.setBounds(1, pixelPerLevel
-				* ((building.getMaxLevel() - elevator.getMaxLevel())), 100,
-				(elevator.getMaxLevel() - elevator.getMinLevel() + 1)
-						* pixelPerLevel);
-		log4j.debug(background.getBounds());
 		this.add(background);
-
 	}
 
 	/**
@@ -76,6 +68,7 @@ public class ElevatorPanel extends JPanel {
 				height, 1);
 		icon.setImage(scaledImage);
 		label.setSize(icon.getIconWidth(), icon.getIconHeight());
+		log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
 	}
 
 	/*
@@ -86,14 +79,15 @@ public class ElevatorPanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		// g.fillRect(pixelPerLevel * elevator.getMinLevel(), 0,
-		// this.getWidth(), pixelPerLevel * elevator.getMaxLevel());
-		// g.setColor(this.backgroundColor);
-		// g.drawRect(pixelPerLevel * elevator.getMinLevel(), 0,
-		// this.getWidth(), pixelPerLevel * elevator.getMaxLevel());
-
 		pixelPerLevel = (int) Math.floor((float) this.getHeight()
 				/ (building.getMaxLevel() - building.getMinLevel() + 1));
+
+		background.setBounds(
+				0, 
+				pixelPerLevel * ((building.getMaxLevel() - elevator.getMaxLevel())), 
+				this.getWidth(), 
+				pixelPerLevel * (elevator.getMaxLevel() - elevator.getMinLevel() + 1)
+				);
 
 		// if icon height isn't as expected the image will be rescaled
 		if (pixelPerLevel != icon.getIconHeight()) {

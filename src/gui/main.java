@@ -1,6 +1,7 @@
 package gui;
 
 import org.apache.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import logic.*;
 import definition.*;
@@ -18,14 +19,23 @@ public class main {
 	
 	/**
 	 * @param args
+	 * @throws IOException 
+	 * @throws SAXException 
 	 */
 	public static void main(String[] args) {
+		runTestConfig();
+	}
+	
+	public static void runApplication(){
+		new FileDialogFrame();
+	}
+	
+	public static void runTestConfig(){
 		testGui();
 	}
 	
 	public static void testGui(){
 		try {
-			//TODO Auswahldialog für XML-Datei einblenden
 			Building building = new Tower(new Elevator(-2, 3, Integer.MAX_VALUE, 1));
 			building.addElevator(new Elevator(3, 6, Integer.MAX_VALUE, 4));
 			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));

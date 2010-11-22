@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import logic.ElevatorAction;
 
 import definition.Action;
@@ -21,6 +23,8 @@ import exceptions.IllegalActionException;
  */
 public class LevelButtonPanel extends JPanel {
 	private static final long serialVersionUID = 5928452566660481029L;
+
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
 
 	private Controller controller;
 
@@ -60,13 +64,8 @@ public class LevelButtonPanel extends JPanel {
 			try {
 				controller.performAction(action);
 			} catch (IllegalActionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				log4j.error(e1);
 			}
-			// TODO: implement action
-			System.out.println("getStartLevel(): "
-					+ this.action.getStartLevel() + " getEndLevel(): "
-					+ this.action.getEndLevel());
 		}
 	}
 }

@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
@@ -12,6 +11,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import definition.Building;
 import definition.Controller;
@@ -23,6 +24,8 @@ import definition.HorizontalTransporter;
  * 
  */
 public class FrameMain extends JFrame implements Runnable {
+
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
 
 	private boolean isRunning;	
 	private Controller controller;
@@ -48,31 +51,23 @@ public class FrameMain extends JFrame implements Runnable {
 		this.controller = controller;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Wo ist mein Lift?");
-
+		
 		this.addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void windowIconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -83,46 +78,38 @@ public class FrameMain extends JFrame implements Runnable {
 
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void windowActivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
 		this.setSize(1024, 800); // TODO
-		this.setResizable(false);
+		this.setResizable(true);
 
-		this.setVisible(true);
-
-		JPanel panelElevator = new JPanel();
-		panelElevator.setLayout(new GridLayout(1, building.getElevators().size() + 1));
-		panelElevator.setMinimumSize(new Dimension(this.getContentPane().getWidth(), this.getContentPane().getHeight() - 50));
+		//a panel with everything (LevelPanel / ElevatorPanel) except the console
+		JPanel panelMain = new JPanel();
+		//contains one LevelPanel and an ElevatorPanel for each elevator
+		panelMain.setLayout(new GridLayout(1, building.getElevators().size() + 1));
+		panelMain.add(new LevelPanel(building, controller));
 
 		this.getContentPane().setLayout(new BorderLayout());
-		this.getContentPane().add(panelElevator, BorderLayout.CENTER);
+		//the main panel is placed in the middle of this frame, the console on the bottom
+		this.getContentPane().add(panelMain, BorderLayout.CENTER);
 		this.getContentPane().add(new ConsolePanel(building, this), BorderLayout.SOUTH);
-
-		// add a single LevelPanel and an ElevatorPanel for each elevator
-		this.getContentPane().setLayout(
-				new GridLayout(1, building.getElevators().size() + 1));
-
-		this.getContentPane().add(new LevelPanel(building, controller));
 
 		float gradient = 0.8f;
 		int oddEven = 1;
 		for (HorizontalTransporter item : building.getElevators()) {
 			ElevatorPanel ePanel = new ElevatorPanel(item, building, this, new Color(gradient, gradient, gradient));
-			this.getContentPane().add(ePanel);
+			panelMain.add(ePanel);
 			
 			gradient -= (oddEven > 0) ? 0.1 : -0.1;
 			oddEven *= -1;
 			elevatorPanels.add(ePanel);
 		}
+		this.setVisible(true);
 	}
 
 	/*
@@ -149,8 +136,7 @@ public class FrameMain extends JFrame implements Runnable {
 			try {
 				Thread.sleep(20);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log4j.error(e);
 			}
 		}
 
