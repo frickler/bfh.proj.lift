@@ -42,6 +42,8 @@ public class ElevatorTest {
 	public void constructorTest() throws Exception {
 		Elevator e = new Elevator(-10, 100, 10, 50);
 
+		assertEquals("MaxLevel", 100, e.getMaxLevel());
+		assertEquals("MinLevel", -10, e.getMinLevel());
 		assertEquals("Current level", 50, e.getCurrentLevel());
 		assertEquals("Moved levels", 0, e.getDrivenLevels());
 		assertEquals("Moved levels empty", 0, e.getDrivenLevelsEmpty());

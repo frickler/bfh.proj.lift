@@ -45,6 +45,8 @@ public class FiFoAlgorithm extends Algorithm {
 					// (MinLevel & MaxLevel)
 					if (!i.isBusy()
 							&& ele.getMinLevel() <= action.getStartLevel()
+							&& ele.getMaxLevel() >= action.getStartLevel()
+							&& ele.getMinLevel() <= action.getEndLevel()
 							&& ele.getMaxLevel() >= action.getEndLevel()) {
 						ele.move(action);
 						// remove element from queue
