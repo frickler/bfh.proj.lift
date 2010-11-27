@@ -82,4 +82,16 @@ public class SimulatorController implements Controller, Runnable {
 		return Running;
 	}
 
+	@Override
+	public Action getActionWithHighestPriority() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Action> getActions(int startLevel, int endlevel, int maxPerson) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

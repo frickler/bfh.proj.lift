@@ -1,6 +1,9 @@
 package definition;
 
 /**
+ * Abstract class which provides a skeleton of an algorithm. Each algorithm runs
+ * as a separate thread and is typically controlled by an object which
+ * implements {@link Controller}
  * 
  * @author BFH-Boys
  * 
@@ -8,6 +11,7 @@ package definition;
 public abstract class Algorithm implements Runnable {
 
 	private Building building;
+	private Controller controller;
 	private boolean isRunning;
 
 	/**
@@ -15,8 +19,17 @@ public abstract class Algorithm implements Runnable {
 	 * @param building
 	 *            Building (with elevators)
 	 */
-	public Algorithm(Building building) {
+	public Algorithm(Building building, Controller controller) {
 		this.building = building;
+		this.controller = controller;
+	}
+
+	/**
+	 * 
+	 * @return controller assigned to this algorithm
+	 */
+	protected Controller getController() {
+		return controller;
 	}
 
 	/**
@@ -33,20 +46,6 @@ public abstract class Algorithm implements Runnable {
 	public void stop() {
 		this.isRunning = false;
 	}
-
-	// /**
-	// * Starts the processing of the actions by starting the algorithm
-	// * and creating a new thread. There is just one running algorithm at
-	// * the same time. If this method gets called and the algorithm is already
-	// * in progress, then it does not call run().
-	// */
-	// public void start() {
-	// this.isRunning = true;
-	// if (this.isRunning){
-	// return;
-	// }
-	// run();
-	// }
 
 	/**
 	 * 
@@ -65,10 +64,4 @@ public abstract class Algorithm implements Runnable {
 		this.isRunning = isRunning;
 	}
 
-	/**
-	 * 
-	 * @param action
-	 *            Adds an action to process to the algorithms datastructure
-	 */
-	public abstract void performAction(Action action);
 }

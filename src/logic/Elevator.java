@@ -1,14 +1,12 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import definition.ActionObservable;
-import definition.ActionObserver;
 import definition.Action;
+import definition.ActionObserver;
 import definition.HorizontalTransporter;
 import definition.MovementObserver;
 import definition.MovementObserverable;

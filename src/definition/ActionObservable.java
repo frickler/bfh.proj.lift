@@ -3,6 +3,8 @@ package definition;
 import logic.Elevator;
 
 /**
+ * Interface which provides the possibility to
+ * observe a object (typically an elevator) which handles actions. 
  * 
  * @author BFH-Boys
  * 

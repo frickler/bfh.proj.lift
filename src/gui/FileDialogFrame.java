@@ -43,11 +43,11 @@ public class FileDialogFrame extends JFrame {
 		
 		if(building != null){
 			this.dispose();
-			
-			ElevatorController controller = new ElevatorController(building, new FiFoAlgorithm(building));
+			try {
+			ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
 			controller.startController();
 
-			try {
+			
 				Thread t = new Thread(new FrameMain(building, controller));
 				t.start();
 			} catch (Exception e) {

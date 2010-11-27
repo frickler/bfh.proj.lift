@@ -3,6 +3,7 @@ package definition;
 import logic.Elevator;
 
 /**
+ * Interface of an object which observes an ActionObservable
  * 
  * @author BFH-Boys
  *

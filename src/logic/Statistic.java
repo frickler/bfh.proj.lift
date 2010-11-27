@@ -72,10 +72,10 @@ public class Statistic {
 		switch(typ){
 		case Started:
 			return ia.getTimestampStarted();
-		case Loaded:
-			return ia.getTimestampPeopleLoaded();
-		case Entered:
-			return ia.getTimestampEntered();
+//		case Loaded:
+//			return ia.getTimestampPeopleLoaded();
+//		case Entered:
+//			return ia.getTimestampEntered();
 		case Ended:
 			return ia.getTimestampEnded();
 		}

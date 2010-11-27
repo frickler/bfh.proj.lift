@@ -1,7 +1,11 @@
 package logic;
 
-import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import definition.Action;
 import definition.ActionObserver;
@@ -15,9 +19,13 @@ import exceptions.MinLevelActionException;
 
 public class ElevatorController implements Controller {
 
+	// Logger
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
+
 	// Building attached to the controller
 	private Building building;
 	private Algorithm algorithm;
+	private List<Action> actions;
 
 	/**
 	 * Constructor for the controller. Each controller is responsible for
@@ -26,10 +34,19 @@ public class ElevatorController implements Controller {
 	 * @param building
 	 *            The attached building
 	 */
-	public ElevatorController(Building building, Algorithm algorithm) {
+	public ElevatorController(Building building,
+			Class<? extends Algorithm> clazz) throws Exception {
 		super();
+		this.actions = new LinkedList<Action>();
 		this.building = building;
-		this.algorithm = algorithm;
+
+		// Create new instance of algorithm using reflections
+		// to ensure that each controller always has a algorithm
+		// which processes the data
+		Class[] args = new Class[] { Building.class ,Controller.class };
+		Constructor con = clazz.getConstructor(args);
+
+		this.algorithm = (Algorithm) con.newInstance(building, this);
 	}
 
 	/**
@@ -48,7 +65,13 @@ public class ElevatorController implements Controller {
 		if (action.getEndLevel() > building.getMaxLevel()) {
 			throw new MaxLevelActionException(action);
 		}
-		algorithm.performAction(action);
+		// set the current timestamp to the action
+		action.setTimestampCreated(new Date());
+
+		// add to datastructure
+		synchronized (actions) {
+			this.actions.add(action);
+		}
 	}
 
 	@Override
@@ -82,6 +105,65 @@ public class ElevatorController implements Controller {
 			elevator.deleteActionObserver(observer);
 		}
 
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public Action getActionWithHighestPriority() {
+		if (actions.isEmpty()) {
+			return null;
+		}
+		return actions.remove(0);
+	}
+
+	@Override
+	public List<Action> getActions(int startLevel, int endlevel, int maxPerson) {
+		List<Action> actionsOfLevel = new LinkedList<Action>();
+		boolean up = startLevel < endlevel;
+		int remainingCapacity = maxPerson;
+
+		Action splitedAction = null;
+		synchronized (actionsOfLevel) {
+			for (Action action : actions) {
+				// break if the elevator is full
+				if (remainingCapacity == 0) {
+					break;
+				}
+				// ensure that action comes from the same startLevel
+				if (action.getStartLevel() == startLevel) {
+					// ensure that action goes in the same directory as the
+					// elevator
+					if ((action.getStartLevel() < action.getEndLevel()) == up) {
+						// ensure that the elevator is not overloaded
+						if (action.getPeopleAmount() > remainingCapacity) {
+							// Split action so that only a few people move
+							splitedAction = new ElevatorAction(
+									action.getStartLevel(),
+									action.getEndLevel(),
+									action.getPeopleAmount()
+											- remainingCapacity);
+							action.setPeopleAmount(remainingCapacity);
+						}
+						// Descend the free spaces in the elevator
+						remainingCapacity -= action.getPeopleAmount();
+						actionsOfLevel.add(action);
+					}
+				}
+			}
+			// Remove actions which are processed
+			this.actions.removeAll(actionsOfLevel);
+		}
+		if (splitedAction != null) {
+			try {
+				this.performAction(splitedAction);
+			} catch (IllegalActionException e) {
+				log4j.error(e.getMessage(), e);
+			}
+		}
+
+		return actionsOfLevel;
 	}
 
 }
