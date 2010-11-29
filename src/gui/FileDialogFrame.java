@@ -49,25 +49,17 @@ public class FileDialogFrame extends JFrame {
 
 		if (building != null) {
 			this.dispose();
-<<<<<<< .mine
-=======
 			try {
-			ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
-			controller.startController();
->>>>>>> .r35
-
-<<<<<<< .mine
+		
 			SimulatorController sim = new SimulatorController(c);
-			try {
-=======
-			
->>>>>>> .r35
+
 				sim.performActions(xmlReader.getActions());
+			
+			sim.startController();
 			} catch (IllegalActionException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			sim.startController();
 		}
 	}
 }

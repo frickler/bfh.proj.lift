@@ -107,7 +107,7 @@ public class ElevatorController implements Controller {
 
 	}
 
-<<<<<<< .mine
+
 	@Override
 	public void performActions(List<Action> actions)
 			throws IllegalActionException {
@@ -116,7 +116,6 @@ public class ElevatorController implements Controller {
 		}		
 	}
 
-=======
 	/**
 	 * 
 	 */
@@ -175,6 +174,4 @@ public class ElevatorController implements Controller {
 
 		return actionsOfLevel;
 	}
-
->>>>>>> .r35
 }
