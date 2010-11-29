@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+
+import logic.ElevatorController;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +36,8 @@ public class FrameMain extends JFrame implements Runnable {
 	private static final long serialVersionUID = -6897288117049912593L;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
 
+	public int buildingHash = 0;
+	
 	/**
 	 * @param building
 	 *            the building that will be visualized in this frame
@@ -42,6 +47,12 @@ public class FrameMain extends JFrame implements Runnable {
 	 *             throws an exception if arguments are null
 	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
+		
+		Menu m = new Menu(building,controller);
+		JMenuBar menubar = m.getMenuBar(); 
+		this.setJMenuBar(menubar);
+		
+		
 		if (building == null)
 			throw new Exception("building can not be null");
 
@@ -98,7 +109,7 @@ public class FrameMain extends JFrame implements Runnable {
 		//the main panel is placed in the middle of this frame, the console on the bottom
 		this.getContentPane().add(panelMain, BorderLayout.CENTER);
 		this.getContentPane().add(new ConsolePanel(building, this), BorderLayout.SOUTH);
-
+		
 		float gradient = 0.8f;
 		int oddEven = 1;
 		for (HorizontalTransporter item : building.getElevators()) {

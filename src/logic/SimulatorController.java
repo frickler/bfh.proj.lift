@@ -13,17 +13,25 @@ import exceptions.IllegalActionException;
 public class SimulatorController implements Controller, Runnable {
 
 	private Date startTime;
-	private ElevatorController elevatorController;
+	private Controller elevatorController;
 	private List<Action> actions = new ArrayList<Action>();
 	private Boolean Running = false;
 
-	public SimulatorController(ElevatorController eController) {
+	public SimulatorController(Controller eController) {
 		this.elevatorController = eController;
 	}
 
 	@Override
 	public void performAction(Action action) {
 		this.actions.add(action);
+	}
+	
+	@Override
+	public void performActions(List<Action> actions)
+			throws IllegalActionException {
+		for(Action a : actions){
+			performAction(a);
+		}		
 	}
 
 	@Override

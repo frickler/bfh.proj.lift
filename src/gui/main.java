@@ -24,11 +24,9 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		runTestConfig();
+		//runApplication();
 	}
 	
-	public static void runApplication(){
-		new FileDialogFrame();
-	}
 	
 	public static void runTestConfig(){
 		testGui();

@@ -22,6 +22,15 @@ public interface Controller {
 	public void performAction(Action action) throws IllegalActionException;
 
 	/**
+	 * Performs the given actions. Usually by giving it to 
+	 * the algorithm
+	 * 
+	 * @param actions to perform
+	 * @throws IllegalActionException if an action is invalid (invalid levels p.E.)
+	 */
+	public void performActions(List<Action> action) throws IllegalActionException;
+	
+	/**
 	 * Starts the performing of the actions
 	 */
 	public void startController();
