@@ -11,20 +11,26 @@ import org.xml.sax.SAXException;
 import logic.ElevatorActionXMLReader;
 import logic.ElevatorController;
 import logic.FiFoAlgorithm;
+import logic.SimulatorController;
 import definition.Building;
+import definition.Controller;
+import exceptions.IllegalActionException;
 
 public class FileDialogFrame extends JFrame {
 
 	private static final long serialVersionUID = 6794649153700018626L;
 
 	private static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
+	private Controller c;
 
-	public FileDialogFrame()
-	{
+	public FileDialogFrame(Controller controller) {
+
+		this.c = controller;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		FileDialog dialog = new FileDialog(this, "Select XML-configuration file");
-		
+		FileDialog dialog = new FileDialog(this,
+				"Select XML-configuration file");
+
 		dialog.setMode(FileDialog.LOAD);
 		dialog.setVisible(true);
 
@@ -40,19 +46,28 @@ public class FileDialogFrame extends JFrame {
 		}
 
 		Building building = xmlReader.getBuilding();
-		
-		if(building != null){
+
+		if (building != null) {
 			this.dispose();
+<<<<<<< .mine
+=======
 			try {
 			ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
 			controller.startController();
+>>>>>>> .r35
 
+<<<<<<< .mine
+			SimulatorController sim = new SimulatorController(c);
+			try {
+=======
 			
-				Thread t = new Thread(new FrameMain(building, controller));
-				t.start();
-			} catch (Exception e) {
-				log4j.error(e);
+>>>>>>> .r35
+				sim.performActions(xmlReader.getActions());
+			} catch (IllegalActionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			sim.startController();
 		}
 	}
 }
