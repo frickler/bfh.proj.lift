@@ -74,4 +74,6 @@ public interface Controller {
 
 	public void stopRandomSimulation();
 
+	public void startSimulation(List<Action> actions);
+
 }

@@ -45,7 +45,7 @@ public class ElevatorController implements Controller {
 		// Create new instance of algorithm using reflections
 		// to ensure that each controller always has a algorithm
 		// which processes the data
-		Class[] args = new Class[] { Building.class ,Controller.class };
+		Class[] args = new Class[] { Building.class, Controller.class };
 		Constructor con = clazz.getConstructor(args);
 
 		this.algorithm = (Algorithm) con.newInstance(building, this);
@@ -109,13 +109,12 @@ public class ElevatorController implements Controller {
 
 	}
 
-
 	@Override
 	public void performActions(List<Action> actions)
 			throws IllegalActionException {
-		for(Action a : actions){
+		for (Action a : actions) {
 			performAction(a);
-		}		
+		}
 	}
 
 	/**
@@ -180,11 +179,11 @@ public class ElevatorController implements Controller {
 	/**
 	 * 
 	 */
-	public  boolean removeElevator(int removeId) {
-		try{
+	public boolean removeElevator(int removeId) {
+		try {
 			building.removeElevator(building.getElevators().get(removeId));
 			return true;
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return false;
 		}
 	}
@@ -193,43 +192,42 @@ public class ElevatorController implements Controller {
 	public List<Action> getDoneActions() {
 		// TODO List of done actions (krigu)
 		List<Action> list = new ArrayList<Action>();
-		
-		
+
 		// hardcode test actions use done actions
-		Action a = new ElevatorAction(2,12,3);
+		Action a = new ElevatorAction(2, 12, 3);
 		Date date = new Date(System.currentTimeMillis());
 		a.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis()+3*1000);
+		date = new Date(System.currentTimeMillis() + 3 * 1000);
 		a.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis()+6*1000);
+		date = new Date(System.currentTimeMillis() + 6 * 1000);
 		a.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis()+9*1000);
+		date = new Date(System.currentTimeMillis() + 9 * 1000);
 		a.setTimestampEnded(date);
-		
-		Action b = new ElevatorAction(2,12,3);
-		date = new Date(System.currentTimeMillis());		
+
+		Action b = new ElevatorAction(2, 12, 3);
+		date = new Date(System.currentTimeMillis());
 		b.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis()+10*1000);
+		date = new Date(System.currentTimeMillis() + 10 * 1000);
 		b.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis()+20*1000);
+		date = new Date(System.currentTimeMillis() + 20 * 1000);
 		b.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis()+30*1000);
+		date = new Date(System.currentTimeMillis() + 30 * 1000);
 		b.setTimestampEnded(date);
-		
-		Action c = new ElevatorAction(2,12,3);
-		date = new Date(System.currentTimeMillis());		
+
+		Action c = new ElevatorAction(2, 12, 3);
+		date = new Date(System.currentTimeMillis());
 		c.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis()+5*1000);
+		date = new Date(System.currentTimeMillis() + 5 * 1000);
 		c.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis()+10*1000);		
+		date = new Date(System.currentTimeMillis() + 10 * 1000);
 		c.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis()+15*1000);
+		date = new Date(System.currentTimeMillis() + 15 * 1000);
 		c.setTimestampEnded(date);
-		
+
 		list.add(a);
 		list.add(b);
 		list.add(c);
-		
+
 		return list;
 	}
 
@@ -255,5 +253,16 @@ public class ElevatorController implements Controller {
 		simulation.stopSimulation();
 		simulation.clearActions();
 		algorithm.stop();
+	}
+
+	@Override
+	public void startSimulation(List<Action> actions) {
+		try {
+			simulation = new Simulation(this);
+			simulation.addAction(actions);
+			simulation.start();
+		} catch (IllegalActionException e) {
+			e.printStackTrace();
+		}
 	}
 }

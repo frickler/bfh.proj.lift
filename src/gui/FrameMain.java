@@ -164,6 +164,7 @@ public class FrameMain extends JFrame implements Runnable {
 		if(building != null){
 			controller.setBuilding(building);
 			arrangeBuilding(controller.getBuilding());
+			controller.startSimulation(actions);
 		}
 	}
 
