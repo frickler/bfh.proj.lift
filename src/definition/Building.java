@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class Building {
 
 	// all elevators of the building
-	private List<HorizontalTransporter> transporters;
+	private List<VerticalTransporter> transporters;
 
 	/**
 	 * 
@@ -20,9 +20,9 @@ public abstract class Building {
 	 * @throws Exception
 	 *             If the elevator-argument is null, an exception will be thrown
 	 */
-	public Building(HorizontalTransporter elevator)
+	public Building(VerticalTransporter elevator)
 			throws IllegalArgumentException {
-		transporters = new ArrayList<HorizontalTransporter>();
+		transporters = new ArrayList<VerticalTransporter>();
 		if (elevator == null) {
 			throw new IllegalArgumentException("elevator object is empty");
 		}
@@ -36,7 +36,7 @@ public abstract class Building {
 	 * @throws IllegalArgumentException
 	 *             An exception gets thrown when die elevator is null
 	 */
-	public void addElevator(HorizontalTransporter elevator)
+	public void addElevator(VerticalTransporter elevator)
 			throws IllegalArgumentException {
 		if (elevator == null) {
 			throw new IllegalArgumentException("elevator object is empty");
@@ -49,7 +49,7 @@ public abstract class Building {
 	 * @param elevator
 	 *            Elevator to remove from the building
 	 */
-	public void removeElevator(HorizontalTransporter elevator) {
+	public void removeElevator(VerticalTransporter elevator) {
 		transporters.remove(elevator);
 	}
 
@@ -57,7 +57,7 @@ public abstract class Building {
 	 * 
 	 * @return Returns a list of all elevators in this building
 	 */
-	public List<HorizontalTransporter> getElevators() {
+	public List<VerticalTransporter> getElevators() {
 		return transporters;
 	}
 
@@ -67,7 +67,7 @@ public abstract class Building {
 	 */
 	public int getMinLevel() {
 		int minLevel = 100000;
-		for (HorizontalTransporter e : transporters) {
+		for (VerticalTransporter e : transporters) {
 			if (e.getMinLevel() < minLevel) {
 				minLevel = e.getMinLevel();
 			}
@@ -81,7 +81,7 @@ public abstract class Building {
 	 */
 	public int getMaxLevel() {
 		int maxLevel = 0;
-		for (HorizontalTransporter e : transporters) {
+		for (VerticalTransporter e : transporters) {
 			if (e.getMaxLevel() > maxLevel) {
 				maxLevel = e.getMaxLevel();
 			}

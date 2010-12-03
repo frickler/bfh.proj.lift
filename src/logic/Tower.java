@@ -1,11 +1,11 @@
 package logic;
 
 import definition.Building;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 
 public class Tower extends Building {
 
-	public Tower(HorizontalTransporter elevator) throws Exception {
+	public Tower(VerticalTransporter elevator) throws Exception {
 		super(elevator);
 	}
 

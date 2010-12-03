@@ -35,5 +35,6 @@ public class LevelPanel extends JPanel {
 			panelLevel.add(new LevelButtonPanel(i, building, controller));
 			this.add(panelLevel);
 		}
+		this.validate();
 	}
 }

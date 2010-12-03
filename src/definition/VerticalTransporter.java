@@ -1,19 +1,25 @@
 package definition;
 
+import java.util.List;
+
 /**
  * @author BFH-Boys
  * 
  */
-public interface HorizontalTransporter extends ActionObservable {
+public interface VerticalTransporter extends ActionObservable {
 
 	/**
 	 * 
 	 * @return the accelaration of the elevator
 	 */
 	public float getAcceleration();
-	
+
+	/**
+	 * 
+	 * @return maximal speed of the elevator
+	 */
 	public float getMaxSpeed();
-	
+
 	/**
 	 * 
 	 * @return the lowest floor this transporter can reach
@@ -92,6 +98,19 @@ public interface HorizontalTransporter extends ActionObservable {
 	 * 
 	 */
 	void move(Action action);
+
+	/**
+	 * Gives a list of actions to perform
+	 * 
+	 * @param action
+	 *            Actions with movement parameters (StartLevel should not equal
+	 *            the EndLevel). This method sets the values of two variables
+	 *            timestampStarted and timeStampEnded in each action
+	 * @param startLevel
+	 *            Level where the elevator should goto first
+	 * 
+	 */
+	void move(List<Action> actions, int startLevel, Direction direction);
 
 	/**
 	 * Aborts the processing of the current action. The transporter stays at the

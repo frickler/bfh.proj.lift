@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import definition.Action;
 import definition.ActionObserver;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 import exceptions.IllegalRangeException;
 import exceptions.IllegalStartLevelException;
 import static org.junit.Assert.*;
@@ -68,7 +68,7 @@ public class ElevatorTest {
 				+ " and bring them to level " + targetLevel);
 
 		final Action a = new ElevatorAction(startLevel, targetLevel, 5);
-		final HorizontalTransporter e = new Elevator(0, 40, 6, currentLevel);
+		final VerticalTransporter e = new Elevator(0, 40, 6, currentLevel);
 
 		a.setTimestampStarted(new Date(System.currentTimeMillis()));
 		e.move(a);

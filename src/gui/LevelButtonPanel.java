@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +42,10 @@ public class LevelButtonPanel extends JPanel {
 				- building.getMinLevel() + 1));
 
 		for (int i = building.getMinLevel(); i <= building.getMaxLevel(); i++) {
-			JButton buttonLevel = new JButton(String.valueOf(i));
+			JButton buttonLevel = new JButton();
+			buttonLevel.setText(String.valueOf(i));
+			buttonLevel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 5));
+			//buttonLevel.setSize(20, 20);
 			if (i != levelIndex) {
 				buttonLevel.addActionListener(new ActionCmdTargetFloor(
 						new ElevatorAction(levelIndex, i, 1)));

@@ -19,7 +19,7 @@ import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 import definition.Action;
 import definition.Building;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 import definition.XMLReader;
 
 public class ElevatorActionXMLReader extends XMLReader {
@@ -102,7 +102,7 @@ public class ElevatorActionXMLReader extends XMLReader {
 		return null;
 	}
 
-	private HorizontalTransporter getElevator(Node item) {
+	private VerticalTransporter getElevator(Node item) {
 		try {
 			if (item.hasAttributes()) {
 				NamedNodeMap m = item.getAttributes();
@@ -149,7 +149,7 @@ public class ElevatorActionXMLReader extends XMLReader {
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			try {
 				if (nodes_i.item(i).getNodeName() == "Elevator") {
-					HorizontalTransporter e = getElevator(nodes_i.item(i));
+					VerticalTransporter e = getElevator(nodes_i.item(i));
 					if (e != null) {
 						if (building == null) {
 							building = new Tower(e);

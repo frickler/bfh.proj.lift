@@ -1,7 +1,5 @@
 package logic;
 
-import org.apache.log4j.Logger;
-
 import definition.Action;
 import definition.Algorithm;
 import definition.Building;
@@ -9,17 +7,17 @@ import definition.Controller;
 import definition.VerticalTransporter;
 
 /**
- * This algorithm is a simple FIFO implementation. Each elevator gets the action
- * with the highest priority and delivers the people to the according level.
+ * This algorithm is similar to the FifoAlgorithm, with the slight difference
+ * that people with the same start level can enter the elevator as well. So
+ * people who arrive late in a floor can profite from a person who pressed the
+ * elevator button erlier. TODO Better description
  * 
- * @author BFH-Boys
+ * @author krigu
  * 
  */
-public class FiFoAlgorithm extends Algorithm {
+public class PickUpFifoAlgorithm extends Algorithm {
 
-	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
-
-	public FiFoAlgorithm(Building building, Controller controller) {
+	public PickUpFifoAlgorithm(Building building, Controller controller) {
 		super(building, controller);
 	}
 

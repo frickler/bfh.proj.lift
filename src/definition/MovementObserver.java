@@ -17,13 +17,12 @@ public interface MovementObserver {
 	 * @param action
 	 *            Processed action (or a part of it)
 	 */
-	public void moved(MovementObserverable object, Action action);
+	public void moved(MovementObserverable object);
 	
 	/**
 	 * 
-	 * @param movement
-	 * @param action
+	 * @param movement	 
 	 * @param stepSize
 	 */
-	public void stepDone(Movement movement, Action action, double stepSize);
+	public void stepDone(Movement movement, double stepSize);
 }

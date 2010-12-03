@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 
 import definition.Action;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 import definition.MovementObserver;
 import definition.MovementObserverable;
 
@@ -13,19 +13,30 @@ public class Movement extends Thread implements MovementObserverable {
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
-	private HorizontalTransporter elevator;
-	private Action action;
+	private VerticalTransporter elevator;
 	private MovementObserver movedObserver;
+	private int startLevel;
+	private int endLevel;
+	// Amount of people moving in/out
+	private int peopleInOut;
 	// Variable to indicate if the stopMovement-Method is called
 	private boolean move;
 
-	public Movement(HorizontalTransporter elevator, Action action,
+	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
 			MovementObserver movedObserver) {
+		this(elevator, startLevel, endLevel, 0, movedObserver);
+
+	}
+
+	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
+			int peopleInOut, MovementObserver movedObserver) {
 		super();
 		move = true;
+		this.startLevel = startLevel;
+		this.endLevel = endLevel;
 		this.elevator = elevator;
-		this.action = action;
 		this.movedObserver = movedObserver;
+		this.peopleInOut = peopleInOut;
 
 	}
 
@@ -40,28 +51,25 @@ public class Movement extends Thread implements MovementObserverable {
 		//
 		// }
 
-		log4j.debug("Moving elevator " + elevator.hashCode() + " with "
-				+ action.getPeopleAmount() + " people from "
-				+ action.getStartLevel() + " to " + action.getEndLevel()
-				+ " action: " + action.hashCode());
-		action.setTimestampStarted(new Date(System.currentTimeMillis()));
+		log4j.debug("Moving elevator " + elevator.hashCode() + " from "
+				+ startLevel + " to " + endLevel);
+
+		// action.setTimestampStarted(new Date(System.currentTimeMillis()));
+		// loadPeople();
 		loadPeople();
-		move(elevator.getCurrentLevel(), action.getEndLevel());
-		loadPeople();
-		action.setTimestampEnded(new Date(System.currentTimeMillis()));
+		move();
 
 		// update statistics
-		movedObserver.moved(this, action);
+		movedObserver.moved(this);
 	}
 
 	/**
 	 * @ToDo: Überprüfen
 	 */
-	private void loadPeople() {
-		log4j.debug("People Amount:" + action.getPeopleAmount());
-		if (action.getPeopleAmount() > 0) {
+	private void loadPeople() {		
+		if (peopleInOut > 0) {
 			try {
-				Thread.sleep(action.getPeopleAmount() * 2000);
+				Thread.sleep(peopleInOut * 1000);
 			} catch (InterruptedException e) {
 			}
 		}
@@ -72,7 +80,9 @@ public class Movement extends Thread implements MovementObserverable {
 	 * @param sourceLevel
 	 * @param targetLevel
 	 */
-	private void move(int sourceLevel, int targetLevel) {
+	private void move() {
+		int sourceLevel = startLevel;
+		int targetLevel = endLevel;
 
 		int totalDistance = Math.abs(targetLevel - sourceLevel) * 100;
 		// double distanceAcceleration = (elevator.getMaxSpeed() * elevator
@@ -108,7 +118,7 @@ public class Movement extends Thread implements MovementObserverable {
 			}
 			milage += currentSpeed;
 			// log4j.debug((sign * currentSpeed) / 100);
-			movedObserver.stepDone(this, action, (sign * currentSpeed) / 100);
+			movedObserver.stepDone(this, (sign * currentSpeed) / 100);
 
 			try {
 				Thread.sleep(20);

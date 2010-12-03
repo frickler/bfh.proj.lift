@@ -1,20 +1,27 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import definition.Action;
 import definition.ActionObserver;
-import definition.HorizontalTransporter;
+import definition.Direction;
 import definition.MovementObserver;
 import definition.MovementObserverable;
+import definition.VerticalTransporter;
 import exceptions.ElevatorConfigException;
 import exceptions.IllegalRangeException;
 import exceptions.IllegalStartLevelException;
 
-public class Elevator implements HorizontalTransporter {
+/**
+ * 
+ * TODO Overthink setPeopleLoaded
+ */
+public class Elevator implements VerticalTransporter {
 
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
@@ -41,17 +48,22 @@ public class Elevator implements HorizontalTransporter {
 	private float timeInMotion;
 	// time in second the elevator moved without any passangers.
 	private float timeInMotionEmpty;
-
+	// Movement currently processing
 	private Movement movement;
-	private Action currentAction;
-
+	// Action listeners
 	private List<ActionObserver> actionObservers;
+	// List of actions the elevator has to process
+	private List<Action> actions;
+	// direction
+	private Direction direction;
+	// indicates if the elevator is busy
+	private boolean isBusy;
 
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
 			throws Exception {
-	this(minLevel,maxLevel,maxPeople,startLevel,40f,0.5f);
+		this(minLevel, maxLevel, maxPeople, startLevel, 40f, 0.5f);
 	}
-	
+
 	/**
 	 * 
 	 * @param minLevel
@@ -69,11 +81,12 @@ public class Elevator implements HorizontalTransporter {
 	 * @throws Exception
 	 *             if an parameter is not valid
 	 */
-	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel,float maxSpeed,float acceleration)
-		throws Exception {
-		
-		checkParameters(minLevel,maxLevel,maxPeople,startLevel,maxSpeed,acceleration);
-		
+	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel,
+			float maxSpeed, float acceleration) throws Exception {
+
+		checkParameters(minLevel, maxLevel, maxPeople, startLevel, maxSpeed,
+				acceleration);
+
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.maxPeople = maxPeople;
@@ -81,33 +94,36 @@ public class Elevator implements HorizontalTransporter {
 		this.maxSpeed = maxSpeed;
 		this.acceleration = acceleration;
 		this.actionObservers = new ArrayList<ActionObserver>();
+		this.actions = new LinkedList<Action>();
 	}
 
 	/**
-	 * Checks all parameter if they are valid
-	 * 
+	 * Checks all parameter if they are valid private List<Action> actions;
 	 */
 	private void checkParameters(int minLevel, int maxLevel, int maxPeople,
 			int startLevel, float maxSpeed, float acceleration)
 			throws Exception {
 		if (minLevel >= maxLevel) {
-			throw new IllegalRangeException("minLevel cannot be less or equal maxLevel");
+			throw new IllegalRangeException(
+					"minLevel cannot be less or equal maxLevel");
 		}
-		if (startLevel > maxLevel || startLevel < minLevel){
-			throw new IllegalStartLevelException("startLevel is not in the range of the elevator");			
+		if (startLevel > maxLevel || startLevel < minLevel) {
+			throw new IllegalStartLevelException(
+					"startLevel is not in the range of the elevator");
 		}
 		if (acceleration < 0.2 || acceleration > 4) {
-			throw new ElevatorConfigException("acceleration must be between 0.2 and 4");
+			throw new ElevatorConfigException(
+					"acceleration must be between 0.2 and 4");
 		}
 		if (maxSpeed < 20 || maxSpeed > 80) {
-			throw new ElevatorConfigException("maxSpeed must be between 20 and 80");
+			throw new ElevatorConfigException(
+					"maxSpeed must be between 20 and 80");
 		}
 		if (maxPeople < 1) {
 			throw new ElevatorConfigException("maxPeople must be bigger than 1");
 		}
 	}
-	
-	
+
 	/**
 	 * This method is called when an action is performed on a elevator to update
 	 * his data/statistics
@@ -130,65 +146,182 @@ public class Elevator implements HorizontalTransporter {
 		// log4j.debug("Elevator" + hashCode() + " moved " + this);
 	}
 
+	/**
+	 * 
+	 * @param targetLevel
+	 * @return All actions with the destination level given in the parameter
+	 */
+	private List<Action> getActionsWithDestination(int targetLevel) {
+		List<Action> matchingActions = new LinkedList<Action>();
+		for (Action action : actions) {
+			if (action.getEndLevel() == targetLevel) {
+				matchingActions.add(action);
+			}
+		}
+		return matchingActions;
+	}
+
+	/**
+	 * 
+	 * @return returns the next higher Level if the elevator is moving up
+	 */
+	private int getNextHigherLevel() {
+		int nextLevel = getCurrentLevel();
+		for (Action act : actions) {
+			if (act.getStartLevel() > nextLevel
+					&& act.getStartLevel() > getCurrentLevel()) {
+				nextLevel = act.getStartLevel();
+			}
+		}
+		return nextLevel;
+	}
+
+	/**
+	 * 
+	 * @return returns the next higher Level if the elevator is moving down
+	 */
+	private int getNextLowerLevel() {
+		int nextLevel = getCurrentLevel();
+		for (Action act : actions) {
+			if (act.getStartLevel() < nextLevel
+					&& act.getStartLevel() < getCurrentLevel()) {
+				nextLevel = act.getStartLevel();
+			}
+		}
+		return nextLevel;
+	}
+
+	private int getTarget() {
+
+		int target;
+		if (actions.size() > 1) {
+			if (direction == Direction.UP) {
+				target = getNextHigherLevel();
+			} else {
+				target = getNextLowerLevel();
+			}
+		} else {
+			target = actions.get(0).getEndLevel();
+		}
+		return target;
+	}
+
+	private void move() {
+
+		if (actions.isEmpty()) {
+			isBusy = false;
+			return;
+		}
+
+		// Amount of people enter/leave elevator on this floor
+		int peopleInOut = 0;
+		// get target floor
+		int target = getTarget();
+		
+		// Remove processed actions
+		for (int i = actions.size() - 1; i >= 0; i--) {
+			Action a = actions.get(i);
+			if (a.getEndLevel() == getCurrentLevel()) {
+				peopleInOut += a.getPeopleAmount();
+				a.setTimestampEnded(new Date());
+				moved(a);
+				actions.remove(a);
+				log4j.debug("Elevator " + this.hashCode()  + " Action done: " + a + " left: " + actions.size());
+			}
+			if (a.getStartLevel() == getCurrentLevel()) {
+				peopleInOut += a.getPeopleAmount();
+				a.setTimestampStarted(new Date());
+			}
+		}
+
+		this.movement = new Movement(this, getCurrentLevel(), target,
+				peopleInOut, new MovementObserver() {
+
+					@Override
+					public void moved(MovementObserverable object) {
+						move();
+					}
+
+					@Override
+					public void stepDone(Movement movement, double stepSize) {
+						currentPosition += stepSize;
+					}
+
+				});
+
+		this.movement.start();
+	}
+
+	/**
+	 * TODO Add statistics
+	 * 
+	 * @param startLevel
+	 */
+	private void moveToStart(int startLevel) {
+
+		if (startLevel == getCurrentLevel()) {
+			move();
+			return;
+		}
+
+		this.movement = new Movement(this, getCurrentLevel(), startLevel,
+				new MovementObserver() {
+
+					@Override
+					public void moved(MovementObserverable object) {
+						Elevator.this.move();
+
+					}
+
+					@Override
+					public void stepDone(Movement movement, double stepSize) {
+						currentPosition += stepSize;
+					}
+				});
+
+		this.movement.start();
+
+	}
+
+	@Override
+	public void move(List<Action> actions, int startLevel, Direction direction) {
+		this.isBusy = true;
+		this.setDirection(direction);
+		this.actions.addAll(actions);
+		moveToStart(startLevel);
+	}
+
 	@Override
 	public void move(Action action) {
-
-		this.currentAction = action;
-		notifyObserversActionStarted(this, this.currentAction);
-
-		if (action.getStartLevel() == getCurrentLevel()) {
-			this.movement = new Movement(this, action, new MovementObserver() {
-
-				@Override
-				public void moved(MovementObserverable object,
-						Action performedAction) {
-					Elevator.this.moved(Elevator.this.currentAction);
-					actionDone();
-				}
-
-				@Override
-				public void stepDone(Movement movement, Action action,
-						double stepSize) {
-					currentPosition += stepSize;
-
-				}
-			});
-		} else {
-			// Start with movement to startLevel and then perform action
-			ElevatorAction moveTo = new ElevatorAction(getCurrentLevel(),
-					action.getStartLevel(), 0);
-			this.movement = new Movement(this, moveTo, new MovementObserver() {
-
-				@Override
-				public void moved(MovementObserverable object,
-						Action performedAction) {
-					Elevator.this.moved(performedAction);
-					Elevator.this.move(Elevator.this.currentAction);
-
-				}
-
-				@Override
-				public void stepDone(Movement movement, Action action,
-						double stepSize) {
-					currentPosition += stepSize;
-				}
-
-			});
+		this.isBusy = true;
+		log4j.debug("Elevator " + this + " received " + action);
+		List<Action> moveActions = new LinkedList<Action>();
+		moveActions.add(action);
+		Direction dir = Direction.DOWN;
+		if (action.getStartLevel() < action.getEndLevel()) {
+			dir = Direction.UP;
 		}
-		this.movement.start();
+		move(moveActions, action.getStartLevel(), dir);
 	}
 
 	private void actionDone() {
 		Elevator.this.movement = null;
-		notifyObserversActionPerformed(this, this.currentAction);
-		Elevator.this.currentAction = null;
+		// notifyObserversActionPerformed(this, this.currentAction);
 	}
 
 	public int getCurrentLevel() {
 		// ToDo: Floor
-//		log4j.debug("CurrentPosition:" + currentPosition);
-//		log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
+		// log4j.debug("CurrentPosition:" + currentPosition);
+		// log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
 		return (int) Math.round(currentPosition);
+	}
+
+	public Direction getDirection() {
+		return direction;
+	}
+
+	protected void setDirection(Direction direction) {
+		this.direction = direction;
 	}
 
 	public int getMinLevel() {
@@ -223,13 +356,9 @@ public class Elevator implements HorizontalTransporter {
 		return timeInMotionEmpty;
 	}
 
-	public Action getCurrentAction() {
-		return this.currentAction;
-	}
-
 	@Override
 	public boolean isBusy() {
-		return currentAction != null;
+		return isBusy;
 	}
 
 	@Override
@@ -282,7 +411,7 @@ public class Elevator implements HorizontalTransporter {
 	}
 
 	@Override
-	public float getMaxSpeed() {		
+	public float getMaxSpeed() {
 		return this.maxSpeed;
 	}
 

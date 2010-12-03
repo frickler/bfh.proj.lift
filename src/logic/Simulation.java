@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import definition.Action;
 import definition.Controller;
-import definition.HorizontalTransporter;
 import exceptions.IllegalActionException;
 
 

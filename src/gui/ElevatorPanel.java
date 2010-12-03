@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import definition.Building;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class ElevatorPanel extends JPanel {
 
 	private static final long serialVersionUID = 3356838193898117742L;
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
-	private HorizontalTransporter elevator;
+	private VerticalTransporter elevator;
 	private Building building;
 	private ImageIcon icon;
 	private JLabel label;
@@ -39,7 +39,7 @@ public class ElevatorPanel extends JPanel {
 	 * @param frameMain
 	 *            the main JFrame
 	 */
-	public ElevatorPanel(HorizontalTransporter elevator, Building building,
+	public ElevatorPanel(VerticalTransporter elevator, Building building,
 			JFrame frameMain, Color backGroundColor) {
 		this.elevator = elevator;
 		this.building = building;

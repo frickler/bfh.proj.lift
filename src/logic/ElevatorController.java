@@ -13,7 +13,7 @@ import definition.ActionObserver;
 import definition.Algorithm;
 import definition.Building;
 import definition.Controller;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 import exceptions.IllegalActionException;
 import exceptions.MaxLevelActionException;
 import exceptions.MinLevelActionException;
@@ -23,7 +23,7 @@ public class ElevatorController implements Controller {
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
-	// Building attached to the controller
+	// Building attached to the controller2144398321443983
 	private Building building;
 	private Algorithm algorithm;
 	private List<Action> actions;
@@ -69,6 +69,8 @@ public class ElevatorController implements Controller {
 		}
 		// set the current timestamp to the action
 		action.setTimestampCreated(new Date());
+		
+		log4j.debug("Adding action " + action);
 
 		// add to datastructure
 		synchronized (actions) {
@@ -93,7 +95,7 @@ public class ElevatorController implements Controller {
 	 * Adds an actionListener to all elevators
 	 */
 	public void addActionObserver(ActionObserver observer) {
-		for (HorizontalTransporter elevator : building.getElevators()) {
+		for (VerticalTransporter elevator : building.getElevators()) {
 			elevator.addActionObserver(observer);
 		}
 
@@ -103,7 +105,7 @@ public class ElevatorController implements Controller {
 	 * Removes an actionListener from all elevators
 	 */
 	public void deleteActionObserver(ActionObserver observer) {
-		for (HorizontalTransporter elevator : building.getElevators()) {
+		for (VerticalTransporter elevator : building.getElevators()) {
 			elevator.deleteActionObserver(observer);
 		}
 

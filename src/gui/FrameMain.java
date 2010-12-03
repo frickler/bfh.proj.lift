@@ -25,7 +25,7 @@ import com.sun.corba.se.impl.oa.poa.AOMEntry;
 import definition.Action;
 import definition.Building;
 import definition.Controller;
-import definition.HorizontalTransporter;
+import definition.VerticalTransporter;
 
 /**
  * 
@@ -102,7 +102,7 @@ public class FrameMain extends JFrame implements Runnable {
 			}
 		});
 
-		this.setSize(1024, 800); // TODO
+		this.setSize(1680, 1024); // TODO
 		this.setResizable(true);
 
 		//a panel with everything (LevelPanel / ElevatorPanel) except the console
@@ -119,7 +119,7 @@ public class FrameMain extends JFrame implements Runnable {
 		
 		float gradient = 0.8f;
 		int oddEven = 1;
-		for (HorizontalTransporter item : building.getElevators()) {
+		for (VerticalTransporter item : building.getElevators()) {
 			ElevatorPanel ePanel = new ElevatorPanel(item, building, this, new Color(gradient, gradient, gradient));
 			panelMain.add(ePanel);
 			
