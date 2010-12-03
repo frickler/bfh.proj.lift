@@ -160,8 +160,6 @@ public class ElevatorConfigPanel extends JFrame {
 		b.setText("remove elevator");
 		b.setBounds(170, line, 150, 40);
 		b.addActionListener(new ActionListener() {
-
-			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				removeElevator();
@@ -169,7 +167,6 @@ public class ElevatorConfigPanel extends JFrame {
 		});
 		this.add(b);
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Elevator Configuration");
 
 		line += 100;

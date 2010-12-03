@@ -23,5 +23,13 @@ public class DelayedElevatorAction extends ElevatorAction {
 	public int getDelayInSeconds() {
 		return delayInSeconds;
 	}
+	
+	@Override
+	public String toString() {
+		return "Action [getStartLevel()=" + getStartLevel()
+				+ ", getEndLevel()=" + getEndLevel() + ", getPeopleAmount()="
+				+ getPeopleAmount() + ", getDelayInSeconds()="
+				+ getDelayInSeconds() + ", hashCode()=" + hashCode() + "]";
+	}
 
 }

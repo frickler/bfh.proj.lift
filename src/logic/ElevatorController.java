@@ -27,6 +27,7 @@ public class ElevatorController implements Controller {
 	private Building building;
 	private Algorithm algorithm;
 	private List<Action> actions;
+	private Simulation simulation;
 
 	/**
 	 * Constructor for the controller. Each controller is responsible for
@@ -190,7 +191,7 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public List<Action> getDoneActions() {
-		// TODO List of done actions
+		// TODO List of done actions (krigu)
 		List<Action> list = new ArrayList<Action>();
 		
 		
@@ -240,5 +241,19 @@ public class ElevatorController implements Controller {
 	@Override
 	public void setBuilding(Building b) {
 		building = b;
+	}
+
+	@Override
+	public void startRandomSimulation(int amount) {
+		simulation = new Simulation(this);
+		simulation.generateActions(amount);
+		simulation.start();
+	}
+
+	@Override
+	public void stopRandomSimulation() {
+		simulation.stopSimulation();
+		simulation.clearActions();
+		algorithm.stop();
 	}
 }

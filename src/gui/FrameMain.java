@@ -20,6 +20,8 @@ import logic.StatisticElevator;
 
 import org.apache.log4j.Logger;
 
+import com.sun.corba.se.impl.oa.poa.AOMEntry;
+
 import definition.Action;
 import definition.Building;
 import definition.Controller;
@@ -176,8 +178,7 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	private void arrangeBuilding(Object building) {
-		// TODO Tom
-		
+		// TODO Tom gebäude anordnen	
 	}
 
 	public void doEvaluation(boolean bActions, boolean bElevator) {	
@@ -192,5 +193,16 @@ public class FrameMain extends JFrame implements Runnable {
 			s.addElevator(controller.getBuilding().getElevators());
 			consolePanel.addText(s.getStatistic());	
 			}
+	}
+
+	public void quit() {
+		System.exit(NORMAL);
+	}
+
+	public void startRandomSimulation(int amountAction) {
+		controller.startRandomSimulation(amountAction);		
+	}
+	public void stopRandomSimulation() {
+		controller.stopRandomSimulation();		
 	}
 }

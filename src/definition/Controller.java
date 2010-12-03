@@ -70,4 +70,8 @@ public interface Controller {
 
 	public Building getBuilding();
 
+	public void startRandomSimulation(int amountAction);
+
+	public void stopRandomSimulation();
+
 }
