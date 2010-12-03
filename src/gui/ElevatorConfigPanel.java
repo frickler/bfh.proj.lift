@@ -28,13 +28,13 @@ public class ElevatorConfigPanel extends JFrame {
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
 
-	Building b;
+	FrameMain framemain;
 	JTextField txtmaxspeed, txtmaxlevel, txtminlevel, txtstartlevel,
 			txtmaxpeople, txtacceleration, txtcolumnindex;
 	JLabel lblErrorAdd, lblErrorRemove;
 
-	public ElevatorConfigPanel(Building building) throws Exception {
-		this.b = building;
+	public ElevatorConfigPanel(FrameMain fm) throws Exception {
+		this.framemain = fm;
 		this.setResizable(true);
 		this.setLayout(null);
 
@@ -199,7 +199,7 @@ public class ElevatorConfigPanel extends JFrame {
 			lblErrorAdd.setText("parameter invalid");
 		}
 		if (e != null) {
-			this.b.addElevator(e);
+			framemain.addElevator(e);
 			lblErrorAdd.setText("elevator added");
 		} else {
 			lblErrorAdd.setText("parameter invalid");
@@ -211,7 +211,7 @@ public class ElevatorConfigPanel extends JFrame {
 
 		try {
 			int removeId = Integer.parseInt(txtcolumnindex.getText());
-			this.b.getElevators().remove(removeId);
+			framemain.removeElevator(removeId);
 			lblErrorRemove.setText("elevator removed");
 		} catch (Exception ex) {
 			lblErrorRemove.setText("column index invalid");

@@ -56,7 +56,7 @@ public abstract class Action {
 	 * 
 	 * @return when the people entered the elevator
 	 */
-	protected Date getTimestampPeopleLoaded() {
+	public Date getTimestampPeopleLoaded() {
 		return timestampPeopleLoaded;
 	}
 
@@ -64,7 +64,7 @@ public abstract class Action {
 	 * 
 	 * @param when the people enter the elevator
 	 */
-	protected void setTimestampPeopleLoaded(Date timestampPeopleLoaded) {
+	public void setTimestampPeopleLoaded(Date timestampPeopleLoaded) {
 		this.timestampPeopleLoaded = timestampPeopleLoaded;
 	}
 

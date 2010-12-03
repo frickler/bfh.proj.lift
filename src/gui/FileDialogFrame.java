@@ -11,7 +11,7 @@ import org.xml.sax.SAXException;
 import logic.ElevatorActionXMLReader;
 import logic.ElevatorController;
 import logic.FiFoAlgorithm;
-import logic.SimulatorController;
+import logic.Simulation;
 import definition.Building;
 import definition.Controller;
 import exceptions.IllegalActionException;
@@ -21,11 +21,11 @@ public class FileDialogFrame extends JFrame {
 	private static final long serialVersionUID = 6794649153700018626L;
 
 	private static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
-	private Controller c;
+	private FrameMain framemain;
 
-	public FileDialogFrame(Controller controller) {
+	public FileDialogFrame(FrameMain fm) {
 
-		this.c = controller;
+		this.framemain = fm;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		FileDialog dialog = new FileDialog(this,
@@ -44,22 +44,6 @@ public class FileDialogFrame extends JFrame {
 			log4j.error(e);
 			this.dispose();
 		}
-
-		Building building = xmlReader.getBuilding();
-
-		if (building != null) {
-			this.dispose();
-			try {
-		
-			SimulatorController sim = new SimulatorController(c);
-
-				sim.performActions(xmlReader.getActions());
-			
-			sim.startController();
-			} catch (IllegalActionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions());
 	}
 }

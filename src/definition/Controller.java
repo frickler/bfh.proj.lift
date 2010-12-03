@@ -2,6 +2,8 @@ package definition;
 
 import java.util.List;
 
+import logic.Elevator;
+
 import exceptions.IllegalActionException;
 
 /**
@@ -57,5 +59,15 @@ public interface Controller {
 	 *         datastructure.
 	 */
 	public List<Action> getActions(int startLevel, int endlevel, int maxPerson);
+
+	public boolean removeElevator(int removeId);
+
+	public List<Action> getDoneActions();
+
+	public void addElevator(Elevator e);
+
+	public void setBuilding(Building building);
+
+	public Building getBuilding();
 
 }

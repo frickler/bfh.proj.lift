@@ -6,7 +6,7 @@ import java.util.List;
 
 import definition.Action;
 import logic.ElevatorAction;
-import logic.Statistic;
+import logic.StatisticAction;
 
 import org.junit.Test;
 
@@ -40,7 +40,7 @@ public class StatisticTest {
 		date = new Date(System.currentTimeMillis()+15*1000);
 		c.setTimestampEnded(date);
 			
-		Statistic s = new Statistic();
+		StatisticAction s = new StatisticAction();
 		s.addAction(a);
 		s.addAction(b);
 		s.addAction(c);

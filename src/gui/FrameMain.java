@@ -13,10 +13,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import logic.Elevator;
 import logic.ElevatorController;
+import logic.StatisticAction;
+import logic.StatisticElevator;
 
 import org.apache.log4j.Logger;
 
+import definition.Action;
 import definition.Building;
 import definition.Controller;
 import definition.HorizontalTransporter;
@@ -32,7 +36,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 	private boolean isRunning;	
 	private Controller controller;
-
+	private ConsolePanel consolePanel;
 	private static final long serialVersionUID = -6897288117049912593L;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
 
@@ -48,7 +52,7 @@ public class FrameMain extends JFrame implements Runnable {
 	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
 		
-		Menu m = new Menu(building,controller);
+		Menu m = new Menu(this);
 		JMenuBar menubar = m.getMenuBar(); 
 		this.setJMenuBar(menubar);
 		
@@ -108,7 +112,8 @@ public class FrameMain extends JFrame implements Runnable {
 		this.getContentPane().setLayout(new BorderLayout());
 		//the main panel is placed in the middle of this frame, the console on the bottom
 		this.getContentPane().add(panelMain, BorderLayout.CENTER);
-		this.getContentPane().add(new ConsolePanel(building, this), BorderLayout.SOUTH);
+		consolePanel = new ConsolePanel(building, this);
+		this.getContentPane().add(consolePanel, BorderLayout.SOUTH);
 		
 		float gradient = 0.8f;
 		int oddEven = 1;
@@ -151,5 +156,41 @@ public class FrameMain extends JFrame implements Runnable {
 			}
 		}
 
+	}
+
+	public void startSimulation(Building building, List<Action> actions) {
+		if(building != null){
+			controller.setBuilding(building);
+			arrangeBuilding(controller.getBuilding());
+		}
+	}
+
+	public void addElevator(Elevator e) {
+		controller.addElevator(e);
+		arrangeBuilding(controller.getBuilding());
+	}
+
+	public void removeElevator(int removeId) {
+		controller.removeElevator(removeId);
+		arrangeBuilding(controller.getBuilding());
+	}
+
+	private void arrangeBuilding(Object building) {
+		// TODO Tom
+		
+	}
+
+	public void doEvaluation(boolean bActions, boolean bElevator) {	
+		
+		if(bActions){
+		StatisticAction s = new StatisticAction();
+		s.addAction(controller.getDoneActions());
+		consolePanel.addText(s.getStatistic());	
+		}
+		if(bElevator){
+			StatisticElevator s = new StatisticElevator();
+			s.addElevator(controller.getBuilding().getElevators());
+			consolePanel.addText(s.getStatistic());	
+			}
 	}
 }
