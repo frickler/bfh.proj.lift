@@ -2,6 +2,8 @@ package gui;
 
 import java.lang.String;
 import java.awt.GridLayout;
+
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -29,11 +31,21 @@ public class LevelPanel extends JPanel {
 		// for each level from top to bottom create a label with the level
 		// number and a LevelButtonPanel
 		for (int i = building.getMaxLevel(); i >= building.getMinLevel(); i--) {
-			JPanel panelLevel = new JPanel();
-			panelLevel.setLayout(new GridLayout(2, 1));
-			panelLevel.add(new JLabel("level: " + String.valueOf(i)));
-			panelLevel.add(new LevelButtonPanel(i, building, controller));
-			this.add(panelLevel);
+			JPanel panelLevelMain = new JPanel();
+			panelLevelMain.setLayout(new GridLayout(2, 1));
+			
+			JPanel panelLevelAndPersons = new JPanel();
+			panelLevelAndPersons.add(new JLabel("level: " + String.valueOf(i) + " / persons: "));
+			
+			JComboBox comboBoxPersons = new JComboBox();
+			for(int persons = 1; persons < 10; persons++){
+				comboBoxPersons.addItem(persons);
+			}
+			panelLevelAndPersons.add(comboBoxPersons);
+			
+			panelLevelMain.add(panelLevelAndPersons);
+			panelLevelMain.add(new LevelButtonPanel(i, building, controller, comboBoxPersons));
+			this.add(panelLevelMain);
 		}
 		this.validate();
 	}

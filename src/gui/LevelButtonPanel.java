@@ -1,11 +1,13 @@
 package gui;
 
-import java.awt.Font;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -28,24 +30,26 @@ public class LevelButtonPanel extends JPanel {
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
 
 	private Controller controller;
+	private JComboBox comboBoxPersons;
 
 	/**
 	 * @param levelIndex the level of that instance
 	 * @param building the building that contains this level 
 	 * @param controller the controller used for this building
+	 * @param comboBoxPersons 
 	 */
 	public LevelButtonPanel(int levelIndex, Building building,
-			Controller controller) {
+			Controller controller, JComboBox comboBoxPersons) {
 		this.controller = controller;
+		this.comboBoxPersons = comboBoxPersons;
 
 		this.setLayout(new GridLayout(1, building.getMaxLevel()
 				- building.getMinLevel() + 1));
 
 		for (int i = building.getMinLevel(); i <= building.getMaxLevel(); i++) {
 			JButton buttonLevel = new JButton();
+			buttonLevel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			buttonLevel.setText(String.valueOf(i));
-			buttonLevel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 5));
-			//buttonLevel.setSize(20, 20);
 			if (i != levelIndex) {
 				buttonLevel.addActionListener(new ActionCmdTargetFloor(
 						new ElevatorAction(levelIndex, i, 1)));
@@ -66,7 +70,8 @@ public class LevelButtonPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				controller.performAction(action);
+				Action a = new ElevatorAction(action.getStartLevel(), action.getEndLevel(), Integer.valueOf(comboBoxPersons.getSelectedItem().toString()));
+				controller.performAction(a);
 			} catch (IllegalActionException e1) {
 				log4j.error(e1);
 			}
