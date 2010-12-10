@@ -29,6 +29,7 @@ public class ElevatorPanel extends JPanel {
 	private JLabel label;
 	private JPanel background;
 	private int pixelPerLevel;
+	private int displayedPeople = 0;
 
 	/**
 	 * @param elevator
@@ -96,7 +97,8 @@ public class ElevatorPanel extends JPanel {
 				);
 
 		// if icon height isn't as expected the image will be rescaled
-		if (pixelPerLevel != icon.getIconHeight()) {
+		if (pixelPerLevel != icon.getIconHeight() || displayedPeople != elevator.getCurrentPeople()) {
+			this.displayedPeople = elevator.getCurrentPeople();
 			rescaleImage(pixelPerLevel, pixelPerLevel);
 		}
 				

@@ -46,10 +46,10 @@ public class FileDialogFrame extends JFrame {
 			this.dispose();
 		}
 		
-		int input = JOptionPane.showConfirmDialog(framemain,"Reset Statistics",
-				"Reset statistics of elevators and the actions ?",
+		int input = JOptionPane.showConfirmDialog(framemain,
+				"Doyou wanna reset all statistics of the elevators and the actions?","Reset statistics",
 				JOptionPane.YES_NO_OPTION);
 		
-		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions(),(input == 1));
+		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions(),(input == 0));
 	}
 }

@@ -302,4 +302,11 @@ public class ElevatorController implements Controller {
 	public void resetDoneActions() {
 		doneActions.clear();			
 	}
+
+	/*
+	 * Clears all actions with aren't perfom yet
+	 */
+	public void resetActions() {
+		actions.clear();		
+	}
 }

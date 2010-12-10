@@ -233,7 +233,6 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	public void clearActions() {
-		
-		
+		controller.resetActions();		
 	}
 }
