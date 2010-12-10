@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import sun.awt.HorizBagLayout;
+
 import definition.Action;
 import definition.ActionObserver;
 import definition.Algorithm;
@@ -27,6 +29,7 @@ public class ElevatorController implements Controller {
 	private Building building;
 	private Algorithm algorithm;
 	private List<Action> actions;
+	private List<Action> doneActions;
 	private Simulation simulation;
 	private int simulationSpeed = 1;
 	/**
@@ -40,6 +43,7 @@ public class ElevatorController implements Controller {
 			Class<? extends Algorithm> clazz) throws Exception {
 		super();
 		this.actions = new LinkedList<Action>();
+		this.doneActions = new ArrayList<Action>();
 		this.building = building;
 
 		// Create new instance of algorithm using reflections
@@ -281,5 +285,21 @@ public class ElevatorController implements Controller {
 		
 		building.setSimulationSpeed(speed);
 		
+	}
+
+	/*
+	 * Reset the statistics of each elevator
+	 */
+	public void resetLiftEvaluation() {
+		for(VerticalTransporter t : building.getElevators()){
+			t.resetStatistics();
+		}
+	}
+
+	/*
+	 * Clears the list where all done actions are stored for evaluation
+	 */
+	public void resetDoneActions() {
+		doneActions.clear();			
 	}
 }

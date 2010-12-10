@@ -65,7 +65,7 @@ public class Movement extends Thread implements MovementObserverable {
 	}
 
 	/**
-	 * @ToDo: Überprüfen
+	 * @ToDo: ueberpruefen
 	 */
 	private void loadPeople() {		
 		if (peopleInOut > 0) {

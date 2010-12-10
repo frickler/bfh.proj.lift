@@ -119,4 +119,8 @@ public interface VerticalTransporter extends ActionObservable {
 	void stop();
 
 	public void setSimulationSpeed(int speed);
+
+	public int getCurrentPeople();
+
+	public void resetStatistics();
 }

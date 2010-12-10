@@ -4,6 +4,7 @@ import java.awt.FileDialog;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -44,6 +45,11 @@ public class FileDialogFrame extends JFrame {
 			log4j.error(e);
 			this.dispose();
 		}
-		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions());
+		
+		int input = JOptionPane.showConfirmDialog(framemain,"Reset Statistics",
+				"Reset statistics of elevators and the actions ?",
+				JOptionPane.YES_NO_OPTION);
+		
+		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions(),(input == 1));
 	}
 }

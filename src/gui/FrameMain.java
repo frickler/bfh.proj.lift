@@ -175,11 +175,14 @@ public class FrameMain extends JFrame implements Runnable {
 
 	}
 
-	public void startSimulation(Building building, List<Action> actions) {
+	public void startSimulation(Building building, List<Action> actions,boolean resetEvaluation) {
+		if(resetEvaluation){
+			resetEvaluations();
+		}
 		if (building != null) {
 			controller.setBuilding(building);
-			controller.startSimulation(actions);
 		}
+		controller.startSimulation(actions);
 	}
 
 	public void addElevator(Elevator e) {
@@ -217,11 +220,20 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	public int getSimulationSpeed() {
-		// TODO Auto-generated method stub
 		return controller.getSimulationSpeed();
 	}
 
 	public void setSimulationSpeed(int speed) {
 		controller.setSimulationSpeed(speed);
+	}
+
+	public void resetEvaluations() {
+		controller.resetDoneActions();
+		controller.resetLiftEvaluation();
+	}
+
+	public void clearActions() {
+		
+		
 	}
 }

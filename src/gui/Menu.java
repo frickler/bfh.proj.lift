@@ -79,7 +79,14 @@ public class Menu {
 		menuItem.getAccessibleContext().setAccessibleDescription(
 				"This doesn't really do anything");
 		menu.add(menuItem);
+		menuItem.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				framemain.resetEvaluations();
+			}
+		});
 		menuBar.add(menu);
 	}
 
@@ -170,6 +177,24 @@ public class Menu {
 
 				try {
 					ElevatorConfigPanel ecp = new ElevatorConfigPanel(framemain);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menuItem.getAccessibleContext().setAccessibleDescription(
+				"This doesn't really do anything");
+		menu.add(menuItem);
+		
+		// a group of JMenuItems
+		menuItem = new JMenuItem("Clear actions", KeyEvent.VK_C);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3,
+				ActionEvent.ALT_MASK));
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					framemain.clearActions();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

@@ -80,4 +80,8 @@ public interface Controller {
 
 	public void setSimulationSpeed(int speed);
 
+	public void resetLiftEvaluation();
+
+	public void resetDoneActions();
+
 }

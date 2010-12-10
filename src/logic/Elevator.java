@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 
@@ -60,6 +61,8 @@ public class Elevator implements VerticalTransporter {
 	private Direction direction;
 	// indicates if the elevator is busy
 	private boolean isBusy;
+	// current people loaded
+	private int currentPeople;
 
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
 			throws Exception {
@@ -430,4 +433,24 @@ public class Elevator implements VerticalTransporter {
 		this.simulationSpeed = speed;
 	}
 
+	@Override
+	public int getCurrentPeople() {
+		//return this.currentPeople; TODO use this return
+		Random gen = new Random((int) (Math.random() * 10000));
+		return gen.nextInt(8);
+	}
+
+	public void setCurrentPeople(int currentPeople) {
+		//TODO set and get currentPeople
+		this.currentPeople = currentPeople;
+	}
+
+	@Override
+	public void resetStatistics() {
+		this.drivenLevels = 0;
+		this.drivenLevelsEmpty = 0;
+		this.timeInMotion = 0;
+		this.timeInMotionEmpty = 0;
+		this.transportedPeople = 0;
+	}
 }

@@ -28,7 +28,6 @@ public class ElevatorPanel extends JPanel {
 	private ImageIcon icon;
 	private JLabel label;
 	private JPanel background;
-
 	private int pixelPerLevel;
 
 	/**
@@ -63,12 +62,19 @@ public class ElevatorPanel extends JPanel {
 	 *            new height
 	 */
 	public void rescaleImage(int width, int height) {
-		ImageIcon iconTemp = new ImageIcon("src/gui/icons/elevator.png");
+		ImageIcon iconTemp = GetImageIcon();
 		Image scaledImage = iconTemp.getImage().getScaledInstance(width,
 				height, 1);
 		icon.setImage(scaledImage);
 		label.setSize(icon.getIconWidth(), icon.getIconHeight());
 		log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
+	}
+
+	private ImageIcon GetImageIcon() {
+		// TODO Auto-generated method stub
+		int i = elevator.getCurrentPeople();
+		i = (i>4) ? 4 : i;
+		return new ImageIcon("src/gui/icons/elevator_"+i+".png");
 	}
 
 	/*
@@ -93,7 +99,7 @@ public class ElevatorPanel extends JPanel {
 		if (pixelPerLevel != icon.getIconHeight()) {
 			rescaleImage(pixelPerLevel, pixelPerLevel);
 		}
-
+				
 		int bottomPosition = this.getHeight() - icon.getIconHeight();
 
 		// zero-based level of the current elevator
