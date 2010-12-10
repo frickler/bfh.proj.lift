@@ -74,8 +74,11 @@ public class ElevatorPanel extends JPanel {
 	private ImageIcon GetImageIcon() {
 		// TODO Auto-generated method stub
 		int i = elevator.getCurrentPeople();
-		i = (i>4) ? 4 : i;
-		return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+		if(i>5){
+		return new ImageIcon("src/gui/icons/elevator_more.png");
+		}else{
+			return new ImageIcon("src/gui/icons/elevator_"+i+".png");	
+		}
 	}
 
 	/*

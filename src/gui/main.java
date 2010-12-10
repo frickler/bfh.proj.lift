@@ -35,12 +35,12 @@ public class main {
 	public static void testGui(){
 		try {
 			Building building = new Tower(new Elevator(1, 3, 10, 1));
-//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
-//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
+			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 
 //			
 //			Building building = new Tower(new Elevator(1, 3, Integer.MAX_VALUE, 1));
