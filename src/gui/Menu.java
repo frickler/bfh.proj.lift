@@ -31,43 +31,9 @@ public class Menu {
 		menuBar = new JMenuBar();
 
 		addMainMenu();
-
 		addSimuationMenu();
-
 		addEvaluationMenu();
 
-		/*
-		 * menuItem = new JMenuItem("Both text and icon", new
-		 * ImageIcon("images/middle.gif")); menuItem.setMnemonic(KeyEvent.VK_B);
-		 * menu.add(menuItem);
-		 * 
-		 * menuItem = new JMenuItem(new ImageIcon("images/middle.gif"));
-		 * menuItem.setMnemonic(KeyEvent.VK_D); menu.add(menuItem);
-		 * 
-		 * 
-		 * 
-		 * //a group of check box menu items menu.addSeparator(); cbMenuItem =
-		 * new JCheckBoxMenuItem("A check box menu item");
-		 * cbMenuItem.setMnemonic(KeyEvent.VK_C); menu.add(cbMenuItem);
-		 * 
-		 * cbMenuItem = new JCheckBoxMenuItem("Another one");
-		 * cbMenuItem.setMnemonic(KeyEvent.VK_H); menu.add(cbMenuItem);
-		 * 
-		 * //a submenu menu.addSeparator(); submenu = new JMenu("A submenu");
-		 * submenu.setMnemonic(KeyEvent.VK_S);
-		 * 
-		 * menuItem = new JMenuItem("An item in the submenu");
-		 * menuItem.setAccelerator(KeyStroke.getKeyStroke( KeyEvent.VK_2,
-		 * ActionEvent.ALT_MASK)); submenu.add(menuItem);
-		 * 
-		 * menuItem = new JMenuItem("Another item"); submenu.add(menuItem);
-		 * menu.add(submenu);
-		 * 
-		 * //Build second menu in the menu bar. menu = new
-		 * JMenu("Another Menu"); menu.setMnemonic(KeyEvent.VK_N);
-		 * menu.getAccessibleContext().setAccessibleDescription(
-		 * "This menu does nothing"); menuBar.add(menu);
-		 */
 	}
 
 	private void addEvaluationMenu() {
@@ -212,6 +178,38 @@ public class Menu {
 		menuItem.getAccessibleContext().setAccessibleDescription(
 				"This doesn't really do anything");
 		menu.add(menuItem);
+		
+		
+		// a group of JMenuItems
+		menuItem = new JMenuItem("Simulation speed", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2,
+				ActionEvent.ALT_MASK));
+
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					try {
+						int amount = 0;
+						int currentSpeed = framemain.getSimulationSpeed();
+						do {
+							
+							String input = JOptionPane.showInputDialog(framemain,
+									"Enter simulation speed (1-100)\nCurrent speed is "+currentSpeed, "Simulation speed",
+									JOptionPane.QUESTION_MESSAGE);
+							try{
+							amount = Integer.parseInt(input);
+							}catch(Exception ex){}
+						} while (amount <= 0 || amount > 100);					
+						framemain.setSimulationSpeed(amount);				
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+			}
+		});
+		menuItem.getAccessibleContext().setAccessibleDescription(
+				"This doesn't really do anything");
+		menu.add(menuItem);
+		
 
 		submenu = new JMenu("Select Algorithmus");
 		submenu.setMnemonic(KeyEvent.VK_A);

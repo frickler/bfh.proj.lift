@@ -215,4 +215,13 @@ public class FrameMain extends JFrame implements Runnable {
 	public void stopRandomSimulation() {
 		controller.stopRandomSimulation();
 	}
+
+	public int getSimulationSpeed() {
+		// TODO Auto-generated method stub
+		return controller.getSimulationSpeed();
+	}
+
+	public void setSimulationSpeed(int speed) {
+		controller.setSimulationSpeed(speed);
+	}
 }

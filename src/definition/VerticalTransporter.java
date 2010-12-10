@@ -117,4 +117,6 @@ public interface VerticalTransporter extends ActionObservable {
 	 * currentLevel and waits for further actions.
 	 */
 	void stop();
+
+	public void setSimulationSpeed(int speed);
 }

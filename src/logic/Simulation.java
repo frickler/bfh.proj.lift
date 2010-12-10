@@ -24,6 +24,8 @@ public class Simulation extends Thread {
 	private List<Action> actions = new ArrayList<Action>();
 	private Boolean Running = false;
 
+	private int simulationSpeed;
+
 	public Simulation(Controller eController) {
 		this.elevatorController = eController;
 	}
@@ -63,7 +65,7 @@ public class Simulation extends Thread {
 							.get(i);
 					Calendar d = Calendar.getInstance();
 					d.setTimeInMillis(System.currentTimeMillis());
-					d.add(Calendar.SECOND, di.getDelayInSeconds());
+					d.add(Calendar.SECOND, di.getDelayInSeconds()/simulationSpeed);
 					Calendar start = Calendar.getInstance();
 					start.setTime(this.startTime);
 					if (d.after(start)) {
@@ -114,7 +116,7 @@ public class Simulation extends Thread {
 			int startLevel = gen.nextInt(maxLevel-minLevel) + minLevel;
 			int endLevel = gen.nextInt(maxLevel-minLevel) + minLevel;
 			int pepoleAmount = gen.nextInt(10) + 1;
-			int delay = gen.nextInt(40);		
+			int delay = gen.nextInt(40)/simulationSpeed;		
 			Action a = new DelayedElevatorAction(startLevel, endLevel, pepoleAmount,delay);
 			actions.add(a);
 			log4j.debug("Simulator: action generated: "+a.toString());

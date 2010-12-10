@@ -76,4 +76,8 @@ public interface Controller {
 
 	public void startSimulation(List<Action> actions);
 
+	public int getSimulationSpeed();
+
+	public void setSimulationSpeed(int speed);
+
 }

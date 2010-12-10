@@ -38,6 +38,8 @@ public class Elevator implements VerticalTransporter {
 	private float acceleration;
 	// time in second the elevator moved without any passangers.
 	private float maxSpeed;
+	// simulation speed
+	private int simulationSpeed = 1;
 	// sum of all transported people
 	private int transportedPeople;
 	// amount of all passed levels
@@ -235,7 +237,7 @@ public class Elevator implements VerticalTransporter {
 		}
 
 		this.movement = new Movement(this, getCurrentLevel(), target,
-				peopleInOut, new MovementObserver() {
+				peopleInOut,this.simulationSpeed, new MovementObserver() {
 
 					@Override
 					public void moved(MovementObserverable object) {
@@ -421,6 +423,11 @@ public class Elevator implements VerticalTransporter {
 
 	public void setMaxSpeed(float maxSpeed) {
 		this.maxSpeed = maxSpeed;
+	}
+
+	@Override
+	public void setSimulationSpeed(int speed) {
+		this.simulationSpeed = speed;
 	}
 
 }

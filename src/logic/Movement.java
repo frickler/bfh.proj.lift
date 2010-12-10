@@ -17,6 +17,7 @@ public class Movement extends Thread implements MovementObserverable {
 	private MovementObserver movedObserver;
 	private int startLevel;
 	private int endLevel;
+	private int simulationSpeed = 1;
 	// Amount of people moving in/out
 	private int peopleInOut;
 	// Variable to indicate if the stopMovement-Method is called
@@ -24,12 +25,12 @@ public class Movement extends Thread implements MovementObserverable {
 
 	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
 			MovementObserver movedObserver) {
-		this(elevator, startLevel, endLevel, 0, movedObserver);
+		this(elevator, startLevel, endLevel, 0,1, movedObserver);
 
 	}
 
 	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
-			int peopleInOut, MovementObserver movedObserver) {
+			int peopleInOut, int simulationSpeed, MovementObserver movedObserver) {
 		super();
 		move = true;
 		this.startLevel = startLevel;
@@ -69,7 +70,7 @@ public class Movement extends Thread implements MovementObserverable {
 	private void loadPeople() {		
 		if (peopleInOut > 0) {
 			try {
-				Thread.sleep(peopleInOut * 1000);
+				Thread.sleep(peopleInOut * 1000 / simulationSpeed);
 			} catch (InterruptedException e) {
 			}
 		}
@@ -121,7 +122,7 @@ public class Movement extends Thread implements MovementObserverable {
 			movedObserver.stepDone(this, (sign * currentSpeed) / 100);
 
 			try {
-				Thread.sleep(20);
+				Thread.sleep(20/simulationSpeed);
 			} catch (InterruptedException e) {
 
 			}

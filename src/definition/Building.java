@@ -88,4 +88,10 @@ public abstract class Building {
 		}
 		return maxLevel;
 	}
+
+	public void setSimulationSpeed(int speed) {
+		for(VerticalTransporter e : transporters){
+			e.setSimulationSpeed(speed);
+		}
+	}
 }

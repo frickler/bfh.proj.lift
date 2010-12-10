@@ -28,7 +28,7 @@ public class ElevatorController implements Controller {
 	private Algorithm algorithm;
 	private List<Action> actions;
 	private Simulation simulation;
-
+	private int simulationSpeed = 1;
 	/**
 	 * Constructor for the controller. Each controller is responsible for
 	 * exactly one building.
@@ -266,5 +266,20 @@ public class ElevatorController implements Controller {
 		} catch (IllegalActionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public int getSimulationSpeed() {
+		// TODO Auto-generated method stub
+		return this.simulationSpeed;
+	}
+
+	@Override
+	public void setSimulationSpeed(int speed) {
+		
+		simulationSpeed = speed;
+		
+		building.setSimulationSpeed(speed);
+		
 	}
 }
