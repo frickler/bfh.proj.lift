@@ -6,7 +6,7 @@ import java.util.List;
  * @author BFH-Boys
  * 
  */
-public interface VerticalTransporter extends ActionObservable {
+public interface VerticalTransporter {
 
 	/**
 	 * 
@@ -123,4 +123,5 @@ public interface VerticalTransporter extends ActionObservable {
 	public int getCurrentPeople();
 
 	public void resetStatistics();
+
 }

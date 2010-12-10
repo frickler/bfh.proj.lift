@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import sun.awt.HorizBagLayout;
-
 import definition.Action;
 import definition.ActionObserver;
 import definition.Algorithm;
@@ -74,6 +72,27 @@ public class ElevatorController implements Controller {
 		// set the current timestamp to the action
 		action.setTimestampCreated(new Date());
 		
+		action.addActionObserver(new ActionObserver() {
+			
+			@Override
+			public void actionStarted(Action action) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void actionPerformed(Action action) {
+				doneActions.add(action);
+				
+			}
+			
+			@Override
+			public void actionPeopleLoaded(Action action) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		log4j.debug("Adding action " + action);
 
 		// add to datastructure
@@ -92,26 +111,6 @@ public class ElevatorController implements Controller {
 	@Override
 	public void stopController() {
 		algorithm.stop();
-
-	}
-
-	/**
-	 * Adds an actionListener to all elevators
-	 */
-	public void addActionObserver(ActionObserver observer) {
-		for (VerticalTransporter elevator : building.getElevators()) {
-			elevator.addActionObserver(observer);
-		}
-
-	}
-
-	/**
-	 * Removes an actionListener from all elevators
-	 */
-	public void deleteActionObserver(ActionObserver observer) {
-		for (VerticalTransporter elevator : building.getElevators()) {
-			elevator.deleteActionObserver(observer);
-		}
 
 	}
 
@@ -196,48 +195,16 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public List<Action> getDoneActions() {
-		// TODO List of done actions (krigu)
-		List<Action> list = new ArrayList<Action>();
-
-		// hardcode test actions use done actions
-		Action a = new ElevatorAction(2, 12, 3);
-		Date date = new Date(System.currentTimeMillis());
-		a.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis() + 3 * 1000);
-		a.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis() + 6 * 1000);
-		a.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis() + 9 * 1000);
-		a.setTimestampEnded(date);
-
-		Action b = new ElevatorAction(2, 12, 3);
-		date = new Date(System.currentTimeMillis());
-		b.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis() + 10 * 1000);
-		b.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis() + 20 * 1000);
-		b.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis() + 30 * 1000);
-		b.setTimestampEnded(date);
-
-		Action c = new ElevatorAction(2, 12, 3);
-		date = new Date(System.currentTimeMillis());
-		c.setTimestampCreated(date);
-		date = new Date(System.currentTimeMillis() + 5 * 1000);
-		c.setTimestampStarted(date);
-		date = new Date(System.currentTimeMillis() + 10 * 1000);
-		c.setTimestampPeopleLoaded(date);
-		date = new Date(System.currentTimeMillis() + 15 * 1000);
-		c.setTimestampEnded(date);
-
-		list.add(a);
-		list.add(b);
-		list.add(c);
-
-		return list;
+		return doneActions;
+	}
+	
+	@Override
+	public void addDoneAction(Action a){
+		this.actions.add(a);
 	}
 
 	@Override
+	// TODO Clone list
 	public void addElevator(Elevator e) {
 		building.addElevator(e);
 	}

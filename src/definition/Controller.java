@@ -86,4 +86,6 @@ public interface Controller {
 
 	public void resetActions();
 
+	void addDoneAction(Action a);
+
 }

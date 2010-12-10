@@ -18,7 +18,7 @@ public interface ActionObserver {
 	 * @param action
 	 *            Action to process
 	 */
-	public void actionStarted(Elevator elevator, Action action);
+	public void actionStarted(Action action);
 
 	/**
 	 * This Method is called when an action is done processing
@@ -28,6 +28,17 @@ public interface ActionObserver {
 	 * @param action
 	 *            Action which was processed
 	 */
-	public void actionPerformed(Elevator elevator, Action action);
+	public void actionPerformed(Action action);
+
+	/**
+	 * This method is called when people enter the elevator 
+	 * 
+	 * @param elevator
+	 * @param action
+	 */
+	public void actionPeopleLoaded(Action action);
+
+	
+
 
 }

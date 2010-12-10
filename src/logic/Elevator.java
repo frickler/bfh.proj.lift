@@ -1,18 +1,16 @@
 package logic;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.log4j.Logger;
 
 import definition.Action;
-import definition.ActionObserver;
 import definition.Direction;
 import definition.MovementObserver;
 import definition.MovementObserverable;
+import definition.PeopleLoadedObserver;
 import definition.VerticalTransporter;
 import exceptions.ElevatorConfigException;
 import exceptions.IllegalRangeException;
@@ -20,7 +18,7 @@ import exceptions.IllegalStartLevelException;
 
 /**
  * 
- * TODO Overthink setPeopleLoaded
+ * TODO Overthink setPeopleLoaded and setPeopleStarted
  */
 public class Elevator implements VerticalTransporter {
 
@@ -53,8 +51,6 @@ public class Elevator implements VerticalTransporter {
 	private float timeInMotionEmpty;
 	// Movement currently processing
 	private Movement movement;
-	// Action listeners
-	private List<ActionObserver> actionObservers;
 	// List of actions the elevator has to process
 	private List<Action> actions;
 	// direction
@@ -97,8 +93,7 @@ public class Elevator implements VerticalTransporter {
 		this.maxPeople = maxPeople;
 		this.currentPosition = startLevel;
 		this.maxSpeed = maxSpeed;
-		this.acceleration = acceleration;
-		this.actionObservers = new ArrayList<ActionObserver>();
+		this.acceleration = acceleration;		
 		this.actions = new LinkedList<Action>();
 	}
 
@@ -243,7 +238,8 @@ public class Elevator implements VerticalTransporter {
 		}
 
 		// Amount of people enter/leave elevator on this floor
-		int peopleInOut = 0;
+		int peopleIn = 0;
+		int peopleOut = 0;
 		// get target floor
 		int target = getTarget();
 
@@ -251,8 +247,8 @@ public class Elevator implements VerticalTransporter {
 		for (int i = actions.size() - 1; i >= 0; i--) {
 			Action a = actions.get(i);
 			if (a.getEndLevel() == getCurrentLevel()) {
-				peopleInOut += a.getPeopleAmount();
-				currentPeople -= a.getPeopleAmount();
+				peopleOut += a.getPeopleAmount();
+				// currentPeople -= a.getPeopleAmount();
 				a.setTimestampEnded(new Date());
 				moved(a);
 				actions.remove(a);
@@ -260,19 +256,20 @@ public class Elevator implements VerticalTransporter {
 						+ a + " left: " + actions.size());
 			}
 			if (a.getStartLevel() == getCurrentLevel()) {
-				peopleInOut += a.getPeopleAmount();
-				currentPeople += a.getPeopleAmount();
+				peopleIn += a.getPeopleAmount();
+				// currentPeople += a.getPeopleAmount();
 				a.setTimestampStarted(new Date());
+				a.setTimestampPeopleLoaded(new Date());
 			}
 		}
-		
+
 		if (getCurrentLevel() == target && actions.isEmpty()) {
 			isBusy = false;
 			return;
 		}
 
-		this.movement = new Movement(this, getCurrentLevel(), target,
-				peopleInOut, this.simulationSpeed, new MovementObserver() {
+		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
+				peopleOut, this.simulationSpeed, new MovementObserver() {
 
 					@Override
 					public void moved(MovementObserverable object) {
@@ -282,6 +279,15 @@ public class Elevator implements VerticalTransporter {
 					@Override
 					public void stepDone(Movement movement, double stepSize) {
 						currentPosition += stepSize;
+						//log4j.debug("Current Position: " + currentPosition);
+					}
+
+				}, new PeopleLoadedObserver() {
+
+					@Override
+					public void peopleLoaded(VerticalTransporter elevator,
+							int difference) {
+						currentPeople += difference;
 					}
 
 				});
@@ -295,7 +301,7 @@ public class Elevator implements VerticalTransporter {
 	 * @param startLevel
 	 */
 	private void moveToStart(int startLevel) {
-		
+
 		currentPeople = 0;
 
 		if (startLevel == getCurrentLevel()) {
@@ -303,7 +309,7 @@ public class Elevator implements VerticalTransporter {
 			return;
 		}
 
-		this.movement = new Movement(this, getCurrentLevel(), startLevel,
+		this.movement = new Movement(this, getCurrentLevel(), startLevel, this.simulationSpeed, 
 				new MovementObserver() {
 
 					@Override
@@ -416,30 +422,6 @@ public class Elevator implements VerticalTransporter {
 	}
 
 	@Override
-	public void addActionObserver(ActionObserver observer) {
-		this.actionObservers.add(observer);
-	}
-
-	@Override
-	public void deleteActionObserver(ActionObserver observer) {
-		this.actionObservers.remove(observer);
-	}
-
-	@Override
-	public void notifyObserversActionStarted(Elevator elevator, Action action) {
-		for (ActionObserver observer : actionObservers) {
-			observer.actionStarted(this, action);
-		}
-	}
-
-	@Override
-	public void notifyObserversActionPerformed(Elevator elevator, Action action) {
-		for (ActionObserver observer : actionObservers) {
-			observer.actionPerformed(this, action);
-		}
-	}
-
-	@Override
 	public double getCurrentPosition() {
 		return currentPosition;
 	}
@@ -469,7 +451,7 @@ public class Elevator implements VerticalTransporter {
 
 	@Override
 	public int getCurrentPeople() {
-		//return this.currentPeople; TODO use this return
+		// return this.currentPeople; TODO use this return
 		return currentPeople;
 	}
 
@@ -481,4 +463,5 @@ public class Elevator implements VerticalTransporter {
 		this.timeInMotionEmpty = 0;
 		this.transportedPeople = 0;
 	}
+
 }

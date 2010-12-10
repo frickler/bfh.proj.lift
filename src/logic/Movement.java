@@ -1,44 +1,54 @@
 package logic;
 
-import java.util.Date;
-
 import org.apache.log4j.Logger;
 
-import definition.Action;
-import definition.VerticalTransporter;
 import definition.MovementObserver;
 import definition.MovementObserverable;
+import definition.PeopleLoadedObserver;
+import definition.PeopleLoadedObserverable;
+import definition.VerticalTransporter;
 
 public class Movement extends Thread implements MovementObserverable {
+	
+	// Time for one person to enter/exit the elevator in milliseconds
+	private final int TIME_TO_EXIT = 1000; 
+	// Time for one level
+	
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	private VerticalTransporter elevator;
 	private MovementObserver movedObserver;
+	private PeopleLoadedObserver peopleLoadedObserver;
 	private int startLevel;
 	private int endLevel;
 	private int simulationSpeed = 1;
-	// Amount of people moving in/out
-	private int peopleInOut;
+	// Amount of people enter the elevator
+	private int peopleIn;
+	// Amount of people exiting the elevator
+	private int peopleOut;
 	// Variable to indicate if the stopMovement-Method is called
 	private boolean move;
 
 	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
-			MovementObserver movedObserver) {
-		this(elevator, startLevel, endLevel, 0,1, movedObserver);
-
-	}
-
-	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
-			int peopleInOut, int simulationSpeed, MovementObserver movedObserver) {
+			int peopleIn, int peopleOut, int simulationSpeed,
+			MovementObserver movedObserver,
+			PeopleLoadedObserver peopleLoadedObserver) {
 		super();
 		move = true;
 		this.startLevel = startLevel;
 		this.endLevel = endLevel;
 		this.elevator = elevator;
 		this.movedObserver = movedObserver;
-		this.peopleInOut = peopleInOut;
+		this.peopleIn = peopleIn;
+		this.peopleOut = peopleOut;
+		this.peopleLoadedObserver = peopleLoadedObserver;
+		this.simulationSpeed = simulationSpeed;
+	}
 
+	public Movement(Elevator elevator, int startLevel, int endLevel, int simulationSpeed, 
+			MovementObserver movementObserver) {
+		this(elevator, startLevel, endLevel, 0, 0, simulationSpeed, movementObserver, null);
 	}
 
 	@Override
@@ -67,11 +77,27 @@ public class Movement extends Thread implements MovementObserverable {
 	/**
 	 * @ToDo: ueberpruefen
 	 */
-	private void loadPeople() {		
-		if (peopleInOut > 0) {
+	private void loadPeople() {
+		
+		log4j.debug("LoadPeople - In: " + peopleIn + " Out: " + peopleOut);
+
+		for (int i = 0; i < peopleOut; i++) {
 			try {
-				Thread.sleep(peopleInOut * 100 / simulationSpeed);
+				Thread.sleep(100 / simulationSpeed);
 			} catch (InterruptedException e) {
+			}
+			if (peopleLoadedObserver != null) {
+				peopleLoadedObserver.peopleLoaded(elevator, -1);
+			}
+		}
+
+		for (int i = 0; i < peopleIn; i++) {
+			try {
+				Thread.sleep(100 / simulationSpeed);
+			} catch (InterruptedException e) {
+			}
+			if (peopleLoadedObserver != null) {
+				peopleLoadedObserver.peopleLoaded(elevator, +1);
 			}
 		}
 
@@ -118,11 +144,11 @@ public class Movement extends Thread implements MovementObserverable {
 						.getMaxSpeed() : currentSpeed;
 			}
 			milage += currentSpeed;
-			// log4j.debug((sign * currentSpeed) / 100);
-			movedObserver.stepDone(this, (sign * currentSpeed) / 100);
+			//log4j.debug((sign * currentSpeed) / 100);
+			movedObserver.stepDone(this, (sign * currentSpeed) / 100 / simulationSpeed);			
 
 			try {
-				Thread.sleep(20/simulationSpeed);
+				Thread.sleep(200 / simulationSpeed);
 			} catch (InterruptedException e) {
 
 			}

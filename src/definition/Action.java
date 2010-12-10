@@ -1,17 +1,23 @@
 package definition;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.plaf.basic.BasicSliderUI.ActionScroller;
 
 /**
- * An action is a movement from a level X to another Y 
- * where X <> Y with a certain amount of people. It also
- * has a timestamp with the beginning and the end of an
- * action to offer some calculations.
- *  
+ * An action is a movement from a level X to another Y where X <> Y with a
+ * certain amount of people. It also has a timestamp with the beginning and the
+ * end of an action to offer some calculations.
+ * 
  * @author BFH-Boys
- *
+ * 
  */
-public abstract class Action {
+public abstract class Action implements ActionObservable {
+
+	// List of action observers
+	private List<ActionObserver> observers;
 	// where the lift is called
 	private int startLevel;
 	// where the people want to go
@@ -40,6 +46,7 @@ public abstract class Action {
 		this.startLevel = startLevel;
 		this.endLevel = endLevel;
 		this.peopleAmount = peopleAmount;
+		observers = new ArrayList<ActionObserver>();
 	}
 
 	/**
@@ -50,8 +57,7 @@ public abstract class Action {
 	public int getStartLevel() {
 		return startLevel;
 	}
-	
-	
+
 	/**
 	 * 
 	 * @return when the people entered the elevator
@@ -62,7 +68,8 @@ public abstract class Action {
 
 	/**
 	 * 
-	 * @param when the people enter the elevator
+	 * @param when
+	 *            the people enter the elevator
 	 */
 	public void setTimestampPeopleLoaded(Date timestampPeopleLoaded) {
 		this.timestampPeopleLoaded = timestampPeopleLoaded;
@@ -78,7 +85,8 @@ public abstract class Action {
 
 	/**
 	 * 
-	 * @return Amount of people going from {@link #getStartLevel StartLevel} to {@link #getEndLevel EndLevel}
+	 * @return Amount of people going from {@link #getStartLevel StartLevel} to
+	 *         {@link #getEndLevel EndLevel}
 	 */
 	public int getPeopleAmount() {
 		return peopleAmount;
@@ -86,16 +94,20 @@ public abstract class Action {
 
 	/**
 	 * Sets the amount of people
-	 * @param peopleAmount amount
+	 * 
+	 * @param peopleAmount
+	 *            amount
 	 */
-	public void setPeopleAmount(int peopleAmount){
+	public void setPeopleAmount(int peopleAmount) {
 		this.peopleAmount = peopleAmount;
+		notifyObserversActionPeopleLoaded();
 	}
 
 	/**
 	 * 
 	 * @param timestampCreated
-	 *            Timestamp in milliseconds when the action was put in the {@link Controller} datastructure	 
+	 *            Timestamp in milliseconds when the action was put in the
+	 *            {@link Controller} datastructure
 	 */
 	public void setTimestampCreated(Date timestampCreated) {
 		this.timestampCreated = timestampCreated;
@@ -103,7 +115,8 @@ public abstract class Action {
 
 	/**
 	 * 
-	 * @return Timestamp in milliseconds when the action was put in the {@link Controller} datastructureF
+	 * @return Timestamp in milliseconds when the action was put in the
+	 *         {@link Controller} datastructureF
 	 */
 	public Date getTimestampCreated() {
 		return timestampCreated;
@@ -111,15 +124,19 @@ public abstract class Action {
 
 	/**
 	 * 
-	 * @param Sets the timestamp (in milliseconds) when the action is done processing
+	 * @param Sets
+	 *            the timestamp (in milliseconds) when the action is done
+	 *            processing
 	 */
 	public void setTimestampEnded(Date timestampEnded) {
 		this.timestampEnded = timestampEnded;
+		notifyObserversActionPerformed();
 	}
 
 	/**
 	 * 
-	 * @return Gets the timestamp (in milliseconds) when the action is done processing
+	 * @return Gets the timestamp (in milliseconds) when the action is done
+	 *         processing
 	 */
 	public Date getTimestampEnded() {
 		return timestampEnded;
@@ -127,18 +144,55 @@ public abstract class Action {
 
 	/**
 	 * 
-	 * @param Sets the timestamp (in milliseconds) when the action was started processing
+	 * @param Sets
+	 *            the timestamp (in milliseconds) when the action was started
+	 *            processing
 	 */
 	public void setTimestampStarted(Date timestampStarted) {
 		this.timestampStarted = timestampStarted;
+		notifyObserversActionStarted();
 	}
 
 	/**
 	 * 
-	 * @return Returns the timestamp (in milliseconds) when the action was started processing
+	 * @return Returns the timestamp (in milliseconds) when the action was
+	 *         started processing
 	 */
 	public Date getTimestampStarted() {
 		return timestampStarted;
+	}
+
+	@Override
+	public void addActionObserver(ActionObserver observer) {
+		observers.add(observer);
+
+	}
+
+	@Override
+	public void deleteActionObserver(ActionObserver observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public void notifyObserversActionStarted() {
+		for (ActionObserver observer : observers) {
+			observer.actionStarted(this);
+		}
+	}
+
+	@Override
+	public void notifyObserversActionPerformed() {
+		for (ActionObserver observer : observers) {
+			observer.actionPerformed(this);
+		}
+	}
+
+	@Override
+	public void notifyObserversActionPeopleLoaded() {
+		for (ActionObserver observer : observers) {
+			observer.actionPeopleLoaded(this);
+		}
+
 	}
 
 }

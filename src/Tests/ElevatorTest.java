@@ -1,9 +1,11 @@
 package Tests;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
 
-import logic.ElevatorAction;
 import logic.Elevator;
+import logic.ElevatorAction;
 
 import org.junit.Test;
 
@@ -12,7 +14,6 @@ import definition.ActionObserver;
 import definition.VerticalTransporter;
 import exceptions.IllegalRangeException;
 import exceptions.IllegalStartLevelException;
-import static org.junit.Assert.*;
 
 public class ElevatorTest {
 
@@ -73,21 +74,27 @@ public class ElevatorTest {
 		a.setTimestampStarted(new Date(System.currentTimeMillis()));
 		e.move(a);
 
-		e.addActionObserver(new ActionObserver() {
+		a.addActionObserver(new ActionObserver() {
 
 			@Override
-			public void actionStarted(Elevator elevator, Action action) {
+			public void actionStarted(Action action) {
 				assertEquals(a, action);
 			}
 
 			@Override
-			public void actionPerformed(Elevator elevator, Action action) {
+			public void actionPerformed(Action action) {
 				assertEquals("Current level", targetLevel, e.getCurrentLevel());
 				assertEquals("Moved levels", e.getDrivenLevels(), startLevel
 						- currentLevel + (startLevel - targetLevel));
 				assertEquals("Moved levels empty", e.getDrivenLevelsEmpty(),
 						startLevel - currentLevel);
 				assertEquals("Moved persons", e.getTransportedPeople(), 5);
+			}
+
+			@Override
+			public void actionPeopleLoaded(Action action) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 
