@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -75,9 +76,20 @@ public class ElevatorPanel extends JPanel {
 		// TODO Auto-generated method stub
 		int i = elevator.getCurrentPeople();
 		if(i>5){
+
 		return new ImageIcon("src/gui/icons/elevator_more.png");
+
 		}else{
-			return new ImageIcon("src/gui/icons/elevator_"+i+".png");	
+			if(i != 1){
+				return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+			}else{		
+					int rand = new Random((int) (Math.random() * 10000)).nextInt(30);
+					if(rand == 26){
+						return new ImageIcon("src/gui/icons/elevator_easteregg.png");
+					}else{
+						return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+					}
+			}
 		}
 	}
 
