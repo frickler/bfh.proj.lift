@@ -137,7 +137,7 @@ public class Elevator implements VerticalTransporter {
 	 *            action
 	 */
 	public void moved(Action action) {
-		if (action.getPeopleAmount() == 0) { // Lift runs empty
+		if (action.getPeopleAmount() == 0) { // Lift ran empty
 			this.drivenLevelsEmpty += Math.abs(action.getStartLevel()
 					- action.getEndLevel());
 		} else { // Lift runs with people
@@ -172,10 +172,22 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private int getNextHigherLevel() {
 		int nextLevel = getCurrentLevel();
+		if (actions.isEmpty()) {
+			return nextLevel;
+		}
 		for (Action act : actions) {
 			if (act.getStartLevel() > nextLevel
 					&& act.getStartLevel() > getCurrentLevel()) {
 				nextLevel = act.getStartLevel();
+			}
+		}
+		if (nextLevel == getCurrentLevel()) {
+			nextLevel = Integer.MAX_VALUE;
+			for (Action act : actions) {
+				if (act.getEndLevel() < nextLevel
+						&& act.getEndLevel() > getCurrentLevel()) {
+					nextLevel = act.getEndLevel();
+				}
 			}
 		}
 		return nextLevel;
@@ -187,10 +199,22 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private int getNextLowerLevel() {
 		int nextLevel = getCurrentLevel();
+		if (actions.isEmpty()) {
+			return nextLevel;
+		}
 		for (Action act : actions) {
 			if (act.getStartLevel() < nextLevel
 					&& act.getStartLevel() < getCurrentLevel()) {
 				nextLevel = act.getStartLevel();
+			}
+		}
+		if (nextLevel == getCurrentLevel()) {
+			nextLevel = Integer.MIN_VALUE;
+			for (Action act : actions) {
+				if (act.getEndLevel() > nextLevel
+						&& act.getEndLevel() < getCurrentLevel()) {
+					nextLevel = act.getEndLevel();
+				}
 			}
 		}
 		return nextLevel;
@@ -199,15 +223,15 @@ public class Elevator implements VerticalTransporter {
 	private int getTarget() {
 
 		int target;
-		if (actions.size() > 1) {
-			if (direction == Direction.UP) {
-				target = getNextHigherLevel();
-			} else {
-				target = getNextLowerLevel();
-			}
+
+		if (direction == Direction.UP) {
+			log4j.debug("Direction = Up");
+			target = getNextHigherLevel();
 		} else {
-			target = actions.get(0).getEndLevel();
+			log4j.debug("Direction = Down");
+			target = getNextLowerLevel();
 		}
+
 		return target;
 	}
 
@@ -222,25 +246,33 @@ public class Elevator implements VerticalTransporter {
 		int peopleInOut = 0;
 		// get target floor
 		int target = getTarget();
-		
+
 		// Remove processed actions
 		for (int i = actions.size() - 1; i >= 0; i--) {
 			Action a = actions.get(i);
 			if (a.getEndLevel() == getCurrentLevel()) {
 				peopleInOut += a.getPeopleAmount();
+				currentPeople -= a.getPeopleAmount();
 				a.setTimestampEnded(new Date());
 				moved(a);
 				actions.remove(a);
-				log4j.debug("Elevator " + this.hashCode()  + " Action done: " + a + " left: " + actions.size());
+				log4j.debug("Elevator " + this.hashCode() + " Action done: "
+						+ a + " left: " + actions.size());
 			}
 			if (a.getStartLevel() == getCurrentLevel()) {
 				peopleInOut += a.getPeopleAmount();
+				currentPeople += a.getPeopleAmount();
 				a.setTimestampStarted(new Date());
 			}
 		}
+		
+		if (getCurrentLevel() == target && actions.isEmpty()) {
+			isBusy = false;
+			return;
+		}
 
 		this.movement = new Movement(this, getCurrentLevel(), target,
-				peopleInOut,this.simulationSpeed, new MovementObserver() {
+				peopleInOut, this.simulationSpeed, new MovementObserver() {
 
 					@Override
 					public void moved(MovementObserverable object) {
@@ -263,6 +295,8 @@ public class Elevator implements VerticalTransporter {
 	 * @param startLevel
 	 */
 	private void moveToStart(int startLevel) {
+		
+		currentPeople = 0;
 
 		if (startLevel == getCurrentLevel()) {
 			move();
@@ -436,13 +470,7 @@ public class Elevator implements VerticalTransporter {
 	@Override
 	public int getCurrentPeople() {
 		//return this.currentPeople; TODO use this return
-		Random gen = new Random((int) (Math.random() * 10000));
-		return gen.nextInt(8);
-	}
-
-	public void setCurrentPeople(int currentPeople) {
-		//TODO set and get currentPeople
-		this.currentPeople = currentPeople;
+		return currentPeople;
 	}
 
 	@Override

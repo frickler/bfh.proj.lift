@@ -34,13 +34,13 @@ public class main {
 	
 	public static void testGui(){
 		try {
-			Building building = new Tower(new Elevator(1, 3, Integer.MAX_VALUE, 1));
-			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
-			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
-			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			Building building = new Tower(new Elevator(1, 3, 10, 1));
+//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
+//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
+//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 
 //			
 //			Building building = new Tower(new Elevator(1, 3, Integer.MAX_VALUE, 1));
@@ -52,7 +52,7 @@ public class main {
 //			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 			
 
-			ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
+			ElevatorController controller = new ElevatorController(building, PickUpFifoAlgorithm.class);
 			controller.startController();
 
 			Thread t = new Thread(new FrameMain(building, controller));

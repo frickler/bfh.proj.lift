@@ -1,9 +1,14 @@
 package logic;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import definition.Action;
 import definition.Algorithm;
 import definition.Building;
 import definition.Controller;
+import definition.Direction;
 import definition.VerticalTransporter;
 
 /**
@@ -16,6 +21,10 @@ import definition.VerticalTransporter;
  * 
  */
 public class PickUpFifoAlgorithm extends Algorithm {
+	
+
+	// Logger
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	public PickUpFifoAlgorithm(Building building, Controller controller) {
 		super(building, controller);
@@ -40,7 +49,18 @@ public class PickUpFifoAlgorithm extends Algorithm {
 							&& ele.getMaxLevel() >= action.getStartLevel()
 							&& ele.getMinLevel() <= action.getEndLevel()
 							&& ele.getMaxLevel() >= action.getEndLevel()) {
-						ele.move(action);
+						Direction dir = Direction.UP;
+						if (action.getStartLevel() > action.getEndLevel()) {
+							dir = Direction.DOWN;
+						}
+						List<Action> acts = getController().getActions(
+								action.getStartLevel(), action.getEndLevel(),
+								action.getPeopleAmount());
+						acts.add(action);
+						log4j.debug("Pickup Action Size" + acts.size());
+						
+						ele.move(acts, action.getStartLevel(), dir);
+
 						action = null;
 						break;
 					}

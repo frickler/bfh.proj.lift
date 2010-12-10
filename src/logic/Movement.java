@@ -70,7 +70,7 @@ public class Movement extends Thread implements MovementObserverable {
 	private void loadPeople() {		
 		if (peopleInOut > 0) {
 			try {
-				Thread.sleep(peopleInOut * 1000 / simulationSpeed);
+				Thread.sleep(peopleInOut * 100 / simulationSpeed);
 			} catch (InterruptedException e) {
 			}
 		}
