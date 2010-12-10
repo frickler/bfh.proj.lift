@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Random;
@@ -9,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -27,10 +29,11 @@ public class ElevatorPanel extends JPanel {
 	private VerticalTransporter elevator;
 	private Building building;
 	private ImageIcon icon;
-	private JLabel label;
+	private JLabel jiconlabel;
 	private JPanel background;
 	private int pixelPerLevel;
 	private int displayedPeople = 0;
+	private JLabel infolabel;
 
 	/**
 	 * @param elevator
@@ -45,12 +48,18 @@ public class ElevatorPanel extends JPanel {
 		this.elevator = elevator;
 		this.building = building;
 		icon = new ImageIcon();
-		label = new JLabel(icon);
+		jiconlabel = new JLabel(icon);
 		background = new JPanel();
-
+		this.add(jiconlabel);
+		
+		infolabel = new JLabel();
+		infolabel.setText("test");
+		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
+		infolabel.setFont(f);
+		infolabel.setVerticalTextPosition(JLabel.TOP);
+		infolabel.setBounds(0, 0, 200, 100);	
 		this.setLayout(null);
-		this.add(label);
-
+		this.add(infolabel);
 		background.setBackground(backGroundColor);
 		this.add(background);
 	}
@@ -68,7 +77,7 @@ public class ElevatorPanel extends JPanel {
 		Image scaledImage = iconTemp.getImage().getScaledInstance(width,
 				height, 1);
 		icon.setImage(scaledImage);
-		label.setSize(icon.getIconWidth(), icon.getIconHeight());
+		jiconlabel.setSize(icon.getIconWidth(), icon.getIconHeight());
 		log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
 	}
 
@@ -114,6 +123,8 @@ public class ElevatorPanel extends JPanel {
 		// if icon height isn't as expected the image will be rescaled
 		if (pixelPerLevel != icon.getIconHeight() || displayedPeople != elevator.getCurrentPeople()) {
 			this.displayedPeople = elevator.getCurrentPeople();
+			infolabel.setText("<html>PeopleLoaded: "+elevator.getCurrentPeople()+"<br/>MaxPeople: "+elevator.getMaxPeople()+ "<br/>MaxSpeed: "+elevator.getMaxSpeed()+ "<br/>CurrentLevel: "+elevator.getCurrentLevel()+ "<br/>CurrentPosition: "+Math.round(elevator.getCurrentPosition()*100)+"</html>");
+			
 			rescaleImage(pixelPerLevel, pixelPerLevel);
 		}
 				
@@ -127,6 +138,6 @@ public class ElevatorPanel extends JPanel {
 
 		// the elevator icon is centered within the panel
 		int horizontalPosition = this.getWidth() / 2 - icon.getIconWidth() / 2;
-		label.setLocation(horizontalPosition, verticalPosition);
+		jiconlabel.setLocation(horizontalPosition, verticalPosition);
 	}
 }

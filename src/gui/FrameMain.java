@@ -175,12 +175,12 @@ public class FrameMain extends JFrame implements Runnable {
 
 	}
 
-	public void startSimulation(Building building, List<Action> actions,boolean resetEvaluation) {
+	public void startSimulation(Building tower, List<Action> actions,boolean resetEvaluation) {
 		if(resetEvaluation){
 			resetEvaluations();
 		}
-		if (building != null) {
-			controller.setBuilding(building);
+		if (tower != null) {
+			controller.setBuilding(tower);
 		}
 		controller.startSimulation(actions);
 	}
