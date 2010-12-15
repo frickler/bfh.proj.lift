@@ -276,4 +276,12 @@ public class ElevatorController implements Controller {
 	public void resetActions() {
 		actions.clear();		
 	}
+
+	@Override
+	public String getSimulationResult() {
+		if(simulation != null){
+			return simulation.getResult();
+		}
+		return "";
+	}
 }

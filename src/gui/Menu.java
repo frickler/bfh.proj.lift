@@ -156,6 +156,26 @@ public class Menu {
 		});
 		menu.add(menuItem);
 		
+		// a group of JMenuItems
+		menuItem = new JMenuItem("Simulation result", KeyEvent.VK_E);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+				ActionEvent.ALT_MASK));
+
+		menuItem.getAccessibleContext().setAccessibleDescription(
+				"This doesn't really do anything");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					framemain.showSimulationResult();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menu.add(menuItem);
+		
+		
 		menuBar.add(menu);
 	}
 

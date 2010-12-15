@@ -30,6 +30,9 @@ public class ConsolePanel extends JPanel {
 	public void addText(String text){
 		textAreaConsole.append(text);
 	}
+	public void addTextNewLine(String text){
+		addText("\n"+text);
+	}
 	
 	public void setText(String text){
 		clearText();

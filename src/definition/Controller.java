@@ -88,4 +88,6 @@ public interface Controller {
 
 	void addDoneAction(Action a);
 
+	public String getSimulationResult();
+
 }
