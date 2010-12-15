@@ -279,7 +279,7 @@ public class Elevator implements VerticalTransporter {
 					@Override
 					public void stepDone(Movement movement, double stepSize) {
 						currentPosition += stepSize;
-						//log4j.debug("Current Position: " + currentPosition);
+						log4j.debug("Current Position: " + currentPosition);
 					}
 
 				}, new PeopleLoadedObserver() {

@@ -9,11 +9,11 @@ import definition.PeopleLoadedObserverable;
 import definition.VerticalTransporter;
 
 public class Movement extends Thread implements MovementObserverable {
-	
+
 	// Time for one person to enter/exit the elevator in milliseconds
-	private final int TIME_TO_EXIT = 1000; 
+	private final int TIME_TO_EXIT = 10000;
 	// Time for one level
-	
+	private final int TICK_TIME = 400;
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
@@ -22,7 +22,7 @@ public class Movement extends Thread implements MovementObserverable {
 	private PeopleLoadedObserver peopleLoadedObserver;
 	private int startLevel;
 	private int endLevel;
-	private int simulationSpeed = 1;
+	private int simulationSpeed = 10;
 	// Amount of people enter the elevator
 	private int peopleIn;
 	// Amount of people exiting the elevator
@@ -46,9 +46,10 @@ public class Movement extends Thread implements MovementObserverable {
 		this.simulationSpeed = simulationSpeed;
 	}
 
-	public Movement(Elevator elevator, int startLevel, int endLevel, int simulationSpeed, 
-			MovementObserver movementObserver) {
-		this(elevator, startLevel, endLevel, 0, 0, simulationSpeed, movementObserver, null);
+	public Movement(Elevator elevator, int startLevel, int endLevel,
+			int simulationSpeed, MovementObserver movementObserver) {
+		this(elevator, startLevel, endLevel, 0, 0, simulationSpeed,
+				movementObserver, null);
 	}
 
 	@Override
@@ -78,12 +79,12 @@ public class Movement extends Thread implements MovementObserverable {
 	 * @ToDo: ueberpruefen
 	 */
 	private void loadPeople() {
-		
+
 		log4j.debug("LoadPeople - In: " + peopleIn + " Out: " + peopleOut);
 
 		for (int i = 0; i < peopleOut; i++) {
 			try {
-				Thread.sleep(100 / simulationSpeed);
+				Thread.sleep((int) (TIME_TO_EXIT / simulationSpeed));
 			} catch (InterruptedException e) {
 			}
 			if (peopleLoadedObserver != null) {
@@ -93,7 +94,7 @@ public class Movement extends Thread implements MovementObserverable {
 
 		for (int i = 0; i < peopleIn; i++) {
 			try {
-				Thread.sleep(100 / simulationSpeed);
+				Thread.sleep((int) (TIME_TO_EXIT / simulationSpeed));
 			} catch (InterruptedException e) {
 			}
 			if (peopleLoadedObserver != null) {
@@ -144,11 +145,11 @@ public class Movement extends Thread implements MovementObserverable {
 						.getMaxSpeed() : currentSpeed;
 			}
 			milage += currentSpeed;
-			//log4j.debug((sign * currentSpeed) / 100);
-			movedObserver.stepDone(this, (sign * currentSpeed) / 100 / simulationSpeed);			
+			// log4j.debug((sign * currentSpeed) / 100);
+			movedObserver.stepDone(this, ((sign * currentSpeed) / 100));
 
 			try {
-				Thread.sleep(200 / simulationSpeed);
+				Thread.sleep((int) (TICK_TIME / simulationSpeed));
 			} catch (InterruptedException e) {
 
 			}

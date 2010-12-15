@@ -41,6 +41,7 @@ public class main {
 			building.addElevator(new Elevator(-1, 6,4,4,20f,0.2f));
 			building.addElevator(new Elevator(-1, 6, 2,5));
 			building.addElevator(new Elevator(-1, 6, 12,5));
+			building.setSimulationSpeed(10);
 
 //			
 //			Building building = new Tower(new Elevator(1, 3, Integer.MAX_VALUE, 1));

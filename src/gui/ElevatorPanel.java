@@ -109,6 +109,8 @@ public class ElevatorPanel extends JPanel {
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
+		
+		
 
 		pixelPerLevel = (int) Math.floor((float) this.getHeight()
 				/ (building.getMaxLevel() - building.getMinLevel() + 1));
@@ -122,11 +124,10 @@ public class ElevatorPanel extends JPanel {
 
 		// if icon height isn't as expected the image will be rescaled
 		if (pixelPerLevel != icon.getIconHeight() || displayedPeople != elevator.getCurrentPeople()) {
-			this.displayedPeople = elevator.getCurrentPeople();
-			infolabel.setText("<html>PeopleLoaded: "+elevator.getCurrentPeople()+"<br/>MaxPeople: "+elevator.getMaxPeople()+ "<br/>MaxSpeed: "+elevator.getMaxSpeed()+ "<br/>CurrentLevel: "+elevator.getCurrentLevel()+ "<br/>CurrentPosition: "+Math.round(elevator.getCurrentPosition()*100)+"</html>");
-			
+			this.displayedPeople = elevator.getCurrentPeople();					
 			rescaleImage(pixelPerLevel, pixelPerLevel);
 		}
+		infolabel.setText("<html>PeopleLoaded: "+elevator.getCurrentPeople()+"<br/>MaxPeople: "+elevator.getMaxPeople()+ "<br/>MaxSpeed: "+elevator.getMaxSpeed()+ "<br/>CurrentLevel: "+elevator.getCurrentLevel()+ "<br/>CurrentPosition: "+(double) Math.round(elevator.getCurrentPosition()*100)/100+"</html>");
 				
 		int bottomPosition = this.getHeight() - icon.getIconHeight();
 
