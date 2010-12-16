@@ -48,9 +48,13 @@ public abstract class Building {
 	 * 
 	 * @param elevator
 	 *            Elevator to remove from the building
+	 * @throws Exception 
 	 */
-	public void removeElevator(VerticalTransporter elevator) {
+	public void removeElevator(VerticalTransporter elevator) throws Exception {
+		if(transporters.size() != 1)
 		transporters.remove(elevator);
+		else
+			throw new Exception("cannot remove the last elevator, do you really wanna use the stairs?");
 	}
 
 	/**

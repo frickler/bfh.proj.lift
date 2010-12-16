@@ -206,6 +206,7 @@ public class ElevatorController implements Controller {
 	@Override
 	// TODO Clone list
 	public void addElevator(Elevator e) {
+		e.setSimulationSpeed(this.simulationSpeed);
 		building.addElevator(e);
 	}
 
@@ -232,6 +233,7 @@ public class ElevatorController implements Controller {
 	public void startSimulation(List<Action> actions) {
 		try {
 			simulation = new Simulation(this);
+			simulation.setSimulationSpeed(this.simulationSpeed);
 			simulation.addAction(actions);
 			simulation.start();
 		} catch (IllegalActionException e) {
@@ -249,7 +251,9 @@ public class ElevatorController implements Controller {
 	public void setSimulationSpeed(int speed) {
 		
 		simulationSpeed = speed;
-		
+		if(simulation != null){
+			simulation.setSimulationSpeed(speed);
+		}
 		building.setSimulationSpeed(speed);
 		
 	}

@@ -24,7 +24,7 @@ public class Simulation extends Thread {
 	private Boolean Running = false;
 	private int actionsToDo = -1;
 	private String result = "no simulation started yet";
-	private int simulationSpeed;
+	private int simulationSpeed = 1;
 
 	public Simulation(Controller eController) {
 		this.elevatorController = eController;
@@ -100,7 +100,9 @@ public class Simulation extends Thread {
 				stopSimulation();
 				log4j.debug("Simulator stopped: all action are completed by the controller");
 				int spaninseconds = (int)(this.endTime.getTime() - this.startTime.getTime()) / 1000;
-				this.result = "It took "+spaninseconds+" seconds to complete all actions";
+				this.result = "Started @ "+this.startTime.toString()+" and ended @"+this.endTime.toString();
+				this.result += "\nIt took "+spaninseconds+" seconds to complete all actions";
+				this.result += "\nSimulation speed was: "+simulationSpeed+" in real time the simulation would have taken "+spaninseconds*simulationSpeed+" seconds";
 				log4j.debug(this.result);
 			}
 		}
@@ -136,5 +138,9 @@ public class Simulation extends Thread {
 	public void clearActions() {
 		log4j.debug(actions.size() + " actions cleared in simulator");
 		actions.clear();
+	}
+
+	public void setSimulationSpeed(int speed) {
+		this.simulationSpeed = speed;
 	}
 }

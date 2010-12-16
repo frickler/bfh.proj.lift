@@ -179,6 +179,7 @@ public class FrameMain extends JFrame implements Runnable {
 		if(resetEvaluation){
 			resetEvaluations();
 		}
+		
 		if (tower != null) {
 			Building old = controller.getBuilding();
 			int size = old.getElevators().size();
@@ -186,7 +187,7 @@ public class FrameMain extends JFrame implements Runnable {
 				controller.addElevator((Elevator)e);
 			}
 			for(int i = 0;i < size;i++){
-				controller.removeElevator(i);
+				controller.removeElevator(0);
 			}
 			
 		}

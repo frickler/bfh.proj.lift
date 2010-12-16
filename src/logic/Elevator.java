@@ -27,6 +27,8 @@ public class Elevator implements VerticalTransporter {
 
 	// returns the currentPosition of the elevator
 	private double currentPosition;
+	// returns the current accelaeration
+	private double currentSpeed;
 	// min Level (Stockwerk) the elevator can reach
 	private int minLevel;
 	// max Level (Stockwerk) the elevator can reach
@@ -282,6 +284,11 @@ public class Elevator implements VerticalTransporter {
 						log4j.debug("Current Position: " + currentPosition);
 					}
 
+					@Override
+					public void updateSpeed(double speed) {
+						currentSpeed = speed;						
+					}
+
 				}, new PeopleLoadedObserver() {
 
 					@Override
@@ -315,6 +322,12 @@ public class Elevator implements VerticalTransporter {
 					@Override
 					public void moved(MovementObserverable object) {
 						Elevator.this.move();
+
+					}
+					
+					@Override
+					public void updateSpeed(double speed) {
+						currentSpeed = speed;
 
 					}
 
@@ -462,6 +475,12 @@ public class Elevator implements VerticalTransporter {
 		this.timeInMotion = 0;
 		this.timeInMotionEmpty = 0;
 		this.transportedPeople = 0;
+	}
+
+	@Override
+	public double getCurrentSpeed() {
+		// TODO Auto-generated method stub
+		return this.currentSpeed;
 	}
 
 }

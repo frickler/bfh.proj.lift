@@ -25,4 +25,6 @@ public interface MovementObserver {
 	 * @param stepSize
 	 */
 	public void stepDone(Movement movement, double stepSize);
+
+	void updateSpeed(double speed);
 }

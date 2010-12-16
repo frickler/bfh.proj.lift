@@ -127,8 +127,16 @@ public class ElevatorPanel extends JPanel {
 			this.displayedPeople = elevator.getCurrentPeople();					
 			rescaleImage(pixelPerLevel, pixelPerLevel);
 		}
-		infolabel.setText("<html>PeopleLoaded: "+elevator.getCurrentPeople()+"<br/>MaxPeople: "+elevator.getMaxPeople()+ "<br/>MaxSpeed: "+elevator.getMaxSpeed()+ "<br/>CurrentLevel: "+elevator.getCurrentLevel()+ "<br/>CurrentPosition: "+(double) Math.round(elevator.getCurrentPosition()*100)/100+"</html>");
+		String sInfo = "<html><h4>People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople();
+		sInfo += "<br/>Speed max: "+elevator.getMaxSpeed();
+		sInfo += "<br>/Speed current: "+(double) Math.round(elevator.getCurrentSpeed()*100)/100;
+		sInfo += "<br/>Acceleration: "+elevator.getAcceleration();		
+		sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
+		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();
+		sInfo +=  "</h4></html>";
 				
+		infolabel.setText(sInfo);
+		
 		int bottomPosition = this.getHeight() - icon.getIconHeight();
 
 		// zero-based level of the current elevator

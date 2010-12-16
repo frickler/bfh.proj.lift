@@ -124,4 +124,6 @@ public interface VerticalTransporter {
 
 	public void resetStatistics();
 
+	public double getCurrentSpeed();
+
 }

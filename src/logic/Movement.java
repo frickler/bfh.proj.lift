@@ -144,6 +144,8 @@ public class Movement extends Thread implements MovementObserverable {
 				currentSpeed = (currentSpeed > elevator.getMaxSpeed()) ? elevator
 						.getMaxSpeed() : currentSpeed;
 			}
+			movedObserver.updateSpeed(currentSpeed);
+			
 			milage += currentSpeed;
 			// log4j.debug((sign * currentSpeed) / 100);
 			movedObserver.stepDone(this, ((sign * currentSpeed) / 100));
@@ -154,6 +156,7 @@ public class Movement extends Thread implements MovementObserverable {
 
 			}
 		}
+		movedObserver.updateSpeed(0);
 	}
 
 	public void stopMovement() {
