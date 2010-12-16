@@ -30,6 +30,7 @@ public class ElevatorController implements Controller {
 	private List<Action> doneActions;
 	private Simulation simulation;
 	private int simulationSpeed = 1;
+
 	/**
 	 * Constructor for the controller. Each controller is responsible for
 	 * exactly one building.
@@ -71,28 +72,28 @@ public class ElevatorController implements Controller {
 		}
 		// set the current timestamp to the action
 		action.setTimestampCreated(new Date());
-		
+
 		action.addActionObserver(new ActionObserver() {
-			
+
 			@Override
 			public void actionStarted(Action action) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void actionPerformed(Action action) {
 				doneActions.add(action);
-				
+
 			}
-			
+
 			@Override
 			public void actionPeopleLoaded(Action action) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		log4j.debug("Adding action " + action);
 
 		// add to datastructure
@@ -197,9 +198,9 @@ public class ElevatorController implements Controller {
 	public List<Action> getDoneActions() {
 		return doneActions;
 	}
-	
+
 	@Override
-	public void addDoneAction(Action a){
+	public void addDoneAction(Action a) {
 		this.actions.add(a);
 	}
 
@@ -247,22 +248,28 @@ public class ElevatorController implements Controller {
 		return this.simulationSpeed;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see definition.Controller#setSimulationSpeed(int)
+	 * sets the speed only if valid 0 < speed <= 100
+	 */
 	public void setSimulationSpeed(int speed) {
-		
-		simulationSpeed = speed;
-		if(simulation != null){
-			simulation.setSimulationSpeed(speed);
+
+		if (speed > 0 && speed <= 100) {
+			simulationSpeed = speed;
+			if (simulation != null) {
+				simulation.setSimulationSpeed(speed);
+			}
+			building.setSimulationSpeed(speed);
 		}
-		building.setSimulationSpeed(speed);
-		
+
 	}
 
 	/*
 	 * Reset the statistics of each elevator
 	 */
 	public void resetLiftEvaluation() {
-		for(VerticalTransporter t : building.getElevators()){
+		for (VerticalTransporter t : building.getElevators()) {
 			t.resetStatistics();
 		}
 	}
@@ -271,19 +278,19 @@ public class ElevatorController implements Controller {
 	 * Clears the list where all done actions are stored for evaluation
 	 */
 	public void resetDoneActions() {
-		doneActions.clear();			
+		doneActions.clear();
 	}
 
 	/*
 	 * Clears all actions with aren't perfom yet
 	 */
 	public void resetActions() {
-		actions.clear();		
+		actions.clear();
 	}
 
 	@Override
 	public String getSimulationResult() {
-		if(simulation != null){
+		if (simulation != null) {
 			return simulation.getResult();
 		}
 		return "";

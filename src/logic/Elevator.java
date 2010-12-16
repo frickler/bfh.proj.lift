@@ -61,7 +61,11 @@ public class Elevator implements VerticalTransporter {
 	private boolean isBusy;
 	// current people loaded
 	private int currentPeople;
+	// unique number for each elevator
+	private int identityNumber;
 
+	public static int elevatorCounter = 0;
+	
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
 			throws Exception {
 		this(minLevel, maxLevel, maxPeople, startLevel, 40f, 0.5f);
@@ -86,7 +90,7 @@ public class Elevator implements VerticalTransporter {
 	 */
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel,
 			float maxSpeed, float acceleration) throws Exception {
-
+		this.identityNumber = ++elevatorCounter;
 		checkParameters(minLevel, maxLevel, maxPeople, startLevel, maxSpeed,
 				acceleration);
 
@@ -481,6 +485,10 @@ public class Elevator implements VerticalTransporter {
 	public double getCurrentSpeed() {
 		// TODO Auto-generated method stub
 		return this.currentSpeed;
+	}
+
+	public int getIdentityNumber() {
+		return identityNumber;
 	}
 
 }

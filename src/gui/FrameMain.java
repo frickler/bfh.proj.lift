@@ -175,11 +175,11 @@ public class FrameMain extends JFrame implements Runnable {
 
 	}
 
-	public void startSimulation(Building tower, List<Action> actions,boolean resetEvaluation) {
+	public void startSimulation(Building tower, List<Action> actions,boolean resetEvaluation,int simulationSpeed) {
 		if(resetEvaluation){
 			resetEvaluations();
 		}
-		
+		controller.setSimulationSpeed(simulationSpeed);
 		if (tower != null) {
 			Building old = controller.getBuilding();
 			int size = old.getElevators().size();
@@ -187,10 +187,11 @@ public class FrameMain extends JFrame implements Runnable {
 				controller.addElevator((Elevator)e);
 			}
 			for(int i = 0;i < size;i++){
-				controller.removeElevator(0);
+				controller.removeElevator(i);
 			}
 			
 		}
+		
 		controller.startSimulation(actions);
 	}
 

@@ -57,7 +57,7 @@ public class ElevatorPanel extends JPanel {
 		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
 		infolabel.setFont(f);
 		infolabel.setVerticalTextPosition(JLabel.TOP);
-		infolabel.setBounds(0, 0, 200, 100);	
+		infolabel.setBounds(0, 0, 200, 140);	
 		this.setLayout(null);
 		this.add(infolabel);
 		background.setBackground(backGroundColor);
@@ -72,7 +72,7 @@ public class ElevatorPanel extends JPanel {
 	 * @param height
 	 *            new height
 	 */
-	public void rescaleImage(int width, int height) {
+	public void rearrageImage(int width, int height) {
 		ImageIcon iconTemp = GetImageIcon();
 		Image scaledImage = iconTemp.getImage().getScaledInstance(width,
 				height, 1);
@@ -125,11 +125,12 @@ public class ElevatorPanel extends JPanel {
 		// if icon height isn't as expected the image will be rescaled
 		if (pixelPerLevel != icon.getIconHeight() || displayedPeople != elevator.getCurrentPeople()) {
 			this.displayedPeople = elevator.getCurrentPeople();					
-			rescaleImage(pixelPerLevel, pixelPerLevel);
+			rearrageImage(pixelPerLevel, pixelPerLevel);
 		}
-		String sInfo = "<html><h4>People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople();
+		String sInfo = "<html><h3>Elevator "+elevator.getIdentityNumber()+"</h3><h4>";
+		sInfo += "People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople();
 		sInfo += "<br/>Speed max: "+elevator.getMaxSpeed();
-		sInfo += "<br>/Speed current: "+(double) Math.round(elevator.getCurrentSpeed()*100)/100;
+		sInfo += "<br/>Speed current: "+(double) Math.round(elevator.getCurrentSpeed()*100)/100;
 		sInfo += "<br/>Acceleration: "+elevator.getAcceleration();		
 		sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
 		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();

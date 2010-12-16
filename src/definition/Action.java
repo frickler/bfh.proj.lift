@@ -195,4 +195,9 @@ public abstract class Action implements ActionObservable {
 
 	}
 
+	public String toXML() {
+		// TODO Auto-generated method stub
+		return "<Action startLevel=\""+startLevel+"\" endLevel=\""+endLevel+"\" peopleAmount=\""+peopleAmount+"\" />";
+	}
+
 }

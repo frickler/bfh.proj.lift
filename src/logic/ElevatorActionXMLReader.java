@@ -28,6 +28,7 @@ public class ElevatorActionXMLReader extends XMLReader {
 	private Document document;
 	private List<Action> actions;
 	private Building building;
+	private int simulationSpeed = 0;
 
 	public ElevatorActionXMLReader() {
 		try {
@@ -37,7 +38,15 @@ public class ElevatorActionXMLReader extends XMLReader {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * 
+ * @param defaultSpeed (if not set in xml)
+ * @return new simulationspeed
+ */
+	public int getSimulationSpeed() {
+			return this.simulationSpeed;		
+	}
+	
 	public Building getBuilding() {
 		return this.building;
 	}
@@ -57,6 +66,11 @@ public class ElevatorActionXMLReader extends XMLReader {
 		if (document == null) {
 			return;
 		}
+		
+		NamedNodeMap m = document.getDocumentElement().getAttributes();
+		try{
+		this.simulationSpeed = Integer.parseInt(getValue("simulationSpeed", m));
+		}catch(Exception e){}
 		NodeList nodes_i = document.getDocumentElement().getChildNodes();
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			if (nodes_i.item(i).getNodeName() == "Building") {

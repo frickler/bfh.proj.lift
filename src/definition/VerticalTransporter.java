@@ -126,4 +126,6 @@ public interface VerticalTransporter {
 
 	public double getCurrentSpeed();
 
+	public int getIdentityNumber();
+
 }

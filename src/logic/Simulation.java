@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -122,17 +123,23 @@ public class Simulation extends Thread {
 		int maxLevel = elevatorController.getBuilding().getMaxLevel();
 
 		Random gen = new Random((int) (Math.random() * 10000));
-
+		String all = "";
 		for (int i = 0; i < amount; i++) {
 			int startLevel = gen.nextInt(maxLevel - minLevel) + minLevel;
-			int endLevel = gen.nextInt(maxLevel - minLevel) + minLevel;
+			int endLevel = startLevel;
+			while(endLevel == startLevel)
+				endLevel =gen.nextInt(maxLevel - minLevel) + minLevel;
+			
 			int pepoleAmount = gen.nextInt(10) + 1;
 			int delay = gen.nextInt(40) / simulationSpeed;
+			
 			Action a = new DelayedElevatorAction(startLevel, endLevel,
 					pepoleAmount, delay);
 			actions.add(a);
+			all += a.toXML()+"\n";
 			log4j.debug("Simulator: action generated: " + a.toString());
 		}
+		//System.out.println(all);
 	}
 
 	public void clearActions() {
