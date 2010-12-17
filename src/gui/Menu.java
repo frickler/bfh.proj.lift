@@ -122,7 +122,7 @@ public class Menu {
 		});
 		menu.add(menuItem);
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Load Simulation", KeyEvent.VK_L);
+		menuItem = new JMenuItem("Import Simulation", KeyEvent.VK_L);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
@@ -175,6 +175,24 @@ public class Menu {
 		});
 		menu.add(menuItem);
 		
+		// a group of JMenuItems
+		menuItem = new JMenuItem("Save Simulation result", KeyEvent.VK_E);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+				ActionEvent.ALT_MASK));
+
+		menuItem.getAccessibleContext().setAccessibleDescription(
+				"This doesn't really do anything");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					framemain.saveSimulationResult();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menu.add(menuItem);
 		
 		menuBar.add(menu);
 	}

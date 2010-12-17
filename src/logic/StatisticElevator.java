@@ -3,6 +3,10 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import definition.VerticalTransporter;
 import definition.Statistic;
 
@@ -123,5 +127,46 @@ public class StatisticElevator extends Statistic {
 		text += "\nTransported People: " + e.getTransportedPeople();
 		text += "\n";
 		return text;
+	}
+
+	public Element getXMLStatistic(Document doc) {
+
+		org.w3c.dom.Element n = doc.createElement("Elevators");
+		try {
+			n.setAttribute("total", this.elevators.size() + "");
+
+			org.w3c.dom.Element sum = doc.createElement("Summary");
+
+			sum.appendChild(getSummaryElement(doc.createElement("DrivenLevel"),
+					getSummaryOf(Attriubte.DrivenLevel)));
+			sum.appendChild(getSummaryElement(
+					doc.createElement("DrivenLevelEmpty"),
+					getSummaryOf(Attriubte.DrivenLevelEmpty)));
+			sum.appendChild(getSummaryElement(
+					doc.createElement("TimeInMotion"),
+					getSummaryOf(Attriubte.TimeInMotion)));
+			sum.appendChild(getSummaryElement(
+					doc.createElement("TimeInMotionEmpty"),
+					getSummaryOf(Attriubte.TimeInMotionEmpty)));
+			sum.appendChild(getSummaryElement(
+					doc.createElement("TrasportedPepole"),
+					getSummaryOf(Attriubte.TrasportedPepole)));
+			n.appendChild(sum);
+			
+			for(VerticalTransporter e : elevators){
+				n.appendChild(e.getXML(doc.createElement("Elevator")));
+			}
+
+		} catch (Exception e1) {
+
+		}
+		return n;
+	}
+
+	private Element getSummaryElement(Element e, int[] results) {
+		e.setAttribute("min", results[0] + "");
+		e.setAttribute("max", results[1] + "");
+		e.setAttribute("avg", results[2] + "");
+		return e;
 	}
 }

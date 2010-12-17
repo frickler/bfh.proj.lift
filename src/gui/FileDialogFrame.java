@@ -50,6 +50,6 @@ public class FileDialogFrame extends JFrame {
 				"Doyou wanna reset all statistics of the elevators and the actions?","Reset statistics",
 				JOptionPane.YES_NO_OPTION);
 		
-		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions(),(input == 0),xmlReader.getSimulationSpeed());
+		fm.startSimulation(xmlReader.getBuilding(),xmlReader.getActions(),(input == 0),xmlReader.getSimulationSpeed(), dialog.getDirectory());
 	}
 }

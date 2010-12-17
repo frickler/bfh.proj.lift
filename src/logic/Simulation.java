@@ -1,17 +1,25 @@
 package logic;
 
 import java.io.Console;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.*;
+
 import org.apache.log4j.Logger;
 
 import definition.Action;
 import definition.Controller;
 import exceptions.IllegalActionException;
+
 
 public class Simulation extends Thread {
 
@@ -26,6 +34,7 @@ public class Simulation extends Thread {
 	private int actionsToDo = -1;
 	private String result = "no simulation started yet";
 	private int simulationSpeed = 1;
+	private String path;
 
 	public Simulation(Controller eController) {
 		this.elevatorController = eController;
@@ -100,13 +109,17 @@ public class Simulation extends Thread {
 			} else {
 				stopSimulation();
 				log4j.debug("Simulator stopped: all action are completed by the controller");
-				int spaninseconds = (int)(this.endTime.getTime() - this.startTime.getTime()) / 1000;
+				int spaninseconds = getDurationInSeconds();
 				this.result = "Started @ "+this.startTime.toString()+" and ended @"+this.endTime.toString();
 				this.result += "\nIt took "+spaninseconds+" seconds to complete all actions";
 				this.result += "\nSimulation speed was: "+simulationSpeed+" in real time the simulation would have taken "+spaninseconds*simulationSpeed+" seconds";
 				log4j.debug(this.result);
 			}
 		}
+	}
+
+	private int getDurationInSeconds() {
+		return (int)(this.endTime.getTime() - this.startTime.getTime()) / 1000;
 	}
 
 	public void setRunning(Boolean running) {
@@ -149,5 +162,24 @@ public class Simulation extends Thread {
 
 	public void setSimulationSpeed(int speed) {
 		this.simulationSpeed = speed;
+	}
+
+	public void setPath(String ppath) {
+		this.path = ppath;
+	}
+
+	public String getPath() {
+		
+		return this.path;
+	}
+
+	public Element setXMLResult(Document doc) throws ParserConfigurationException {
+		Element n = doc.createElement("simluation");
+		n.setAttribute("startDate", startTime.toString());
+		n.setAttribute("endDate", endTime.toString());
+		n.setAttribute("durationInSec",getDurationInSeconds()+"");
+		n.setAttribute("simluationSpeed", this.simulationSpeed+"");
+		n.setAttribute("algorithm",elevatorController.getAlgorithmName()+"");
+		return n;
 	}
 }

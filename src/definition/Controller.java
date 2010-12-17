@@ -1,8 +1,10 @@
 package definition;
 
+import java.io.OutputStream;
 import java.util.List;
 
 import logic.Elevator;
+import logic.Simulation;
 
 import exceptions.IllegalActionException;
 
@@ -74,11 +76,8 @@ public interface Controller {
 
 	public void stopRandomSimulation();
 
-	public void startSimulation(List<Action> actions);
+	public void startSimulation(String path, int simulationSpeed, List<Action> actions);
 
-	public int getSimulationSpeed();
-
-	public void setSimulationSpeed(int speed);
 
 	public void resetLiftEvaluation();
 
@@ -88,6 +87,11 @@ public interface Controller {
 
 	void addDoneAction(Action a);
 
-	public String getSimulationResult();
+	public Simulation getSimulation();
+
+	public int getSimluationSpeed();
+
+	public String getAlgorithmName();
+
 
 }

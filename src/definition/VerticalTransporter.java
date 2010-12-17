@@ -2,6 +2,9 @@ package definition;
 
 import java.util.List;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 /**
  * @author BFH-Boys
  * 
@@ -127,5 +130,7 @@ public interface VerticalTransporter {
 	public double getCurrentSpeed();
 
 	public int getIdentityNumber();
+
+	public Node getXML(Element createElement);
 
 }

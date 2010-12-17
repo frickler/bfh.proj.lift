@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import definition.Action;
 import definition.Direction;
@@ -489,6 +491,21 @@ public class Elevator implements VerticalTransporter {
 
 	public int getIdentityNumber() {
 		return identityNumber;
+	}
+
+	public Node getXML(Element e) {
+		e.setAttribute("simulationSpeed",simulationSpeed+"");
+		e.setAttribute("minLevel",minLevel+"");
+		e.setAttribute("maxLevel",maxLevel+"");
+		e.setAttribute("currentPosition",currentPosition+"");
+		e.setAttribute("maxSpeed",maxSpeed+"");
+		e.setAttribute("maxPeople",maxPeople+"");
+		e.setAttribute("transportedPeople",transportedPeople+"");
+		e.setAttribute("timeInMotion",timeInMotion+"");
+		e.setAttribute("timeInMotionEmpty",timeInMotionEmpty+"");
+		e.setAttribute("drivenLevels",drivenLevels+"");
+		e.setAttribute("drivenLevelsEmpty",drivenLevelsEmpty+"");
+		return e;
 	}
 
 }

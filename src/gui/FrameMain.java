@@ -6,18 +6,34 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import logic.Elevator;
+import logic.Simulation;
 import logic.StatisticAction;
 import logic.StatisticElevator;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import definition.Action;
 import definition.Building;
@@ -149,10 +165,11 @@ public class FrameMain extends JFrame implements Runnable {
 				oddEven *= -1;
 				elevatorPanels.add(ePanel);
 			}
-			
-			//TODO: Hack, damit das Frame neu gezeichnet wird, repaint() funktioniert nicht.
-			this.setSize(getWidth(), getHeight()-1);
-			this.setSize(getWidth(), getHeight()+1);
+
+			// TODO: Hack, damit das Frame neu gezeichnet wird, repaint()
+			// funktioniert nicht.
+			this.setSize(getWidth(), getHeight() - 1);
+			this.setSize(getWidth(), getHeight() + 1);
 		}
 	}
 
@@ -175,24 +192,24 @@ public class FrameMain extends JFrame implements Runnable {
 
 	}
 
-	public void startSimulation(Building tower, List<Action> actions,boolean resetEvaluation,int simulationSpeed) {
-		if(resetEvaluation){
+	public void startSimulation(Building tower, List<Action> actions,
+			boolean resetEvaluation, int simulationSpeed, String path) {
+		if (resetEvaluation) {
 			resetEvaluations();
 		}
-		controller.setSimulationSpeed(simulationSpeed);
+
 		if (tower != null) {
 			Building old = controller.getBuilding();
 			int size = old.getElevators().size();
-			for(VerticalTransporter e : tower.getElevators()){
-				controller.addElevator((Elevator)e);
+			for (VerticalTransporter e : tower.getElevators()) {
+				controller.addElevator((Elevator) e);
 			}
-			for(int i = 0;i < size;i++){
-				controller.removeElevator(i);
+			for (int i = 0; i < size; i++) {
+				controller.removeElevator(0);
 			}
-			
+
 		}
-		
-		controller.startSimulation(actions);
+		controller.startSimulation(path, simulationSpeed, actions);
 	}
 
 	public void addElevator(Elevator e) {
@@ -230,11 +247,11 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	public int getSimulationSpeed() {
-		return controller.getSimulationSpeed();
+		return controller.getSimluationSpeed();
 	}
 
 	public void setSimulationSpeed(int speed) {
-		controller.setSimulationSpeed(speed);
+		controller.getSimulation().setSimulationSpeed(speed);
 	}
 
 	public void resetEvaluations() {
@@ -243,10 +260,67 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	public void clearActions() {
-		controller.resetActions();		
+		controller.resetActions();
 	}
 
 	public void showSimulationResult() {
-		consolePanel.addTextNewLine(this.controller.getSimulationResult());
+		Simulation s = controller.getSimulation();
+		if (s != null) {
+			consolePanel.addTextNewLine(s.getResult());
+		}
+	}
+
+	public void saveSimulationResult() {
+
+		Simulation s = controller.getSimulation();
+		if (s != null) {
+
+			try {
+
+				DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+						.newDocumentBuilder();
+				Document doc = builder.newDocument();
+				Element root = s.setXMLResult(doc);
+
+				StatisticAction sa = new StatisticAction();
+				sa.addAction(controller.getDoneActions());
+				Element actions = sa.getXMLStatistic(doc);
+				root.appendChild(actions);
+
+				StatisticElevator se = new StatisticElevator();
+				se.addElevator(controller.getBuilding().getElevators());
+				Element elevators = se.getXMLStatistic(doc);
+				root.appendChild(elevators);
+				doc.appendChild(root);
+				SimpleDateFormat dateformat = new SimpleDateFormat(
+						"yyyy-MM-dd_hh_mm_ss");
+
+				String pathName = s.getPath() + dateformat.format(new Date())
+						+ "_SimulationResult.xml";
+
+				FileWriter fstream = new FileWriter(pathName);
+				BufferedWriter out = new BufferedWriter(fstream);
+				out.write(xmlToString(root));
+				out.close();
+			} catch (Exception e) {// Catch exception if any
+				System.err.println("Error: " + e.getMessage());
+			}
+		}
+	}
+		
+	    public String xmlToString(Element node) {
+	        try {
+	            Source source = new DOMSource(node);
+	            StringWriter stringWriter = new StringWriter();
+	            Result result = new StreamResult(stringWriter);
+	            TransformerFactory factory = TransformerFactory.newInstance();
+	            Transformer transformer = factory.newTransformer();
+	            transformer.transform(source, result);
+	            return stringWriter.getBuffer().toString();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        return null;
+	    }
+
 	}
 }

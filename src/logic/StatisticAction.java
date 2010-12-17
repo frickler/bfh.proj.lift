@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 
 import definition.Action;
 import definition.Statistic;
@@ -128,5 +129,30 @@ public class StatisticAction extends Statistic {
 
 	public void printStatisticToFile(String sFilePath) {
 
+	}
+
+	public org.w3c.dom.Element getXMLStatistic(Document doc) {
+		org.w3c.dom.Element n = doc.createElement("Actions");
+		n.setAttribute("total", this.actions.size()+"");	
+		org.w3c.dom.Element m1 = GetMeasure(doc.createElement("Measure"),"Einteffen in der Queue bis Auftrag ausgefuehrt ist:",
+				getEnteredToEnded(DateTypes.Created, DateTypes.Ended));
+		org.w3c.dom.Element m2 = GetMeasure(doc.createElement("Measure"),"Eintreffen in der Etage bis zur Zieletage:",
+				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
+		org.w3c.dom.Element m3 = GetMeasure(doc.createElement("Measure"),"Einteffen in der Queue bis zur Ausuehrung:",
+				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
+		n.appendChild(m1);
+		n.appendChild(m2);
+		n.appendChild(m3);
+		
+		return n;
+	}
+
+	private org.w3c.dom.Element GetMeasure(org.w3c.dom.Element e,
+			String string, int[] results) {	
+		e.setTextContent(string);
+		e.setAttribute("min", results[0]+"");
+		e.setAttribute("max", results[1]+"");
+		e.setAttribute("avg", results[2]+"");
+		return e;
 	}
 }

@@ -44,7 +44,7 @@ public class ElevatorController implements Controller {
 		this.actions = new LinkedList<Action>();
 		this.doneActions = new ArrayList<Action>();
 		this.building = building;
-
+		this.simulation = new Simulation(this);
 		// Create new instance of algorithm using reflections
 		// to ensure that each controller always has a algorithm
 		// which processes the data
@@ -231,21 +231,18 @@ public class ElevatorController implements Controller {
 	}
 
 	@Override
-	public void startSimulation(List<Action> actions) {
+	public void startSimulation(String path,int speed,List<Action> actions) {
 		try {
+			simulationSpeed = speed;
 			simulation = new Simulation(this);
 			simulation.setSimulationSpeed(this.simulationSpeed);
+			simulation.setPath(path);
+			building.setSimulationSpeed(simulationSpeed);
 			simulation.addAction(actions);
 			simulation.start();
 		} catch (IllegalActionException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public int getSimulationSpeed() {
-		// TODO Auto-generated method stub
-		return this.simulationSpeed;
 	}
 
 	/*
@@ -288,11 +285,21 @@ public class ElevatorController implements Controller {
 		actions.clear();
 	}
 
+
 	@Override
-	public String getSimulationResult() {
-		if (simulation != null) {
-			return simulation.getResult();
-		}
+	public Simulation getSimulation() {
+		return simulation;
+	}
+
+	@Override
+	public int getSimluationSpeed() {
+		return this.simulationSpeed;
+	}
+
+	@Override
+	public String getAlgorithmName() {
+		if(this.algorithm != null)
+		return algorithm.getClass().toString();
 		return "";
 	}
 }
