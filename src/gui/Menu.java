@@ -15,6 +15,8 @@ import javax.swing.KeyStroke;
 
 import com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase;
 
+import definition.Controller;
+
 public class Menu {
 
 	// Where the GUI is created:
@@ -23,11 +25,14 @@ public class Menu {
 	JMenuItem menuItem;
 	JRadioButtonMenuItem rbMenuItem;
 	JCheckBoxMenuItem cbMenuItem;
+	Controller controller;
 	FrameMain framemain;
+	StatisticFrame statisticFrame;
 
-	public Menu(FrameMain fm) {
+	public Menu(FrameMain fm, Controller controller) {
 		// Create the menu bar.
 		framemain = fm;
+		this.controller = controller;
 		menuBar = new JMenuBar();
 
 		addMainMenu();
@@ -39,6 +44,7 @@ public class Menu {
 	private void addEvaluationMenu() {
 		// Build the first menu.
 		menu = new JMenu("Evaluation");
+		statisticFrame = new StatisticFrame(controller);
 		menu.setMnemonic(KeyEvent.VK_E);
 		menu.getAccessibleContext().setAccessibleDescription(
 				"The only menu in this program that has menu items");
@@ -52,8 +58,7 @@ public class Menu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				framemain.doEvaluation(false, true);
+				statisticFrame.doEvaluation(false, true);
 			}
 		});
 		menu.add(menuItem);
@@ -65,8 +70,7 @@ public class Menu {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				framemain.doEvaluation(true, false);
+				statisticFrame.doEvaluation(true, false);
 			}
 		});
 		menu.add(menuItem);
@@ -301,7 +305,7 @@ public class Menu {
 				JOptionPane
 						.showMessageDialog(
 								framemain,
-								"© 2010\nTom Tschiller, Krigu Feuz, Stef Käser\nBerner Fachhochschule",
+								"ï¿½ 2010\nTom Tschiller, Krigu Feuz, Stef Kï¿½ser\nBerner Fachhochschule",
 								"Elevator Simulation",
 								JOptionPane.INFORMATION_MESSAGE);
 			}

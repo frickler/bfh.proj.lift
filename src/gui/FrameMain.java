@@ -67,10 +67,6 @@ public class FrameMain extends JFrame implements Runnable {
 	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
 
-		Menu m = new Menu(this);
-		JMenuBar menubar = m.getMenuBar();
-		this.setJMenuBar(menubar);
-
 		if (building == null)
 			throw new Exception("building can not be null");
 
@@ -81,6 +77,9 @@ public class FrameMain extends JFrame implements Runnable {
 		this.controller = controller;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Wo ist mein Lift?");
+
+		JMenuBar menubar = new Menu(this, controller).getMenuBar();
+		this.setJMenuBar(menubar);
 
 		addWindowListenerToFrame();
 
@@ -95,8 +94,6 @@ public class FrameMain extends JFrame implements Runnable {
 		// the main panel is placed in the middle of this frame, the console on
 		// the bottom
 		this.getContentPane().add(panelElevatorsLevels, BorderLayout.CENTER);
-		consolePanel = new ConsolePanel(building, this);
-		this.getContentPane().add(consolePanel, BorderLayout.SOUTH);
 
 		this.setVisible(true);
 	}
@@ -218,20 +215,6 @@ public class FrameMain extends JFrame implements Runnable {
 
 	public void removeElevator(int removeId) {
 		controller.removeElevator(removeId);
-	}
-
-	public void doEvaluation(boolean bActions, boolean bElevator) {
-
-		if (bActions) {
-			StatisticAction s = new StatisticAction();
-			s.addAction(controller.getDoneActions());
-			consolePanel.addText(s.getStatistic());
-		}
-		if (bElevator) {
-			StatisticElevator s = new StatisticElevator();
-			s.addElevator(controller.getBuilding().getElevators());
-			consolePanel.addText(s.getStatistic());
-		}
 	}
 
 	public void quit() {

@@ -1,14 +1,14 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.TextArea;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import definition.Building;
+import definition.Controller;
 
 /**
  * 
@@ -18,13 +18,15 @@ import definition.Building;
 public class ConsolePanel extends JPanel {
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
-	TextArea textAreaConsole;
+	protected Controller controller;
+	protected TextArea textAreaConsole;
 	private static final long serialVersionUID = -5903280586820362452L;
 
-	public ConsolePanel(Building building, JFrame frameMain){
-		textAreaConsole = new TextArea("", 6, 120, TextArea.SCROLLBARS_VERTICAL_ONLY);
+	public ConsolePanel(Controller controller){
+		this.controller = controller;
+		
+		textAreaConsole = new TextArea("", 30, 90, TextArea.SCROLLBARS_VERTICAL_ONLY);
 		textAreaConsole.setBackground(Color.WHITE);
-		textAreaConsole.setSize(this.getSize());
 		this.add(textAreaConsole);
 	}
 	public void addText(String text){
@@ -41,5 +43,9 @@ public class ConsolePanel extends JPanel {
 	
 	public void clearText(){
 		textAreaConsole.setText("");
+	}
+	
+	public void paint(Graphics g)
+	{
 	}
 }

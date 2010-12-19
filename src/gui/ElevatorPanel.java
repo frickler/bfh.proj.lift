@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -53,7 +52,6 @@ public class ElevatorPanel extends JPanel {
 		this.add(jiconlabel);
 		
 		infolabel = new JLabel();
-		infolabel.setText("test");
 		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
 		infolabel.setFont(f);
 		infolabel.setVerticalTextPosition(JLabel.TOP);

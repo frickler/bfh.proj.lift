@@ -43,8 +43,8 @@ public class LevelPanel extends JPanel {
 			}
 			panelLevelAndPersons.add(comboBoxPersons);
 			
-			panelLevelMain.add(panelLevelAndPersons);
 			panelLevelMain.add(new LevelButtonPanel(i, building, controller, comboBoxPersons));
+			panelLevelMain.add(panelLevelAndPersons);
 			this.add(panelLevelMain);
 		}
 		this.validate();
