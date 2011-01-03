@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FileDialog;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
@@ -14,11 +15,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -27,13 +31,17 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import logic.Elevator;
+import logic.ElevatorActionXMLReader;
 import logic.Simulation;
+import logic.SimulationCompare;
 import logic.StatisticAction;
 import logic.StatisticElevator;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 import definition.Action;
 import definition.Building;
@@ -285,25 +293,73 @@ public class FrameMain extends JFrame implements Runnable {
 				BufferedWriter out = new BufferedWriter(fstream);
 				out.write(xmlToString(root));
 				out.close();
+				JOptionPane.showConfirmDialog(this,
+						"Simulation result saved @ " + pathName);
 			} catch (Exception e) {// Catch exception if any
 				System.err.println("Error: " + e.getMessage());
 			}
 		}
 	}
-		
-	    public String xmlToString(Element node) {
-	        try {
-	            Source source = new DOMSource(node);
-	            StringWriter stringWriter = new StringWriter();
-	            Result result = new StreamResult(stringWriter);
-	            TransformerFactory factory = TransformerFactory.newInstance();
-	            Transformer transformer = factory.newTransformer();
-	            transformer.transform(source, result);
-	            return stringWriter.getBuffer().toString();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        return null;
-	    }
+
+	public String xmlToString(Element node) {
+		try {
+			Source source = new DOMSource(node);
+			StringWriter stringWriter = new StringWriter();
+			Result result = new StreamResult(stringWriter);
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Transformer transformer = factory.newTransformer();
+			transformer.transform(source, result);
+			return stringWriter.getBuffer().toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 
 	}
+
+	public void compareSimulations() throws Exception {
+
+		int selectedFiles = -1;
+
+		while (selectedFiles < 2) {
+
+			//todo nicht nur für kaeserst
+			JFileChooser fc = new JFileChooser("C:\\Users\\kaeserst\\Documents\\My Dropbox\\bfh\\Projekt1_7301\\Lift_feuzc1_kases1_chiller12");
+			fc.setName("Select XML-Result file");
+			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fc.setFileFilter(new CustomFileFilter("xml"));
+			fc.setMultiSelectionEnabled(true);
+			int returnVal = fc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+
+				if (fc.getSelectedFiles().length > 1) {
+					selectedFiles = fc.getSelectedFiles().length;
+					JFileChooser fcXSLT = new JFileChooser(fc.getSelectedFiles()[0].getParent());
+					fcXSLT.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fcXSLT.setName("Select XSL-Transformation file");
+					fcXSLT.setFileFilter(new CustomFileFilter("xsl"));
+					fcXSLT.setMultiSelectionEnabled(false);
+					returnVal = fcXSLT.showOpenDialog(this);
+
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						SimulationCompare sc = new SimulationCompare(
+								fc.getCurrentDirectory(),
+								fc.getSelectedFiles(), fcXSLT.getSelectedFile());
+						StatisticFrame frm = new StatisticFrame(controller);
+						frm.compareSimulation(sc);
+					} else {
+						break;
+					}
+				} else {
+					JOptionPane.showConfirmDialog(this,
+							"Please select at least two files to compare them");
+				}
+
+			} else {
+				break;
+			}
+
+		}
+	}
+
 }

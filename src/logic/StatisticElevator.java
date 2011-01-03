@@ -137,20 +137,20 @@ public class StatisticElevator extends Statistic {
 
 			org.w3c.dom.Element sum = doc.createElement("Summary");
 
-			sum.appendChild(getSummaryElement(doc.createElement("DrivenLevel"),
-					getSummaryOf(Attriubte.DrivenLevel)));
+			sum.appendChild(getSummaryElement(doc.createElement("Measure"),
+					getSummaryOf(Attriubte.DrivenLevel),"Total gefahrene Stockwerke"));
 			sum.appendChild(getSummaryElement(
-					doc.createElement("DrivenLevelEmpty"),
-					getSummaryOf(Attriubte.DrivenLevelEmpty)));
+					doc.createElement("Measure"),
+					getSummaryOf(Attriubte.DrivenLevelEmpty),"Stockwerke leer gefahren"));
 			sum.appendChild(getSummaryElement(
-					doc.createElement("TimeInMotion"),
-					getSummaryOf(Attriubte.TimeInMotion)));
+					doc.createElement("Measure"),
+					getSummaryOf(Attriubte.TimeInMotion),"Zeit waehrend dem sich der Lift mit Passagieren bewegte"));
 			sum.appendChild(getSummaryElement(
-					doc.createElement("TimeInMotionEmpty"),
-					getSummaryOf(Attriubte.TimeInMotionEmpty)));
+					doc.createElement("Measure"),
+					getSummaryOf(Attriubte.TimeInMotionEmpty),"Zeit waehrend dem sich der Lift leer bewegte"));
 			sum.appendChild(getSummaryElement(
-					doc.createElement("TrasportedPepole"),
-					getSummaryOf(Attriubte.TrasportedPepole)));
+					doc.createElement("Measure"),
+					getSummaryOf(Attriubte.TrasportedPepole),"Transportierte Personen"));
 			n.appendChild(sum);
 			
 			for(VerticalTransporter e : elevators){
@@ -163,10 +163,11 @@ public class StatisticElevator extends Statistic {
 		return n;
 	}
 
-	private Element getSummaryElement(Element e, int[] results) {
+	private Element getSummaryElement(Element e, int[] results,String name) {
 		e.setAttribute("min", results[0] + "");
 		e.setAttribute("max", results[1] + "");
 		e.setAttribute("avg", results[2] + "");
+		e.setTextContent(name);
 		return e;
 	}
 }

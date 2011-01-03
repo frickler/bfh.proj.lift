@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import logic.SimulationCompare;
+
 import definition.Controller;
 
 public class StatisticFrame extends JFrame {
@@ -12,12 +14,13 @@ public class StatisticFrame extends JFrame {
 
 	private ConsolePanel consolePanelElevators;
 	private ConsolePanel consolePanelActions;
-	
+	private JPanel consolePanelSimuation;
+	private Controller controller;
 	private JTabbedPane tabbedPane;
 
-	public StatisticFrame(Controller controller) {
+	public StatisticFrame(Controller pcontroller) {
 		this.setTitle("Wo ist mein Lift? - Statistik");
-
+		controller = pcontroller;
 		this.setSize(800, 600); // TODO
 		this.setResizable(true);
 		
@@ -42,5 +45,26 @@ public class StatisticFrame extends JFrame {
 			tabbedPane.setSelectedIndex(1);
 
 		this.setVisible(true);
+	}
+
+	public void compareSimulation(SimulationCompare sc) {
+		try {
+			
+			String html = sc.saveCompareResult();
+			
+			JPanel panelConsoleActions = new JPanel();
+			consolePanelSimuation = new SimulationStatisticPanel(html);
+			panelConsoleActions.add(consolePanelSimuation);
+			tabbedPane.addTab("Statistik Simulation", consolePanelSimuation);
+			this.add(tabbedPane);
+			tabbedPane.setSelectedIndex(2);
+			this.setVisible(true);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 }
