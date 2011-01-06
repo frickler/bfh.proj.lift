@@ -35,6 +35,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import logic.Elevator;
 import logic.ElevatorActionXMLReader;
+import logic.Helper;
 import logic.Simulation;
 import logic.SimulationCompare;
 import logic.StatisticAction;
@@ -260,7 +261,8 @@ public class FrameMain extends JFrame implements Runnable {
 	public void showSimulationResult() {
 		Simulation s = controller.getSimulation();
 		if (s != null) {
-			consolePanel.addTextNewLine(s.getResult());
+			StatisticFrame frm = new StatisticFrame(controller);
+			frm.showSimulationResult(s);
 		}
 	}
 
@@ -271,21 +273,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 			try {
 
-				DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-						.newDocumentBuilder();
-				Document doc = builder.newDocument();
-				Element root = s.setXMLResult(doc);
-
-				StatisticAction sa = new StatisticAction();
-				sa.addAction(controller.getDoneActions());
-				Element actions = sa.getXMLStatistic(doc);
-				root.appendChild(actions);
-
-				StatisticElevator se = new StatisticElevator();
-				se.addElevator(controller.getBuilding().getElevators());
-				Element elevators = se.getXMLStatistic(doc);
-				root.appendChild(elevators);
-				doc.appendChild(root);
+				Element root = s.getXMLSimulation();
 				SimpleDateFormat dateformat = new SimpleDateFormat(
 						"yyyy-MM-dd_hh_mm_ss");
 
@@ -294,9 +282,9 @@ public class FrameMain extends JFrame implements Runnable {
 
 				FileWriter fstream = new FileWriter(pathName);
 				BufferedWriter out = new BufferedWriter(fstream);
-				out.write(xmlToString(root));
+				out.write(Helper.xmlToString(root));
 				out.close();
-				JOptionPane.showConfirmDialog(this,
+				JOptionPane.showMessageDialog(this,
 						"Simulation result saved @ " + pathName);
 			} catch (Exception e) {// Catch exception if any
 				System.err.println("Error: " + e.getMessage());
@@ -304,21 +292,7 @@ public class FrameMain extends JFrame implements Runnable {
 		}
 	}
 
-	public String xmlToString(Element node) {
-		try {
-			Source source = new DOMSource(node);
-			StringWriter stringWriter = new StringWriter();
-			Result result = new StreamResult(stringWriter);
-			TransformerFactory factory = TransformerFactory.newInstance();
-			Transformer transformer = factory.newTransformer();
-			transformer.transform(source, result);
-			return stringWriter.getBuffer().toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 
-	}
 
 	public void compareSimulations() throws Exception {
 

@@ -1,9 +1,11 @@
 package gui.statistic;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import logic.Simulation;
 import logic.SimulationCompare;
 
 import definition.Controller;
@@ -14,6 +16,7 @@ public class StatisticFrame extends JFrame {
 
 	private ConsolePanel consolePanelElevators;
 	private ConsolePanel consolePanelActions;
+	private JPanel consolePanelSimuationCompare;
 	private JPanel consolePanelSimuation;
 	private Controller controller;
 	private JTabbedPane tabbedPane;
@@ -51,12 +54,13 @@ public class StatisticFrame extends JFrame {
 	public void compareSimulation(SimulationCompare sc) {
 		try {
 			
-			String html = sc.saveCompareResult();
-			
+			String path = sc.saveCompareResult();
+			JOptionPane.showMessageDialog(this,
+					"Simulation comparison saved @ " + path);
 			JPanel panelConsoleActions = new JPanel();
-			consolePanelSimuation = new SimulationStatisticPanel(html);
-			panelConsoleActions.add(consolePanelSimuation);
-			tabbedPane.addTab("Statistik Simulation", consolePanelSimuation);
+			consolePanelSimuationCompare = new SimulationStatisticPanel(path);
+			panelConsoleActions.add(consolePanelSimuationCompare);
+			tabbedPane.addTab("Simulationvergleich", consolePanelSimuationCompare);
 			this.add(tabbedPane);
 			tabbedPane.setSelectedIndex(2);
 			this.setVisible(true);
@@ -65,7 +69,21 @@ public class StatisticFrame extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	public void showSimulationResult(Simulation s) {
+		try {
+			JPanel panelConsoleActions = new JPanel();
+			consolePanelSimuation = new SimulationResultPanel(controller);
+			panelConsoleActions.add(consolePanelSimuation);
+			tabbedPane.addTab("Statistik Simulation", consolePanelSimuation);
+			this.add(tabbedPane);		
+			tabbedPane.setSelectedIndex(2);
+			this.setVisible(true);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

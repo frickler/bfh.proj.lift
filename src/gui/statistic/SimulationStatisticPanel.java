@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
+import logic.Helper;
+
 import org.apache.log4j.Logger;
 
 public class SimulationStatisticPanel extends JPanel {
@@ -35,8 +37,8 @@ public class SimulationStatisticPanel extends JPanel {
 			  try {
 				  String html = readFile(urlpath);
 				  //todo hack do otherwise
-				  html = "<html>"+html.substring(html.indexOf("<body>"));
-				  tp.setText(html);
+				  
+				  tp.setText(Helper.convertToHtml(html));
 			    } 
 			  catch (Exception e) {
 			    e.printStackTrace();

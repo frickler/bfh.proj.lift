@@ -54,7 +54,7 @@ public class Menu {
 
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Elevators", KeyEvent.VK_E);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 
@@ -66,7 +66,7 @@ public class Menu {
 		menu.add(menuItem);
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Actions", KeyEvent.VK_A);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 
@@ -76,10 +76,29 @@ public class Menu {
 			}
 		});
 		menu.add(menuItem);
+		
+		// a group of JMenuItems
+		menuItem = new JMenuItem("Show Simulation Result", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				ActionEvent.ALT_MASK));
+
+		menuItem.getAccessibleContext().setAccessibleDescription(
+				"This doesn't really do anything");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					framemain.showSimulationResult();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		menu.add(menuItem);
 
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Reset Evaluation", KeyEvent.VK_R);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(
@@ -106,7 +125,7 @@ public class Menu {
 
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Random Simulation", KeyEvent.VK_R);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,8 +147,8 @@ public class Menu {
 		});
 		menu.add(menuItem);
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Import Simulation", KeyEvent.VK_L);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem = new JMenuItem("Import Simulation", KeyEvent.VK_I);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,7 +164,7 @@ public class Menu {
 
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Stop Simulation", KeyEvent.VK_E);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(
@@ -162,28 +181,10 @@ public class Menu {
 		});
 		menu.add(menuItem);
 		
+				
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Simulation result", KeyEvent.VK_E);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
-				ActionEvent.ALT_MASK));
-
-		menuItem.getAccessibleContext().setAccessibleDescription(
-				"This doesn't really do anything");
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				try {
-					framemain.showSimulationResult();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		menu.add(menuItem);
-		
-		// a group of JMenuItems
-		menuItem = new JMenuItem("Save Simulation result", KeyEvent.VK_E);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem = new JMenuItem("Save Simulation Result", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(
@@ -201,8 +202,8 @@ public class Menu {
 		menu.add(menuItem);
 		
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Compare Simulations", KeyEvent.VK_E);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
+		menuItem = new JMenuItem("Compare Simulations", KeyEvent.VK_C);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(
@@ -231,8 +232,8 @@ public class Menu {
 		menuBar.add(menu);
 
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Elevator Configuration", KeyEvent.VK_L);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2,
+		menuItem = new JMenuItem("Elevator Configuration", KeyEvent.VK_E);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				ActionEvent.ALT_MASK));
 
 		menuItem.addActionListener(new ActionListener() {
@@ -250,8 +251,8 @@ public class Menu {
 		menu.add(menuItem);
 		
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Clear actions", KeyEvent.VK_C);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3,
+		menuItem = new JMenuItem("Clear Actions", KeyEvent.VK_C);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				ActionEvent.ALT_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -269,8 +270,8 @@ public class Menu {
 		
 		
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Simulation speed", KeyEvent.VK_S);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2,
+		menuItem = new JMenuItem("Simulation Speed", KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.ALT_MASK));
 
 		menuItem.addActionListener(new ActionListener() {
@@ -315,8 +316,8 @@ public class Menu {
 		menu.add(submenu);
 		menu.addSeparator();
 
-		menuItem = new JMenuItem("About", KeyEvent.VK_O);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3,
+		menuItem = new JMenuItem("About", KeyEvent.VK_A);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(
@@ -333,8 +334,8 @@ public class Menu {
 		});
 		menu.add(menuItem);
 
-		menuItem = new JMenuItem("Shut Down", KeyEvent.VK_B);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4,
+		menuItem = new JMenuItem("Shut Down", KeyEvent.VK_Q);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 				ActionEvent.ALT_MASK));
 
 		menuItem.getAccessibleContext().setAccessibleDescription(

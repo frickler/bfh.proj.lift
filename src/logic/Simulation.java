@@ -20,7 +20,6 @@ import definition.Action;
 import definition.Controller;
 import exceptions.IllegalActionException;
 
-
 public class Simulation extends Thread {
 
 	// Logger
@@ -61,8 +60,8 @@ public class Simulation extends Thread {
 		this.endTime = new Date(System.currentTimeMillis());
 		setRunning(false);
 	}
-	
-	public String getResult(){
+
+	public String getResult() {
 		return this.result;
 	}
 
@@ -110,16 +109,20 @@ public class Simulation extends Thread {
 				stopSimulation();
 				log4j.debug("Simulator stopped: all action are completed by the controller");
 				int spaninseconds = getDurationInSeconds();
-				this.result = "Started @ "+this.startTime.toString()+" and ended @"+this.endTime.toString();
-				this.result += "\nIt took "+spaninseconds+" seconds to complete all actions";
-				this.result += "\nSimulation speed was: "+simulationSpeed+" in real time the simulation would have taken "+spaninseconds*simulationSpeed+" seconds";
+				this.result = "Started @ " + this.startTime.toString()
+						+ " and ended @" + this.endTime.toString();
+				this.result += "\nIt took " + spaninseconds
+						+ " seconds to complete all actions";
+				this.result += "\nSimulation speed was: " + simulationSpeed
+						+ " in real time the simulation would have taken "
+						+ spaninseconds * simulationSpeed + " seconds";
 				log4j.debug(this.result);
 			}
 		}
 	}
 
 	private int getDurationInSeconds() {
-		return (int)(this.endTime.getTime() - this.startTime.getTime()) / 1000;
+		return (int) (this.endTime.getTime() - this.startTime.getTime()) / 1000;
 	}
 
 	public void setRunning(Boolean running) {
@@ -140,19 +143,19 @@ public class Simulation extends Thread {
 		for (int i = 0; i < amount; i++) {
 			int startLevel = gen.nextInt(maxLevel - minLevel) + minLevel;
 			int endLevel = startLevel;
-			while(endLevel == startLevel)
-				endLevel =gen.nextInt(maxLevel - minLevel) + minLevel;
-			
+			while (endLevel == startLevel)
+				endLevel = gen.nextInt(maxLevel - minLevel) + minLevel;
+
 			int pepoleAmount = gen.nextInt(10) + 1;
 			int delay = gen.nextInt(40) / simulationSpeed;
-			
+
 			Action a = new DelayedElevatorAction(startLevel, endLevel,
 					pepoleAmount, delay);
 			actions.add(a);
-			all += a.toXML()+"\n";
+			all += a.toXML() + "\n";
 			log4j.debug("Simulator: action generated: " + a.toString());
 		}
-		//System.out.println(all);
+		// System.out.println(all);
 	}
 
 	public void clearActions() {
@@ -169,17 +172,37 @@ public class Simulation extends Thread {
 	}
 
 	public String getPath() {
-		
+
 		return this.path;
 	}
 
-	public Element setXMLResult(Document doc) throws ParserConfigurationException {
+	public Element setXMLResult(Document doc)
+			throws ParserConfigurationException {
 		Element n = doc.createElement("simluation");
 		n.setAttribute("startDate", startTime.toString());
 		n.setAttribute("endDate", endTime.toString());
-		n.setAttribute("durationInSec",getDurationInSeconds()+"");
-		n.setAttribute("simluationSpeed", this.simulationSpeed+"");
-		n.setAttribute("algorithm",elevatorController.getAlgorithmName()+"");
+		n.setAttribute("durationInSec", getDurationInSeconds() + "");
+		n.setAttribute("simluationSpeed", this.simulationSpeed + "");
+		n.setAttribute("algorithm", elevatorController.getAlgorithmName() + "");
 		return n;
+	}
+
+	public Element getXMLSimulation() throws ParserConfigurationException {
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
+		Document doc = builder.newDocument();
+		Element root = setXMLResult(doc);
+
+		StatisticAction sa = new StatisticAction();
+		sa.addAction(elevatorController.getDoneActions());
+		Element actions = sa.getXMLStatistic(doc);
+		root.appendChild(actions);
+
+		StatisticElevator se = new StatisticElevator();
+		se.addElevator(elevatorController.getBuilding().getElevators());
+		Element elevators = se.getXMLStatistic(doc);
+		root.appendChild(elevators);
+		doc.appendChild(root);
+		return root;
 	}
 }

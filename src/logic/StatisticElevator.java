@@ -144,7 +144,7 @@ public class StatisticElevator extends Statistic {
 					getSummaryOf(Attriubte.DrivenLevelEmpty),"Stockwerke leer gefahren"));
 			sum.appendChild(getSummaryElement(
 					doc.createElement("Measure"),
-					getSummaryOf(Attriubte.TimeInMotion),"Zeit waehrend dem sich der Lift mit Passagieren bewegte"));
+					getSummaryOf(Attriubte.TimeInMotion),"Zeit waehrend dem sich der Lift bewegte"));
 			sum.appendChild(getSummaryElement(
 					doc.createElement("Measure"),
 					getSummaryOf(Attriubte.TimeInMotionEmpty),"Zeit waehrend dem sich der Lift leer bewegte"));

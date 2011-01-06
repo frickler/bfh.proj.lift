@@ -7,6 +7,7 @@ import java.awt.TextArea;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
 
 import definition.Controller;
 
@@ -44,7 +45,7 @@ public class ConsolePanel extends JPanel {
 	public void clearText(){
 		textAreaConsole.setText("");
 	}
-	
+		
 	public void paint(Graphics g)
 	{
 	}
