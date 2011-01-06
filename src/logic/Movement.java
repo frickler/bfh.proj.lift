@@ -152,6 +152,11 @@ public class Movement extends Thread implements MovementObserverable {
 
 			try {
 				Thread.sleep((int) (TICK_TIME / simulationSpeed));
+				elevator.addTimeInMotion(TICK_TIME);
+				if(!elevator.isLoaded()){
+					elevator.addTimeInMotionEmpty(TICK_TIME);
+				}
+				
 			} catch (InterruptedException e) {
 
 			}

@@ -147,8 +147,6 @@ public class Elevator implements VerticalTransporter {
 		}
 		this.drivenLevels += Math.abs(action.getStartLevel()
 				- action.getEndLevel());
-		this.timeInMotion += action.getTimestampElevatorLeft().getTime()
-				- action.getTimestampElevatorEntered().getTime();
 		this.currentPosition = action.getEndLevel();
 		// log4j.debug("Elevator" + hashCode() + " moved " + this);
 	}
@@ -351,6 +349,9 @@ public class Elevator implements VerticalTransporter {
 	public void move(List<Action> actions, int startLevel, Direction direction) {
 		this.isBusy = true;
 		this.setDirection(direction);
+		for(int i = 0; i < actions.size(); i++){
+			actions.get(i).setTimestampElevatorEntered(new Date());
+		}
 		this.actions.addAll(actions);
 		moveToStart(startLevel);
 	}
@@ -506,6 +507,22 @@ public class Elevator implements VerticalTransporter {
 		e.setAttribute("drivenLevels",drivenLevels+"");
 		e.setAttribute("drivenLevelsEmpty",drivenLevelsEmpty+"");
 		return e;
+	}
+
+	@Override
+	public boolean isLoaded() {
+		// TODO Auto-generated method stub
+		return (currentPeople > 0);
+	}
+
+	@Override
+	public void addTimeInMotion(int milliseconds) {
+		this.timeInMotion += milliseconds;
+	}
+
+	@Override
+	public void addTimeInMotionEmpty(int milliseconds) {
+		this.timeInMotionEmpty += milliseconds;
 	}
 
 }

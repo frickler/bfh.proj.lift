@@ -130,7 +130,13 @@ public interface VerticalTransporter {
 	public double getCurrentSpeed();
 
 	public int getIdentityNumber();
+	
+	public boolean isLoaded();
 
 	public Node getXML(Element createElement);
+
+	public void addTimeInMotion(int milliseconds);
+
+	public void addTimeInMotionEmpty(int milliseconds);
 
 }
