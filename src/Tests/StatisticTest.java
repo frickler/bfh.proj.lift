@@ -19,26 +19,26 @@ public class StatisticTest {
 		Action a = new ElevatorAction(2,12,3);
 		Date date = new Date(System.currentTimeMillis());
 		date = new Date(System.currentTimeMillis()+3*1000);
-		a.setTimestampStarted(date);
+		a.setTimestampElevatorCalled(date);
 		date = new Date(System.currentTimeMillis()+6*1000);		
 		date = new Date(System.currentTimeMillis()+9*1000);
-		a.setTimestampEnded(date);
+		a.setTimestampElevatorEntered(date);
 		
 		Action b = new ElevatorAction(2,12,3);
 		date = new Date(System.currentTimeMillis());		
 		date = new Date(System.currentTimeMillis()+10*1000);
-		b.setTimestampStarted(date);
+		b.setTimestampElevatorCalled(date);
 		date = new Date(System.currentTimeMillis()+20*1000);		
 		date = new Date(System.currentTimeMillis()+30*1000);
-		b.setTimestampEnded(date);
+		b.setTimestampElevatorEntered(date);
 		
 		Action c = new ElevatorAction(2,12,3);
 		date = new Date(System.currentTimeMillis());		
 		date = new Date(System.currentTimeMillis()+5*1000);
-		c.setTimestampStarted(date);
+		c.setTimestampElevatorCalled(date);
 		date = new Date(System.currentTimeMillis()+10*1000);		
 		date = new Date(System.currentTimeMillis()+15*1000);
-		c.setTimestampEnded(date);
+		c.setTimestampElevatorEntered(date);
 			
 		StatisticAction s = new StatisticAction();
 		s.addAction(a);

@@ -14,7 +14,7 @@ public class ElevatorAction extends Action {
 	 */
 	public ElevatorAction(int startLevel, int endLevel, int pepoleAmount) {
 		super(startLevel, endLevel, pepoleAmount);
-		this.setTimestampStarted(new Date());		
+				
 	}
 
 	@Override

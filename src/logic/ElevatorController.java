@@ -71,7 +71,7 @@ public class ElevatorController implements Controller {
 			throw new MaxLevelActionException(action);
 		}
 		// set the current timestamp to the action
-		action.setTimestampCreated(new Date());
+		action.setTimestampElevatorCalled(new Date());
 
 		action.addActionObserver(new ActionObserver() {
 

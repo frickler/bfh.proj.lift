@@ -25,13 +25,13 @@ public abstract class Action implements ActionObservable {
 	// how many people want to go into the lift
 	private int peopleAmount;
 	// when the action was put in the controllers data structure
-	private Date timestampCreated;
-	// when the elevator starts processing the action
-	private Date timestampStarted;
-	// when the action is done
-	private Date timestampEnded;
-	// when the people enter the elevator
-	private Date timestampPeopleLoaded;
+	// the person has pressed the button to call the elevator
+	private Date timestampElevatorCalled;
+	// the elevator arrived at the startLevel the people enter the elevator
+	private Date timestampElevatorEntered;
+	// when the action is done the people had left the elevator
+	private Date timestampElevatorLeft;
+
 
 	/**
 	 * 
@@ -56,23 +56,6 @@ public abstract class Action implements ActionObservable {
 	 */
 	public int getStartLevel() {
 		return startLevel;
-	}
-
-	/**
-	 * 
-	 * @return when the people entered the elevator
-	 */
-	public Date getTimestampPeopleLoaded() {
-		return timestampPeopleLoaded;
-	}
-
-	/**
-	 * 
-	 * @param when
-	 *            the people enter the elevator
-	 */
-	public void setTimestampPeopleLoaded(Date timestampPeopleLoaded) {
-		this.timestampPeopleLoaded = timestampPeopleLoaded;
 	}
 
 	/**
@@ -109,8 +92,8 @@ public abstract class Action implements ActionObservable {
 	 *            Timestamp in milliseconds when the action was put in the
 	 *            {@link Controller} datastructure
 	 */
-	public void setTimestampCreated(Date timestampCreated) {
-		this.timestampCreated = timestampCreated;
+	public void setTimestampElevatorCalled(Date timestampElevatorCalled) {
+		this.timestampElevatorCalled = timestampElevatorCalled;
 	}
 
 	/**
@@ -118,8 +101,8 @@ public abstract class Action implements ActionObservable {
 	 * @return Timestamp in milliseconds when the action was put in the
 	 *         {@link Controller} datastructureF
 	 */
-	public Date getTimestampCreated() {
-		return timestampCreated;
+	public Date getTimestampElevatorCalled() {
+		return timestampElevatorCalled;
 	}
 
 	/**
@@ -128,8 +111,8 @@ public abstract class Action implements ActionObservable {
 	 *            the timestamp (in milliseconds) when the action is done
 	 *            processing
 	 */
-	public void setTimestampEnded(Date timestampEnded) {
-		this.timestampEnded = timestampEnded;
+	public void setTimestampElevatorLeft(Date timestampElevatorLeft) {
+		this.timestampElevatorLeft = timestampElevatorLeft;
 		notifyObserversActionPerformed();
 	}
 
@@ -138,8 +121,8 @@ public abstract class Action implements ActionObservable {
 	 * @return Gets the timestamp (in milliseconds) when the action is done
 	 *         processing
 	 */
-	public Date getTimestampEnded() {
-		return timestampEnded;
+	public Date getTimestampElevatorLeft() {
+		return timestampElevatorLeft;
 	}
 
 	/**
@@ -148,8 +131,8 @@ public abstract class Action implements ActionObservable {
 	 *            the timestamp (in milliseconds) when the action was started
 	 *            processing
 	 */
-	public void setTimestampStarted(Date timestampStarted) {
-		this.timestampStarted = timestampStarted;
+	public void setTimestampElevatorEntered(Date timestampElevatorEntered) {
+		this.timestampElevatorEntered = timestampElevatorEntered;
 		notifyObserversActionStarted();
 	}
 
@@ -158,8 +141,8 @@ public abstract class Action implements ActionObservable {
 	 * @return Returns the timestamp (in milliseconds) when the action was
 	 *         started processing
 	 */
-	public Date getTimestampStarted() {
-		return timestampStarted;
+	public Date getTimestampElevatorEntered() {
+		return timestampElevatorEntered;
 	}
 
 	@Override

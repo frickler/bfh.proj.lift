@@ -31,12 +31,12 @@ public class StatisticAction extends Statistic {
 
 	public void printStatisticToConsole() throws Exception {
 
-		consolePrint("Einteffen in der Queue bis Auftrag ausgef�hrt ist:",
-				getEnteredToEnded(DateTypes.Created, DateTypes.Ended));
-		consolePrint("Eintreffen in der Etage bis zur Zieletage:",
-				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
-		consolePrint("Einteffen in der Queue bis zur Aus�hrung:",
-				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
+		consolePrint("Wartezeit auf den Lift",
+				getTimespan(DateTypes.Called, DateTypes.Entered));
+		consolePrint("Fahrzeit",
+				getTimespan(DateTypes.Entered, DateTypes.Left));
+		consolePrint("Gesamtzeit",
+				getTimespan(DateTypes.Called, DateTypes.Left));
 	}
 
 	private void consolePrint(String title, int[] summary) {
@@ -51,15 +51,12 @@ public class StatisticAction extends Statistic {
 		String sText = "";
 		try {
 			sText += getTitle(actions.size() + " Actions evaluated");
-			sText += getFormattedText(
-					"Einteffen in der Queue bis Auftrag ausgefuehrt ist:",
-					getEnteredToEnded(DateTypes.Created, DateTypes.Ended));
-			sText += getFormattedText(
-					"Eintreffen in der Etage bis zur Zieletage:",
-					getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
-			sText += getFormattedText(
-					"Einteffen in der Queue bis zur Ausfuehrung:",
-					getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
+			sText += getFormattedText("Wartezeit auf den Lift",
+					getTimespan(DateTypes.Called, DateTypes.Entered));
+			sText += getFormattedText("Fahrzeit",
+					getTimespan(DateTypes.Entered, DateTypes.Left));
+			sText += getFormattedText("Gesamtzeit",
+					getTimespan(DateTypes.Called, DateTypes.Left));
 		} catch (Exception e) {
 			sText = "Error doing Evaluation: " + e.getMessage() + ":"
 					+ e.getClass() + ":" + e.getStackTrace();
@@ -78,10 +75,10 @@ public class StatisticAction extends Statistic {
 	}
 
 	public enum DateTypes {
-		Created, Ended, Started, Loaded
+		Called, Entered, Left
 	};
 
-	public int[] getEnteredToEnded(DateTypes from, DateTypes to) {
+	public int[] getTimespan(DateTypes from, DateTypes to) {
 
 		int[] returns = new int[3];
 
@@ -114,14 +111,12 @@ public class StatisticAction extends Statistic {
 	private Date getDateTime(Action ia, DateTypes typ) {
 
 		switch (typ) {
-		case Started:
-			return ia.getTimestampStarted();
-		case Loaded:
-			return ia.getTimestampPeopleLoaded();
-		case Created:
-			return ia.getTimestampCreated();
-		case Ended:
-			return ia.getTimestampEnded();
+		case Left:
+			return ia.getTimestampElevatorLeft();
+		case Called:
+			return ia.getTimestampElevatorCalled();
+		case Entered:
+			return ia.getTimestampElevatorEntered();
 		}
 		return null;
 		// throw new Exception("Actions datetype not defined");
@@ -134,12 +129,12 @@ public class StatisticAction extends Statistic {
 	public org.w3c.dom.Element getXMLStatistic(Document doc) {
 		org.w3c.dom.Element n = doc.createElement("Actions");
 		n.setAttribute("total", this.actions.size()+"");	
-		org.w3c.dom.Element m1 = GetMeasure(doc.createElement("Measure"),"Einteffen in der Queue bis Auftrag ausgefuehrt ist:",
-				getEnteredToEnded(DateTypes.Created, DateTypes.Ended));
-		org.w3c.dom.Element m2 = GetMeasure(doc.createElement("Measure"),"Eintreffen in der Etage bis zur Zieletage:",
-				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
-		org.w3c.dom.Element m3 = GetMeasure(doc.createElement("Measure"),"Einteffen in der Queue bis zur Ausuehrung:",
-				getEnteredToEnded(DateTypes.Loaded, DateTypes.Ended));
+		org.w3c.dom.Element m1 = GetMeasure(doc.createElement("Measure"),"Wartezeit auf den Lift",
+				getTimespan(DateTypes.Called, DateTypes.Entered));
+		org.w3c.dom.Element m2 = GetMeasure(doc.createElement("Measure"),"Fahrzeit",
+				getTimespan(DateTypes.Entered, DateTypes.Left));
+		org.w3c.dom.Element m3 = GetMeasure(doc.createElement("Measure"),"Gesamtzeit",
+				getTimespan(DateTypes.Called, DateTypes.Left));
 		n.appendChild(m1);
 		n.appendChild(m2);
 		n.appendChild(m3);

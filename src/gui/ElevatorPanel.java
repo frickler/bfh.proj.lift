@@ -55,7 +55,7 @@ public class ElevatorPanel extends JPanel {
 		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
 		infolabel.setFont(f);
 		infolabel.setVerticalTextPosition(JLabel.TOP);
-		infolabel.setBounds(0, 0, 200, 140);	
+		infolabel.setBounds(0, 0, 200, 180);	
 		this.setLayout(null);
 		this.add(infolabel);
 		background.setBackground(backGroundColor);
@@ -132,6 +132,8 @@ public class ElevatorPanel extends JPanel {
 		sInfo += "<br/>Acceleration: "+elevator.getAcceleration();		
 		sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
 		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();
+		sInfo += "<br/>Levels driven: "+elevator.getDrivenLevels()+" empty: "+elevator.getDrivenLevelsEmpty();
+		sInfo += "<br/>TimeInMotion: "+Math.round(elevator.getTimeInMotion()/1000)+" empty: "+Math.round(elevator.getTimeInMotionEmpty()/1000);
 		sInfo +=  "</h4></html>";
 				
 		infolabel.setText(sInfo);

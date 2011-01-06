@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.sun.jmx.snmp.Timestamp;
+
 import definition.Action;
 import definition.Direction;
 import definition.MovementObserver;
@@ -18,10 +20,7 @@ import exceptions.ElevatorConfigException;
 import exceptions.IllegalRangeException;
 import exceptions.IllegalStartLevelException;
 
-/**
- * 
- * TODO Overthink setPeopleLoaded and setPeopleStarted
- */
+
 public class Elevator implements VerticalTransporter {
 
 	// Logger
@@ -148,8 +147,8 @@ public class Elevator implements VerticalTransporter {
 		}
 		this.drivenLevels += Math.abs(action.getStartLevel()
 				- action.getEndLevel());
-		this.timeInMotion += action.getTimestampEnded().getTime()
-				- action.getTimestampStarted().getTime();
+		this.timeInMotion += action.getTimestampElevatorLeft().getTime()
+				- action.getTimestampElevatorEntered().getTime();
 		this.currentPosition = action.getEndLevel();
 		// log4j.debug("Elevator" + hashCode() + " moved " + this);
 	}
@@ -257,7 +256,7 @@ public class Elevator implements VerticalTransporter {
 			if (a.getEndLevel() == getCurrentLevel()) {
 				peopleOut += a.getPeopleAmount();
 				// currentPeople -= a.getPeopleAmount();
-				a.setTimestampEnded(new Date());
+				a.setTimestampElevatorLeft(new Date());
 				moved(a);
 				actions.remove(a);
 				log4j.debug("Elevator " + this.hashCode() + " Action done: "
@@ -266,8 +265,7 @@ public class Elevator implements VerticalTransporter {
 			if (a.getStartLevel() == getCurrentLevel()) {
 				peopleIn += a.getPeopleAmount();
 				// currentPeople += a.getPeopleAmount();
-				a.setTimestampStarted(new Date());
-				a.setTimestampPeopleLoaded(new Date());
+				a.setTimestampElevatorEntered(new Date()); //todo new date?
 			}
 		}
 
@@ -321,14 +319,16 @@ public class Elevator implements VerticalTransporter {
 			move();
 			return;
 		}
-
+		final int levelsStarted = getCurrentLevel() - startLevel;
 		this.movement = new Movement(this, getCurrentLevel(), startLevel, this.simulationSpeed, 
 				new MovementObserver() {
 
 					@Override
 					public void moved(MovementObserverable object) {
+						drivenLevelsEmpty += Math.abs(levelsStarted);
+						drivenLevels += Math.abs(levelsStarted);
 						Elevator.this.move();
-
+							
 					}
 					
 					@Override
@@ -338,9 +338,9 @@ public class Elevator implements VerticalTransporter {
 					}
 
 					@Override
-					public void stepDone(Movement movement, double stepSize) {
+					public void stepDone(Movement movement, double stepSize) {	
 						currentPosition += stepSize;
-					}
+						}
 				});
 
 		this.movement.start();

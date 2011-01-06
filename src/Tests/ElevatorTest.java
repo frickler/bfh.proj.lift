@@ -71,7 +71,7 @@ public class ElevatorTest {
 		final Action a = new ElevatorAction(startLevel, targetLevel, 5);
 		final VerticalTransporter e = new Elevator(0, 40, 6, currentLevel);
 
-		a.setTimestampStarted(new Date(System.currentTimeMillis()));
+		a.setTimestampElevatorEntered(new Date(System.currentTimeMillis()));
 		e.move(a);
 
 		a.addActionObserver(new ActionObserver() {
