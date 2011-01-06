@@ -302,4 +302,10 @@ public class ElevatorController implements Controller {
 		return algorithm.getClass().toString();
 		return "";
 	}
+
+	@Override
+	public int getTodoActionsAmount() {
+		// TODO Auto-generated method stub
+		return this.actions.size();
+	}
 }

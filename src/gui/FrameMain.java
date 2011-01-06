@@ -1,5 +1,8 @@
 package gui;
 
+import gui.statistic.ConsolePanel;
+import gui.statistic.StatisticFrame;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FileDialog;

@@ -8,7 +8,7 @@ import java.util.List;
 import logic.Elevator;
 import logic.ElevatorAction;
 import logic.ElevatorController;
-import logic.FiFoAlgorithm;
+import logic.algorithm.*;
 import logic.Tower;
 
 import org.junit.Test;

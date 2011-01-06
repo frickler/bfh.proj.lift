@@ -1,5 +1,6 @@
 package definition;
 
+import java.awt.Component;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -92,6 +93,8 @@ public interface Controller {
 	public int getSimluationSpeed();
 
 	public String getAlgorithmName();
+
+	public int getTodoActionsAmount();
 
 
 }

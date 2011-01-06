@@ -1,5 +1,7 @@
 package gui;
 
+import gui.statistic.StatisticFrame;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;

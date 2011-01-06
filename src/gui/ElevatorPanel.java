@@ -76,7 +76,7 @@ public class ElevatorPanel extends JPanel {
 				height, 1);
 		icon.setImage(scaledImage);
 		jiconlabel.setSize(icon.getIconWidth(), icon.getIconHeight());
-		log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
+		//log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
 	}
 
 	private ImageIcon GetImageIcon() {

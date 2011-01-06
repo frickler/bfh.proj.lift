@@ -11,8 +11,8 @@ import org.xml.sax.SAXException;
 
 import logic.ElevatorActionXMLReader;
 import logic.ElevatorController;
-import logic.FiFoAlgorithm;
 import logic.Simulation;
+import logic.algorithm.FiFoAlgorithm;
 import definition.Building;
 import definition.Controller;
 import exceptions.IllegalActionException;
