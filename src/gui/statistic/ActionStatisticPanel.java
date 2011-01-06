@@ -1,4 +1,4 @@
-package gui;
+package gui.statistic;
 
 import java.awt.Graphics;
 
@@ -17,6 +17,9 @@ public class ActionStatisticPanel extends ConsolePanel {
 		clearText();
 		StatisticAction s = new StatisticAction();
 		s.addAction(controller.getDoneActions());
-		addText(s.getStatistic());
+		addTextNewLine("Todo actions: "+controller.getTodoActionsAmount());
+		addTextNewLine("one actions: "+controller.getDoneActions().size());
+		addTextNewLine(s.getStatistic());
+		
 	}
 }

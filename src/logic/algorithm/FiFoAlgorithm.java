@@ -1,6 +1,6 @@
-package logic;
+package logic.algorithm;
 
-import java.util.List;
+import logic.Elevator;
 
 import org.apache.log4j.Logger;
 
@@ -8,25 +8,20 @@ import definition.Action;
 import definition.Algorithm;
 import definition.Building;
 import definition.Controller;
-import definition.Direction;
 import definition.VerticalTransporter;
 
 /**
- * This algorithm is similar to the FifoAlgorithm, with the slight difference
- * that people with the same start level can enter the elevator as well. So
- * people who arrive late in a floor can profite from a person who pressed the
- * elevator button erlier. TODO Better description
+ * This algorithm is a simple FIFO implementation. Each elevator gets the action
+ * with the highest priority and delivers the people to the according level.
  * 
- * @author krigu
+ * @author BFH-Boys
  * 
  */
-public class PickUpFifoAlgorithm extends Algorithm {
-	
+public class FiFoAlgorithm extends Algorithm {
 
-	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
-	public PickUpFifoAlgorithm(Building building, Controller controller) {
+	public FiFoAlgorithm(Building building, Controller controller) {
 		super(building, controller);
 	}
 
@@ -49,18 +44,7 @@ public class PickUpFifoAlgorithm extends Algorithm {
 							&& ele.getMaxLevel() >= action.getStartLevel()
 							&& ele.getMinLevel() <= action.getEndLevel()
 							&& ele.getMaxLevel() >= action.getEndLevel()) {
-						Direction dir = Direction.UP;
-						if (action.getStartLevel() > action.getEndLevel()) {
-							dir = Direction.DOWN;
-						}
-						List<Action> acts = getController().getActions(
-								action.getStartLevel(), action.getEndLevel(),
-								action.getPeopleAmount());
-						acts.add(action);
-						log4j.debug("Pickup Action Size" + acts.size());
-						
-						ele.move(acts, action.getStartLevel(), dir);
-
+						ele.move(action);
 						action = null;
 						break;
 					}

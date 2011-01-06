@@ -1,4 +1,4 @@
-package gui;
+package gui.statistic;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,14 +27,15 @@ public class StatisticFrame extends JFrame {
 		tabbedPane = new JTabbedPane();
 
 		JPanel panelConsoleElevator = new JPanel();
-		consolePanelElevators = new ActionStatisticPanel(controller);
+		consolePanelElevators = new ElevatorStatisticPanel(controller);
 		panelConsoleElevator.add(consolePanelElevators);
 		tabbedPane.addTab("Statistik Lift", panelConsoleElevator);
 
 		JPanel panelConsoleActions = new JPanel();
-		consolePanelActions = new ElevatorStatisticPanel(controller);
+		consolePanelActions = new ActionStatisticPanel(controller);
 		panelConsoleActions.add(consolePanelActions);
 		tabbedPane.addTab("Statistik Actions", panelConsoleActions);
+		
 		this.add(tabbedPane);
 	}
 

@@ -1,4 +1,4 @@
-package gui;
+package gui.statistic;
 
 import java.awt.Graphics;
 
