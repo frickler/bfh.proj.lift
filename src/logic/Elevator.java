@@ -185,7 +185,7 @@ public class Elevator implements VerticalTransporter {
 						&& act.getEndLevel() > getCurrentLevel()) {
 					nextLevel = act.getEndLevel();
 				}
-			}
+			}	
 		}
 		return nextLevel;
 	}

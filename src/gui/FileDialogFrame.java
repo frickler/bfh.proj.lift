@@ -6,16 +6,10 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import logic.ElevatorActionXMLReader;
+
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
-
-import logic.XMLSimulationReader;
-import logic.ElevatorController;
-import logic.Simulation;
-import logic.algorithm.FiFoAlgorithm;
-import definition.Building;
-import definition.Controller;
-import exceptions.IllegalActionException;
 
 public class FileDialogFrame extends JFrame {
 
@@ -35,7 +29,7 @@ public class FileDialogFrame extends JFrame {
 		dialog.setMode(FileDialog.LOAD);
 		dialog.setVisible(true);
 
-		XMLSimulationReader xmlReader = new XMLSimulationReader();
+		ElevatorActionXMLReader xmlReader = new ElevatorActionXMLReader();
 		try {
 			xmlReader.readPath(dialog.getDirectory() + dialog.getFile());
 		} catch (SAXException e) {

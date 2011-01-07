@@ -1,62 +1,65 @@
 package gui;
 
+import java.io.IOException;
+
+import logic.Elevator;
+import logic.ElevatorController;
+import logic.Tower;
+
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import logic.*;
-import logic.algorithm.FiFoAlgorithm;
-import logic.algorithm.PickUpFifoAlgorithm;
-import definition.*;
-import gui.FrameMain;
+import definition.Building;
 
 /**
  * 
  * @author BFH-Boys
- *
+ * 
  */
 public class main {
 
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
-	
+
 	/**
 	 * @param args
-	 * @throws IOException 
-	 * @throws SAXException 
+	 * @throws IOException
+	 * @throws SAXException
 	 */
 	public static void main(String[] args) {
 		runTestConfig();
-		//runApplication();
+		// runApplication();
 	}
-	
-	
-	public static void runTestConfig(){
+
+	public static void runTestConfig() {
 		testGui();
 	}
-	
-	public static void testGui(){
+
+	public static void testGui() {
 		try {
-			Building building = new Tower(new Elevator(1, 12, 10, 1));
-			building.addElevator(new Elevator(1, 3, 8, 3,20f,0.5f));
-			building.addElevator(new Elevator(1, 3, 6,2,60f,2f));
-			//building.addElevator(new Elevator(-1, 6,12,4,30f,1f));
-			//building.addElevator(new Elevator(-1, 6,4,4,20f,0.2f));
-			//building.addElevator(new Elevator(-1, 6, 2,5));
-			//building.addElevator(new Elevator(-1, 6, 12,5));
+			Building building = new Tower(new Elevator(-1, 12, 10, 1));
+			building.addElevator(new Elevator(1, 3, 8, 3, 20f, 0.5f));
+			building.addElevator(new Elevator(-1, 12, 6, 2, 60f, 2f));
+			building.addElevator(new Elevator(-1, 12, 12, 4, 30f, 1f));
+			// building.addElevator(new Elevator(-1, 6,4,4,20f,0.2f));
+			// building.addElevator(new Elevator(-1, 6, 2,5));
+			// building.addElevator(new Elevator(-1, 6, 12,5));
 			building.setSimulationSpeed(10);
 
-//			
-//			Building building = new Tower(new Elevator(1, 3, Integer.MAX_VALUE, 1));
-//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
-//			building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-//			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
-			
+			//
+			// Building building = new Tower(new Elevator(1, 3,
+			// Integer.MAX_VALUE, 1));
+			// building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE, 3));
+			// building.addElevator(new Elevator(1, 3, Integer.MAX_VALUE,3));
+			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
+			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 
-			//ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
-			ElevatorController controller = new ElevatorController(building, PickUpFifoAlgorithm.class);
+			ElevatorController controller = new ElevatorController(building,
+					"BetterPickupFifoAlgorithm");
+			// ElevatorController controller = new ElevatorController(building,
+			// PickUpFifoAlgorithm.class);
 			controller.startController();
 
 			Thread t = new Thread(new FrameMain(building, controller));

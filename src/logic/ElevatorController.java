@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import logic.algorithm.BetterPickupFifoAlgorithm;
+import logic.algorithm.FiFoAlgorithm;
+import logic.algorithm.PickUpFifoAlgorithm;
+
 import org.apache.log4j.Logger;
 
 import definition.Action;
@@ -39,19 +43,25 @@ public class ElevatorController implements Controller {
 	 *            The attached building
 	 */
 	public ElevatorController(Building building,
-			Class<? extends Algorithm> clazz) throws Exception {
+			String algorithmName) {
 		super();
 		this.actions = new LinkedList<Action>();
 		this.doneActions = new ArrayList<Action>();
 		this.building = building;
 		this.simulation = new Simulation(this);
-		// Create new instance of algorithm using reflections
-		// to ensure that each controller always has a algorithm
-		// which processes the data
-		Class[] args = new Class[] { Building.class, Controller.class };
-		Constructor con = clazz.getConstructor(args);
+		changeAlgorithm(algorithmName);
+	}
 
-		this.algorithm = (Algorithm) con.newInstance(building, this);
+	private void changeAlgorithm(String name) {		
+
+		if (name.equalsIgnoreCase("PickUpFifoAlgorithm")){
+			this.algorithm = new  PickUpFifoAlgorithm(building, this);			
+		} else if (name.equalsIgnoreCase("BetterPickupFifoAlgorithm")){
+			this.algorithm = new BetterPickupFifoAlgorithm(building, this);
+		} else {
+			this.algorithm = new FiFoAlgorithm(building, this);
+		}
+
 	}
 
 	/**
@@ -231,7 +241,7 @@ public class ElevatorController implements Controller {
 	}
 
 	@Override
-	public void startSimulation(String path,int speed,List<Action> actions) {
+	public void startSimulation(String path, int speed, List<Action> actions) {
 		try {
 			simulationSpeed = speed;
 			simulation = new Simulation(this);
@@ -247,8 +257,9 @@ public class ElevatorController implements Controller {
 
 	/*
 	 * (non-Javadoc)
-	 * @see definition.Controller#setSimulationSpeed(int)
-	 * sets the speed only if valid 0 < speed <= 100
+	 * 
+	 * @see definition.Controller#setSimulationSpeed(int) sets the speed only if
+	 * valid 0 < speed <= 100
 	 */
 	public void setSimulationSpeed(int speed) {
 
@@ -285,7 +296,6 @@ public class ElevatorController implements Controller {
 		actions.clear();
 	}
 
-
 	@Override
 	public Simulation getSimulation() {
 		return simulation;
@@ -298,14 +308,41 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public String getAlgorithmName() {
-		if(this.algorithm != null)
-		return algorithm.getClass().toString();
+		if (this.algorithm != null)
+			return algorithm.getClass().getSimpleName();
 		return "";
 	}
 
 	@Override
 	public int getTodoActionsAmount() {
-		// TODO Auto-generated method stub
 		return this.actions.size();
+	}
+
+	@Override
+	public void setAlgorithmName(String name) {
+		stopController();
+		changeAlgorithm(name);
+		startController();
+	}
+
+	@Override
+	public Elevator getClosestFreeElevator(Action action) {
+		Elevator closestElevator = null;
+		for (VerticalTransporter i : getBuilding().getElevators()) {
+
+			Elevator ele = (Elevator) i;
+			// Look for a non-busy elevator with a fitting range
+			// (MinLevel & MaxLevel)
+			if (!i.isBusy() && ele.getMinLevel() <= action.getStartLevel()
+					&& ele.getMaxLevel() >= action.getStartLevel()
+					&& ele.getMinLevel() <= action.getEndLevel()
+					&& ele.getMaxLevel() >= action.getEndLevel()) {
+				if (Math.abs(ele.getCurrentLevel() - action.getStartLevel()) <= Math.abs(ele.getCurrentLevel() - action.getStartLevel())){
+					closestElevator = ele;
+				}
+			}
+
+		}
+		return closestElevator;
 	}
 }

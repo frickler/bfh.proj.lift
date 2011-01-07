@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.print.attribute.standard.JobMessageFromOperator;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -135,11 +136,12 @@ public class Menu {
 						String input = JOptionPane.showInputDialog(framemain,
 								"Enter action amount", "Action amount",
 								JOptionPane.QUESTION_MESSAGE);
-						try{
-						amount = Integer.parseInt(input);
-						}catch(Exception ex){}
-					} while (amount <= 0);					
-					framemain.startRandomSimulation(amount);				
+						try {
+							amount = Integer.parseInt(input);
+						} catch (Exception ex) {
+						}
+					} while (amount <= 0);
+					framemain.startRandomSimulation(amount);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -180,8 +182,7 @@ public class Menu {
 			}
 		});
 		menu.add(menuItem);
-		
-				
+
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Save Simulation Result", KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -200,7 +201,7 @@ public class Menu {
 			}
 		});
 		menu.add(menuItem);
-		
+
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Compare Simulations", KeyEvent.VK_C);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
@@ -219,7 +220,7 @@ public class Menu {
 			}
 		});
 		menu.add(menuItem);
-		
+
 		menuBar.add(menu);
 	}
 
@@ -249,7 +250,7 @@ public class Menu {
 		menuItem.getAccessibleContext().setAccessibleDescription(
 				"This doesn't really do anything");
 		menu.add(menuItem);
-		
+
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Clear Actions", KeyEvent.VK_C);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
@@ -267,8 +268,7 @@ public class Menu {
 		menuItem.getAccessibleContext().setAccessibleDescription(
 				"This doesn't really do anything");
 		menu.add(menuItem);
-		
-		
+
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Simulation Speed", KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -276,42 +276,63 @@ public class Menu {
 
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					try {
-						int amount = 0;
-						int currentSpeed = framemain.getSimulationSpeed();
-						do {
-							
-							String input = JOptionPane.showInputDialog(framemain,
-									"Enter simulation speed (1-100)\nCurrent speed is "+currentSpeed, "Simulation speed",
-									JOptionPane.QUESTION_MESSAGE);
-							try{
+				try {
+					int amount = 0;
+					int currentSpeed = framemain.getSimulationSpeed();
+					do {
+
+						String input = JOptionPane.showInputDialog(framemain,
+								"Enter simulation speed (1-100)\nCurrent speed is "
+										+ currentSpeed, "Simulation speed",
+								JOptionPane.QUESTION_MESSAGE);
+						try {
 							amount = Integer.parseInt(input);
-							}catch(Exception ex){}
-						} while (amount <= 0 || amount > 100);					
-						framemain.setSimulationSpeed(amount);				
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
+						} catch (Exception ex) {
+						}
+					} while (amount <= 0 || amount > 100);
+					framemain.setSimulationSpeed(amount);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 
 			}
 		});
 		menuItem.getAccessibleContext().setAccessibleDescription(
 				"This doesn't really do anything");
 		menu.add(menuItem);
-		
 
 		submenu = new JMenu("Select Algorithmus");
 		submenu.setMnemonic(KeyEvent.VK_A);
 
+		// Make sure only one algorithm is selected
+		ButtonGroup btnGroup = new ButtonGroup();
+
 		rbMenuItem = new JRadioButtonMenuItem("FiFo Algorithm");
 		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5,
 				ActionEvent.ALT_MASK));
+		btnGroup.add(rbMenuItem);
 		submenu.add(rbMenuItem);
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("FifoAlgorithm"));
+		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
+				"FifoAlgorithm"));
 
-		rbMenuItem = new JRadioButtonMenuItem("PickUpFiFo Algorithm");
+		rbMenuItem = new JRadioButtonMenuItem("Pickup FiFo Algorithm");
 		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6,
 				ActionEvent.ALT_MASK));
+		btnGroup.add(rbMenuItem);
 		submenu.add(rbMenuItem);
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("PickupFifoAlgorithm"));
+		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
+				"PickupFifoAlgorithm"));
+
+		rbMenuItem = new JRadioButtonMenuItem("Better Pickup FiFo Algorithm");
+		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7,
+				ActionEvent.ALT_MASK));
+		btnGroup.add(rbMenuItem);
+		submenu.add(rbMenuItem);
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("BetterPickupFifoAlgorithm"));
+		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
+				"BetterPickupFifoAlgorithm"));
 
 		menu.add(submenu);
 		menu.addSeparator();
@@ -350,5 +371,21 @@ public class Menu {
 
 	public JMenuBar getMenuBar() {
 		return this.menuBar;
+	}
+
+	private class AlgorithmChangeActionListener implements ActionListener {
+
+		private String algorithmName;
+
+		public AlgorithmChangeActionListener(String algorithmName) {
+			super();
+			this.algorithmName = algorithmName;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.setAlgorithmName(algorithmName);
+		}
+
 	}
 }

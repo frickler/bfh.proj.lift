@@ -56,7 +56,7 @@ public class PickUpFifoAlgorithm extends Algorithm {
 						}
 						List<Action> acts = getController().getActions(
 								action.getStartLevel(), action.getEndLevel(),
-								ele.getMaxPeople()-action.getPeopleAmount());
+								ele.getMaxPeople() - action.getPeopleAmount());
 						acts.add(action);
 						log4j.debug("Pickup Action Size" + acts.size());
 						
