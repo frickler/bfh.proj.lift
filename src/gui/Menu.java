@@ -45,7 +45,7 @@ public class Menu {
 
 	private void addEvaluationMenu() {
 		// Build the first menu.
-		menu = new JMenu("Evaluation");
+		menu = new JMenu("Statistics");
 		statisticFrame = new StatisticFrame(controller);
 		menu.setMnemonic(KeyEvent.VK_E);
 		menu.getAccessibleContext().setAccessibleDescription(
@@ -78,7 +78,7 @@ public class Menu {
 		menu.add(menuItem);
 		
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Show Simulation Result", KeyEvent.VK_S);
+		menuItem = new JMenuItem("Simulation", KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.ALT_MASK));
 
@@ -97,7 +97,7 @@ public class Menu {
 		menu.add(menuItem);
 
 		// a group of JMenuItems
-		menuItem = new JMenuItem("Reset Evaluation", KeyEvent.VK_R);
+		menuItem = new JMenuItem("Reset Statistics", KeyEvent.VK_R);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
 				ActionEvent.ALT_MASK));
 
@@ -308,7 +308,7 @@ public class Menu {
 				ActionEvent.ALT_MASK));
 		submenu.add(rbMenuItem);
 
-		rbMenuItem = new JRadioButtonMenuItem("Better Algorithm");
+		rbMenuItem = new JRadioButtonMenuItem("PickUpFiFo Algorithm");
 		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6,
 				ActionEvent.ALT_MASK));
 		submenu.add(rbMenuItem);
