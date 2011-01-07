@@ -8,7 +8,6 @@ import java.util.List;
 import logic.Elevator;
 import logic.ElevatorAction;
 import logic.ElevatorController;
-import logic.algorithm.*;
 import logic.Tower;
 
 import org.junit.Test;
@@ -40,7 +39,7 @@ public class ControllerTest {
 		// Create algorithm
 		//FiFoAlgorithm fifo = new FiFoAlgorithm(building);
 		// Create controller
-		ElevatorController c = new ElevatorController(building, FiFoAlgorithm.class);
+		ElevatorController c = new ElevatorController(building, "FiFoAlgorithm");
 		
 		// A valid action
 		ElevatorAction act1 = new ElevatorAction(0, 15, 15);
@@ -119,7 +118,7 @@ public class ControllerTest {
 		// Create algorithm
 		//FiFoAlgorithm fifo = new FiFoAlgorithm(building);
 		// Create controller
-		ElevatorController c = new ElevatorController(building, FiFoAlgorithm.class);
+		ElevatorController c = new ElevatorController(building, "FiFoAlgorithm");
 		
 		// A valid action
 		ElevatorAction action = new ElevatorAction(0, 15, 15);
@@ -150,7 +149,7 @@ public class ControllerTest {
 		// Create algorithm
 		//FiFoAlgorithm fifo = new FiFoAlgorithm(building);
 		// Create controller
-		ElevatorController c = new ElevatorController(building, FiFoAlgorithm.class);
+		ElevatorController c = new ElevatorController(building, "FiFoAlgorithm");
 		
 		// A valid action
 		ElevatorAction action = new ElevatorAction(0, 15, 15);
