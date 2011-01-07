@@ -40,6 +40,9 @@ public abstract class Action implements ActionObservable {
 	 *            Amount of people moving from startLevel to endLevel
 	 */
 	public Action(int startLevel, int endLevel, int peopleAmount) {
+		if(peopleAmount <= 0){
+			throw new IllegalArgumentException("peopleAmount cannot be zero");
+		}
 		this.startLevel = startLevel;
 		this.endLevel = endLevel;
 		this.peopleAmount = peopleAmount;
@@ -79,6 +82,9 @@ public abstract class Action implements ActionObservable {
 	 *            amount
 	 */
 	public void setPeopleAmount(int peopleAmount) {
+		if(peopleAmount <= 0){
+			throw new IllegalArgumentException("peopleAmount cannot be zero");
+		}
 		this.peopleAmount = peopleAmount;
 		notifyObserversActionPeopleLoaded();
 	}

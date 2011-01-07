@@ -68,6 +68,7 @@ public class FrameMain extends JFrame implements Runnable {
 	private JPanel panelElevatorsLevels;
 	private static final long serialVersionUID = -6897288117049912593L;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
+	private boolean repaintElevatorsPanel = true;
 
 	/**
 	 * @param building
@@ -78,7 +79,7 @@ public class FrameMain extends JFrame implements Runnable {
 	 *             throws an exception if arguments are null
 	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
-
+		
 		if (building == null)
 			throw new Exception("building can not be null");
 
@@ -157,7 +158,8 @@ public class FrameMain extends JFrame implements Runnable {
 		panelElevatorsLevels.setLayout(new GridLayout(1, building
 				.getElevators().size() + 1));
 
-		if (elevatorPanels.size() != building.getElevators().size()) {
+		if (repaintElevatorsPanel) {
+			repaintElevatorsPanel = false;
 			panelElevatorsLevels.removeAll();
 
 			panelElevatorsLevels.add(new LevelPanel(building, controller));
@@ -211,10 +213,10 @@ public class FrameMain extends JFrame implements Runnable {
 			Building old = controller.getBuilding();
 			int size = old.getElevators().size();
 			for (VerticalTransporter e : tower.getElevators()) {
-				controller.addElevator((Elevator) e);
+				addElevator((Elevator) e);
 			}
 			for (int i = 0; i < size; i++) {
-				controller.removeElevator(0);
+				removeElevator(0);
 			}
 
 		}
@@ -222,10 +224,12 @@ public class FrameMain extends JFrame implements Runnable {
 	}
 
 	public void addElevator(Elevator e) {
+		repaintElevatorsPanel = true;
 		controller.addElevator(e);
 	}
 
 	public void removeElevator(int removeId) {
+		repaintElevatorsPanel = true;
 		controller.removeElevator(removeId);
 	}
 

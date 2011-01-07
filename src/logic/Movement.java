@@ -99,7 +99,7 @@ public class Movement extends Thread {
 	@Override	
 	public void run() {
 
-		log4j.debug("Moving elevator " + elevator.hashCode() + " from "
+		log4j.debug("Moving "+elevator.getName() + " from "
 				+ startLevel + " to " + endLevel);
 
 		loadPeople();
@@ -115,7 +115,7 @@ public class Movement extends Thread {
 	 */
 	private void loadPeople() {
 
-		log4j.debug("LoadPeople - In: " + peopleIn + " Out: " + peopleOut);
+		log4j.debug(elevator.getName()+" LoadPeople - In: " + peopleIn + " Out: " + peopleOut);
 
 		for (int i = 0; i < peopleOut; i++) {
 			try {

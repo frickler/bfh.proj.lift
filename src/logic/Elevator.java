@@ -222,10 +222,10 @@ public class Elevator implements VerticalTransporter {
 		int target;
 
 		if (direction == Direction.UP) {
-			log4j.debug("Direction = Up");
+			log4j.debug(getName()+" Direction = Up");
 			target = getNextHigherLevel();
 		} else {
-			log4j.debug("Direction = Down");
+			log4j.debug(getName()+" Direction = Down");
 			target = getNextLowerLevel();
 		}
 
@@ -524,6 +524,12 @@ public class Elevator implements VerticalTransporter {
 	@Override
 	public void addTimeInMotionEmpty(int milliseconds) {
 		this.timeInMotionEmpty += milliseconds;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return "Elevator"+getIdentityNumber()+" "+hashCode();
 	}
 
 }

@@ -27,15 +27,11 @@ public class main {
 	 * @throws SAXException
 	 */
 	public static void main(String[] args) {
-		runTestConfig();
-		// runApplication();
+
+		runApplication();
 	}
 
-	public static void runTestConfig() {
-		testGui();
-	}
-
-	public static void testGui() {
+	public static void runApplication() {
 		try {
 			Building building = new Tower(new Elevator(-1, 12, 10, 1));
 			building.addElevator(new Elevator(1, 3, 8, 3, 20f, 0.5f));
@@ -56,10 +52,8 @@ public class main {
 			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 			// building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 
-			ElevatorController controller = new ElevatorController(building,
-					"BetterPickupFifoAlgorithm");
-			// ElevatorController controller = new ElevatorController(building,
-			// PickUpFifoAlgorithm.class);
+			ElevatorController controller = new ElevatorController(building,"BetterPickupFifoAlgorithm");
+			//ElevatorController controller = new ElevatorController(building,PickUpFifoAlgorithm.class);
 			controller.startController();
 
 			Thread t = new Thread(new FrameMain(building, controller));

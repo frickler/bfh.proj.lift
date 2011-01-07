@@ -179,4 +179,6 @@ public interface VerticalTransporter {
 	 */
 	public void addTimeInMotionEmpty(int milliseconds);
 
+	public String getName();
+
 }

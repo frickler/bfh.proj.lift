@@ -165,11 +165,11 @@ public class ElevatorController implements Controller {
 						// ensure that the elevator is not overloaded
 						if (action.getPeopleAmount() > remainingCapacity) {
 							// Split action so that only a few people move
+							int splitedPeopleAmount = action.getPeopleAmount()- remainingCapacity;
 							splitedAction = new ElevatorAction(
 									action.getStartLevel(),
 									action.getEndLevel(),
-									action.getPeopleAmount()
-											- remainingCapacity);
+									splitedPeopleAmount);
 							action.setPeopleAmount(remainingCapacity);
 						}
 						// Descend the free spaces in the elevator

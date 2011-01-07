@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import logic.ElevatorActionXMLReader;
+import logic.XMLSimulationReader;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -29,7 +29,7 @@ public class FileDialogFrame extends JFrame {
 		dialog.setMode(FileDialog.LOAD);
 		dialog.setVisible(true);
 
-		ElevatorActionXMLReader xmlReader = new ElevatorActionXMLReader();
+		XMLSimulationReader xmlReader = new XMLSimulationReader();
 		try {
 			xmlReader.readPath(dialog.getDirectory() + dialog.getFile());
 		} catch (SAXException e) {
