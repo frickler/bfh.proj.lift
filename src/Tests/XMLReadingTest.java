@@ -5,8 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
-import logic.ElevatorActionXMLReader;
+import logic.XMLSimulationReader;
 
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class XMLReadingTest {
 	@Test
 	public void TestBuilding() {
 		String strXML = getXMLString();
-		ElevatorActionXMLReader reader = new ElevatorActionXMLReader();
+		XMLSimulationReader reader = new XMLSimulationReader();
 
 		try {
 			reader.readXMLStructure(strXML);
@@ -51,7 +50,7 @@ public class XMLReadingTest {
 	@Test
 	public void TestActions() {
 		String strXML = getXMLString();
-		ElevatorActionXMLReader reader = new ElevatorActionXMLReader();
+		XMLSimulationReader reader = new XMLSimulationReader();
 
 		try {
 			reader.readXMLStructure(strXML);
