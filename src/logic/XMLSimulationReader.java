@@ -22,7 +22,7 @@ import definition.Building;
 import definition.VerticalTransporter;
 import definition.XMLReader;
 
-public class ElevatorActionXMLReader extends XMLReader {
+public class XMLSimulationReader extends XMLReader {
 
 	private DocumentBuilder builder;
 	private Document document;
@@ -30,7 +30,10 @@ public class ElevatorActionXMLReader extends XMLReader {
 	private Building building;
 	private int simulationSpeed = 0;
 
-	public ElevatorActionXMLReader() {
+	/**
+	 * Initialize the XMLSimulationReader by creating a new DocumentBuilder
+	 */
+	public XMLSimulationReader() {
 		try {
 			builder = new DocumentBuilderFactoryImpl().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
@@ -47,6 +50,7 @@ public class ElevatorActionXMLReader extends XMLReader {
 		return this.simulationSpeed;
 	}
 
+	@Override
 	public Building getBuilding() {
 		return this.building;
 	}
@@ -62,6 +66,9 @@ public class ElevatorActionXMLReader extends XMLReader {
 		processDocument();
 	}
 
+	/**
+	 * Processes the read document and fills the actions list and creates the building
+	 */
 	private void processDocument() {
 		if (document == null) {
 			return;
@@ -83,6 +90,11 @@ public class ElevatorActionXMLReader extends XMLReader {
 		}
 	}
 
+	/**
+	 * Check for all Actions in the node @item, if found add them to the 
+	 * internal actionlist
+	 * @param item
+	 */
 	private void processActions(Node item) {
 		actions = new ArrayList<Action>();
 		NodeList nodes_i = item.getChildNodes();
@@ -96,6 +108,11 @@ public class ElevatorActionXMLReader extends XMLReader {
 		}
 	}
 
+	/**
+	 * Gets the action out of the Node
+	 * @param item
+	 * @return the new created action
+	 */
 	private Action getAction(Node item) {
 		try {
 			if (item.hasAttributes()) {
@@ -119,6 +136,11 @@ public class ElevatorActionXMLReader extends XMLReader {
 		return null;
 	}
 
+	/**
+	 * Gets the elevator out of the Node
+	 * @param item
+	 * @return the new created elevator
+	 */
 	private VerticalTransporter getElevator(Node item) {
 		try {
 			if (item.hasAttributes()) {
@@ -141,6 +163,13 @@ public class ElevatorActionXMLReader extends XMLReader {
 		return null;
 	}
 
+	/**
+	 * Gets the value out of the NamedNodeMap which contains all attributes
+	 * @param attributename attriubte to search
+	 * @param m NamedNodeMap containing all attributes
+	 * @return Value of the atrribute
+	 * @throws Exception if attribute not found
+	 */
 	private String getValue(String attributename, NamedNodeMap m)
 			throws Exception {
 		Attr a = (Attr) m.getNamedItem(attributename);
@@ -151,16 +180,11 @@ public class ElevatorActionXMLReader extends XMLReader {
 				+ " not declated in xml");
 	}
 
-	private boolean isInteger(String check) {
-		try {
-			int zahl = Integer.parseInt(check);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
 
-	}
-
+	/**
+	 * Processes the Building node and looking for Elevators
+	 * @param item
+	 */
 	private void processBuilding(Node item) {
 		NodeList nodes_i = item.getChildNodes();
 		for (int i = 0; i < nodes_i.getLength(); i++) {

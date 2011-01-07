@@ -14,62 +14,73 @@ public class StatisticElevator extends Statistic {
 
 	private ArrayList<VerticalTransporter> elevators = new ArrayList<VerticalTransporter>();
 
+	/**
+	 * Adds elevator for the statistic
+	 * @param list
+	 */
 	public void addElevator(List<VerticalTransporter> list) {
 		elevators.addAll(list);
 	}
 
+	/**
+	 * Adds elevators for the statistics
+	 * @param elevator
+	 */
 	public void addElevator(VerticalTransporter elevator) {
 		elevators.add(elevator);
 	}
 
+	/**
+	 * Removes an added elevator form the statistic
+	 * @param elevator
+	 */
 	public void removeElevator(VerticalTransporter elevator) {
 		elevators.remove(elevator);
 	}
 
 	@Override
 	public String getStatistic() {
-
-		String text = getTitle("Elevators summary");
-		int i = 0;
+		StringBuilder text = new StringBuilder();
+		text.append(getTitle("Elevators summary"));
 		for (VerticalTransporter e : elevators) {
-			i++;
-			text += getElevatorValue(e, i);
+			text.append(getElevatorValue(e));
 		}
-		String summary = getSubTitle("Summary");
+		StringBuilder summary = new StringBuilder();
+		summary.append(getSubTitle("Summary"));
 		try {
 
-			summary += getFormattedText("=>Total driven levels", "levels",
-					getSummaryOf(Attriubte.DrivenLevel));
-			summary += getFormattedText("=>Total driven levels empty",
-					"levels", getSummaryOf(Attriubte.DrivenLevelEmpty));
-			summary += getFormattedText("=>Total time in motion", "seconds",
-					getSummaryOf(Attriubte.TimeInMotion));
-			summary += getFormattedText("=>Total time in motion empty",
-					"seconds", getSummaryOf(Attriubte.TimeInMotionEmpty));
-			summary += getFormattedText("=>Total transported people", "people",
-					getSummaryOf(Attriubte.TrasportedPepole));
+			summary.append(getFormattedText("=>Total driven levels", getSummaryOf(Attriubte.DrivenLevel),
+					"levels"));
+			summary.append(getFormattedText("=>Total driven levels empty",
+					getSummaryOf(Attriubte.DrivenLevelEmpty), "levels"));
+			summary.append(getFormattedText("=>Total time in motion", getSummaryOf(Attriubte.TimeInMotion),
+					"seconds"));
+			summary.append(getFormattedText("=>Total time in motion empty",
+					getSummaryOf(Attriubte.TimeInMotionEmpty), "seconds"));
+			summary.append(getFormattedText("=>Total transported people", getSummaryOf(Attriubte.TrasportedPepole),
+					"people"));
 		} catch (Exception e1) {
 			e1.printStackTrace();
-			summary += e1.getMessage();
+			summary.append(e1.getMessage());
 		}
-		return text + summary;
+		text.append(summary.toString());
+		return text.toString();
 	}
 
-	private String getFormattedText(String title, String entity, int[] summary) {
-
-		String sText = "\n";
-		sText += title;
-		sText += "\nMinimum: " + summary[0] + " " + entity + ". ";
-		sText += "\tMaximum: " + summary[1] + " " + entity + ". ";
-		sText += "\tAverage: " + summary[2] + " " + entity + ". ";
-		sText += "\tSum: " + summary[3] + " " + entity + ". \n";
-		return sText;
-	}
-
+	/**
+	 * Elements of the measure
+	 * @author kaeserst
+	 *
+	 */
 	public enum Attriubte {
 		TrasportedPepole, DrivenLevel, DrivenLevelEmpty, TimeInMotion, TimeInMotionEmpty
 	};
-
+/**
+ * Gets a summary (min,max,avg,sum) of the attribute @a
+ * @param a
+ * @return
+ * @throws Exception
+ */
 	public int[] getSummaryOf(Attriubte a) throws Exception {
 
 		int[] returns = new int[4];
@@ -96,6 +107,13 @@ public class StatisticElevator extends Statistic {
 		return returns;
 	}
 
+	/**
+	 * returns the value of the Attribute @a of the elevator @e
+	 * @param e
+	 * @param a
+	 * @return
+	 * @throws Exception
+	 */
 	private int getValue(VerticalTransporter e, Attriubte a) throws Exception {
 		switch (a) {
 		case TrasportedPepole:
@@ -112,8 +130,13 @@ public class StatisticElevator extends Statistic {
 		throw new Exception("Actions datetype not defined");
 	}
 
-	private String getElevatorValue(VerticalTransporter e, int i) {
-		String text = getSubTitle("Elevator " + i);
+	/**
+	 * Get the current values of the elevator for the statistic
+	 * @param e
+	 * @return
+	 */
+	private String getElevatorValue(VerticalTransporter e) {
+		String text = getSubTitle("Elevator " + e.getIdentityNumber());
 		text += "Driven Levels: " + e.getDrivenLevels() + "\t\tTotalTime: "
 				+ e.getTimeInMotion();
 		int percent = 0;
@@ -129,6 +152,7 @@ public class StatisticElevator extends Statistic {
 		return text;
 	}
 
+	@Override
 	public Element getXMLStatistic(Document doc) {
 
 		org.w3c.dom.Element n = doc.createElement("Elevators");
@@ -137,20 +161,20 @@ public class StatisticElevator extends Statistic {
 
 			org.w3c.dom.Element sum = doc.createElement("Summary");
 
-			sum.appendChild(getSummaryElement(doc.createElement("Measure"),
-					getSummaryOf(Attriubte.DrivenLevel),"Total gefahrene Stockwerke"));
-			sum.appendChild(getSummaryElement(
+			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
+					"Total gefahrene Stockwerke",getSummaryOf(Attriubte.DrivenLevel)));
+			sum.appendChild(getMeasureElement(
 					doc.createElement("Measure"),
-					getSummaryOf(Attriubte.DrivenLevelEmpty),"Stockwerke leer gefahren"));
-			sum.appendChild(getSummaryElement(
+					"Stockwerke leer gefahren",getSummaryOf(Attriubte.DrivenLevelEmpty)));
+			sum.appendChild(getMeasureElement(
 					doc.createElement("Measure"),
-					getSummaryOf(Attriubte.TimeInMotion),"Zeit waehrend dem sich der Lift bewegte"));
-			sum.appendChild(getSummaryElement(
+					"Zeit waehrend dem sich der Lift bewegte",getSummaryOf(Attriubte.TimeInMotion)));
+			sum.appendChild(getMeasureElement(
 					doc.createElement("Measure"),
-					getSummaryOf(Attriubte.TimeInMotionEmpty),"Zeit waehrend dem sich der Lift leer bewegte"));
-			sum.appendChild(getSummaryElement(
+					"Zeit waehrend dem sich der Lift leer bewegte",getSummaryOf(Attriubte.TimeInMotionEmpty)));
+			sum.appendChild(getMeasureElement(
 					doc.createElement("Measure"),
-					getSummaryOf(Attriubte.TrasportedPepole),"Transportierte Personen"));
+					"Transportierte Personen",getSummaryOf(Attriubte.TrasportedPepole)));
 			n.appendChild(sum);
 			
 			for(VerticalTransporter e : elevators){
@@ -161,13 +185,5 @@ public class StatisticElevator extends Statistic {
 
 		}
 		return n;
-	}
-
-	private Element getSummaryElement(Element e, int[] results,String name) {
-		e.setAttribute("min", results[0] + "");
-		e.setAttribute("max", results[1] + "");
-		e.setAttribute("avg", results[2] + "");
-		e.setTextContent(name);
-		return e;
 	}
 }

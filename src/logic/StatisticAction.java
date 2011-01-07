@@ -15,69 +15,78 @@ public class StatisticAction extends Statistic {
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator.gui");
 
+	/**
+	 * List of all actions which are considered at the evaluation
+	 */
 	private List<Action> actions = new ArrayList<Action>();
 
+	/**
+	 * Adds action for the evaluation
+	 * @param pactions
+	 */
 	public void addAction(List<Action> pactions) {
 		actions.addAll(pactions);
 	}
 
+	/**
+	 * Adds actions for the evaluation
+	 * @param action
+	 */
 	public void addAction(Action action) {
 		actions.add(action);
 	}
 
+	/**
+	 * Removes a added action
+	 * @param action
+	 */
 	public void removeAction(Action action) {
 		actions.remove(action);
 	}
-
+    /**
+     * Prints the Statistic Results to the Console
+     * @throws Exception
+     */
 	public void printStatisticToConsole() throws Exception {
-
-		consolePrint("Wartezeit auf den Lift",
-				getTimespan(DateTypes.Called, DateTypes.Entered));
-		consolePrint("Fahrzeit",
-				getTimespan(DateTypes.Entered, DateTypes.Left));
-		consolePrint("Gesamtzeit",
-				getTimespan(DateTypes.Called, DateTypes.Left));
+		System.out.println(getStatistic());
 	}
 
-	private void consolePrint(String title, int[] summary) {
-		System.out.println("");
-		System.out.println(title);
-		System.out.println("Minimum: " + summary[0] + " seconds.");
-		System.out.println("Maximum: " + summary[1] + " seconds.");
-		System.out.println("Average: " + summary[2] + " seconds.");
-	}
-
+	/**
+	 * Returns a string with the formatted statistic restult containg Wartezeit auf den Lift, Fahrzeit, Gesamtzeit
+	 */
 	public String getStatistic() {
-		String sText = "";
+		StringBuilder sb = new StringBuilder();
 		try {
-			sText += getTitle(actions.size() + " Actions evaluated");
-			sText += getFormattedText("Wartezeit auf den Lift",
-					getTimespan(DateTypes.Called, DateTypes.Entered));
-			sText += getFormattedText("Fahrzeit",
-					getTimespan(DateTypes.Entered, DateTypes.Left));
-			sText += getFormattedText("Gesamtzeit",
-					getTimespan(DateTypes.Called, DateTypes.Left));
+			sb.append(getTitle(actions.size() + " Actions evaluated"));
+			sb.append(getFormattedText("Wartezeit auf den Lift",
+					getTimespan(DateTypes.Called, DateTypes.Entered)));
+			sb.append(getFormattedText("Fahrzeit",
+					getTimespan(DateTypes.Entered, DateTypes.Left)));
+			sb.append(getFormattedText("Gesamtzeit",
+					getTimespan(DateTypes.Called, DateTypes.Left)));
 		} catch (Exception e) {
-			sText = "Error doing Evaluation: " + e.getMessage() + ":"
-					+ e.getClass() + ":" + e.getStackTrace();
+			sb.append("Error doing Evaluation: " + e.getMessage() + ":"
+					+ e.getClass() + ":" + e.getStackTrace());
 		}
-		return sText;
+		return sb.toString();
 	}
 
-	private String getFormattedText(String title, int[] summary) {
 
-		String sText = "\n";
-		sText += title;
-		sText += "\nMinimum: " + summary[0] + " seconds.";
-		sText += "\nMaximum: " + summary[1] + " seconds.";
-		sText += "\nAverage: " + summary[2] + " seconds.\n";
-		return sText;
-	}
 
+	/**
+	 * Possible datetypes which were measured 
+	 */
 	public enum DateTypes {
 		Called, Entered, Left
 	};
 
+	/**
+	 * Get the Minimum, Maximum and Average timeSpan between the dates
+	 * defined over the paramter @from and @to
+	 * @param from Start of timespan
+	 * @param to End of timespan
+	 * @return Minimum, Maximum and Average in this order
+	 */
 	public int[] getTimespan(DateTypes from, DateTypes to) {
 
 		int[] returns = new int[3];
@@ -108,6 +117,12 @@ public class StatisticAction extends Statistic {
 		return returns;
 	}
 
+	/**
+	 * Gets the Timestamp @typ of the action @ia
+	 * @param ia the action
+	 * @param typ the date typ
+	 * @return
+	 */
 	private Date getDateTime(Action ia, DateTypes typ) {
 
 		switch (typ) {
@@ -122,18 +137,15 @@ public class StatisticAction extends Statistic {
 		// throw new Exception("Actions datetype not defined");
 	}
 
-	public void printStatisticToFile(String sFilePath) {
-
-	}
 
 	public org.w3c.dom.Element getXMLStatistic(Document doc) {
 		org.w3c.dom.Element n = doc.createElement("Actions");
 		n.setAttribute("total", this.actions.size()+"");	
-		org.w3c.dom.Element m1 = GetMeasure(doc.createElement("Measure"),"Wartezeit auf den Lift",
+		org.w3c.dom.Element m1 = getMeasureElement(doc.createElement("Measure"),"Wartezeit auf den Lift",
 				getTimespan(DateTypes.Called, DateTypes.Entered));
-		org.w3c.dom.Element m2 = GetMeasure(doc.createElement("Measure"),"Fahrzeit",
+		org.w3c.dom.Element m2 = getMeasureElement(doc.createElement("Measure"),"Fahrzeit",
 				getTimespan(DateTypes.Entered, DateTypes.Left));
-		org.w3c.dom.Element m3 = GetMeasure(doc.createElement("Measure"),"Gesamtzeit",
+		org.w3c.dom.Element m3 = getMeasureElement(doc.createElement("Measure"),"Gesamtzeit",
 				getTimespan(DateTypes.Called, DateTypes.Left));
 		n.appendChild(m1);
 		n.appendChild(m2);
@@ -142,12 +154,5 @@ public class StatisticAction extends Statistic {
 		return n;
 	}
 
-	private org.w3c.dom.Element GetMeasure(org.w3c.dom.Element e,
-			String string, int[] results) {	
-		e.setTextContent(string);
-		e.setAttribute("min", results[0]+"");
-		e.setAttribute("max", results[1]+"");
-		e.setAttribute("avg", results[2]+"");
-		return e;
-	}
+	
 }

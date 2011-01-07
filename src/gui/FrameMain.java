@@ -34,7 +34,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import logic.Elevator;
-import logic.ElevatorActionXMLReader;
+import logic.XMLSimulationReader;
 import logic.Helper;
 import logic.Simulation;
 import logic.SimulationCompare;

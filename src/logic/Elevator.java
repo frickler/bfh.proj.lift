@@ -491,6 +491,10 @@ public class Elevator implements VerticalTransporter {
 		return identityNumber;
 	}
 
+	/**
+	 * Add on the Element @e all attributes of the elevator class as attributes
+	 * @param e
+	 */
 	public Node getXML(Element e) {
 		e.setAttribute("simulationSpeed",simulationSpeed+"");
 		e.setAttribute("minLevel",minLevel+"");
