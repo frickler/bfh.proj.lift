@@ -83,21 +83,27 @@ public class ElevatorPanel extends JPanel {
 		// TODO Auto-generated method stub
 		int i = elevator.getCurrentPeople();
 		if(i>5){
-
-		return new ImageIcon("icons/elevator_more.png");
+			
+		//return new ImageIcon("src/gui/icons/elevator_more.png");
+		return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_more.png"));
 
 		}else{
 			if(i <= 0){
-				return new ImageIcon("icons/elevator_0.png");
+				//return new ImageIcon("src/gui/icons/elevator_0.png");
+				return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_0.png"));
+				
 			}
 			if(i != 1){
-				return new ImageIcon("icons/elevator_"+i+".png");
+				//return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+				return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_"+i+".png"));
 			}else{		
 					int rand = new Random((int) (Math.random() * 10000)).nextInt(30);
 					if(rand == 26){
-						return new ImageIcon("icons/elevator_easteregg.png");
+						//return new ImageIcon("src/gui/icons/elevator_easteregg.png");
+						return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_easteregg.png"));
 					}else{
-						return new ImageIcon("icons/elevator_"+i+".png");
+						//return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+						return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_"+i+".png"));
 					}
 			}
 		}
