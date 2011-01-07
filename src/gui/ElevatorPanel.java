@@ -87,6 +87,9 @@ public class ElevatorPanel extends JPanel {
 		return new ImageIcon("src/gui/icons/elevator_more.png");
 
 		}else{
+			if(i <= 0){
+				return new ImageIcon("src/gui/icons/elevator_0.png");
+			}
 			if(i != 1){
 				return new ImageIcon("src/gui/icons/elevator_"+i+".png");
 			}else{		
