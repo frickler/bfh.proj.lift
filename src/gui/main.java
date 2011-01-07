@@ -55,8 +55,8 @@ public class main {
 //			building.addElevator(new Elevator(-1, 6, Integer.MAX_VALUE,5));
 			
 
-			//ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
-			ElevatorController controller = new ElevatorController(building, PickUpFifoAlgorithm.class);
+			ElevatorController controller = new ElevatorController(building, FiFoAlgorithm.class);
+			//ElevatorController controller = new ElevatorController(building, PickUpFifoAlgorithm.class);
 			controller.startController();
 
 			Thread t = new Thread(new FrameMain(building, controller));
