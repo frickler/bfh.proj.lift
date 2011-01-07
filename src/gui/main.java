@@ -33,10 +33,10 @@ public class main {
 
 	public static void runApplication() {
 		try {
-			Building building = new Tower(new Elevator(-1, 12, 10, 1));
-			building.addElevator(new Elevator(1, 3, 8, 3, 20f, 0.5f));
-			building.addElevator(new Elevator(-1, 12, 6, 2, 60f, 2f));
-			building.addElevator(new Elevator(-1, 12, 12, 4, 30f, 1f));
+			Building building = new Tower(new Elevator(-1, 12, 4, 1));
+			building.addElevator(new Elevator(1, 3, 4, 3, 20f, 0.5f));
+			building.addElevator(new Elevator(-1, 12, 4, 2, 60f, 2f));
+			building.addElevator(new Elevator(-1, 12, 4, 4, 30f, 1f));
 			// building.addElevator(new Elevator(-1, 6,4,4,20f,0.2f));
 			// building.addElevator(new Elevator(-1, 6, 2,5));
 			// building.addElevator(new Elevator(-1, 6, 12,5));

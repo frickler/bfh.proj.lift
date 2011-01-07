@@ -154,7 +154,7 @@ public class ElevatorController implements Controller {
 		synchronized (actionsOfLevel) {
 			for (Action action : actions) {
 				// break if the elevator is full
-				if (remainingCapacity == 0) {
+				if (remainingCapacity < 1) {
 					break;
 				}
 				// ensure that action comes from the same startLevel
@@ -164,6 +164,7 @@ public class ElevatorController implements Controller {
 					if ((action.getStartLevel() < action.getEndLevel()) == up) {
 						// ensure that the elevator is not overloaded
 						if (action.getPeopleAmount() > remainingCapacity) {
+							log4j.debug("Remaining capacity" + remainingCapacity);
 							// Split action so that only a few people move
 							int splitedPeopleAmount = action.getPeopleAmount()- remainingCapacity;
 							splitedAction = new ElevatorAction(
