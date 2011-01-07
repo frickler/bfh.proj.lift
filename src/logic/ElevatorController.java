@@ -42,8 +42,7 @@ public class ElevatorController implements Controller {
 	 * @param building
 	 *            The attached building
 	 */
-	public ElevatorController(Building building,
-			String algorithmName) {
+	public ElevatorController(Building building, String algorithmName) {
 		super();
 		this.actions = new LinkedList<Action>();
 		this.doneActions = new ArrayList<Action>();
@@ -52,11 +51,11 @@ public class ElevatorController implements Controller {
 		changeAlgorithm(algorithmName);
 	}
 
-	private void changeAlgorithm(String name) {		
+	private void changeAlgorithm(String name) {
 
-		if (name.equalsIgnoreCase("PickUpFifoAlgorithm")){
-			this.algorithm = new  PickUpFifoAlgorithm(building, this);			
-		} else if (name.equalsIgnoreCase("BetterPickupFifoAlgorithm")){
+		if (name.equalsIgnoreCase("PickUpFifoAlgorithm")) {
+			this.algorithm = new PickUpFifoAlgorithm(building, this);
+		} else if (name.equalsIgnoreCase("BetterPickupFifoAlgorithm")) {
 			this.algorithm = new BetterPickupFifoAlgorithm(building, this);
 		} else {
 			this.algorithm = new FiFoAlgorithm(building, this);
@@ -164,13 +163,14 @@ public class ElevatorController implements Controller {
 					if ((action.getStartLevel() < action.getEndLevel()) == up) {
 						// ensure that the elevator is not overloaded
 						if (action.getPeopleAmount() > remainingCapacity) {
-							log4j.debug("Remaining capacity" + remainingCapacity);
+							log4j.debug("Remaining capacity"
+									+ remainingCapacity);
 							// Split action so that only a few people move
-							int splitedPeopleAmount = action.getPeopleAmount()- remainingCapacity;
+							int splitedPeopleAmount = action.getPeopleAmount()
+									- remainingCapacity;
 							splitedAction = new ElevatorAction(
 									action.getStartLevel(),
-									action.getEndLevel(),
-									splitedPeopleAmount);
+									action.getEndLevel(), splitedPeopleAmount);
 							action.setPeopleAmount(remainingCapacity);
 						}
 						// Descend the free spaces in the elevator
@@ -338,7 +338,8 @@ public class ElevatorController implements Controller {
 					&& ele.getMaxLevel() >= action.getStartLevel()
 					&& ele.getMinLevel() <= action.getEndLevel()
 					&& ele.getMaxLevel() >= action.getEndLevel()) {
-				if (Math.abs(ele.getCurrentLevel() - action.getStartLevel()) <= Math.abs(ele.getCurrentLevel() - action.getStartLevel())){
+				if (Math.abs(ele.getCurrentLevel() - action.getStartLevel()) <= Math
+						.abs(ele.getCurrentLevel() - action.getStartLevel())) {
 					closestElevator = ele;
 				}
 			}
