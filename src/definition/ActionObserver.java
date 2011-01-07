@@ -1,6 +1,5 @@
 package definition;
 
-import logic.Elevator;
 
 /**
  * Interface of an object which observes an ActionObservable
@@ -13,8 +12,6 @@ public interface ActionObserver {
 	/**
 	 * This Method is called when an action gets start processing
 	 * 
-	 * @param elevator
-	 *            The Elevator which processes the action
 	 * @param action
 	 *            Action to process
 	 */
@@ -23,8 +20,6 @@ public interface ActionObserver {
 	/**
 	 * This Method is called when an action is done processing
 	 * 
-	 * @param elevator
-	 *            Elevator which processed the action
 	 * @param action
 	 *            Action which was processed
 	 */
@@ -33,8 +28,7 @@ public interface ActionObserver {
 	/**
 	 * This method is called when people enter the elevator 
 	 * 
-	 * @param elevator
-	 * @param action
+	 * @param action Assigned action
 	 */
 	public void actionPeopleLoaded(Action action);
 

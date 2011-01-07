@@ -6,6 +6,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
+ * This is the interface for the elevators. It represents all the properties
+ * like capacity, speed, highest and lowest level the elevator can reach, etc.
+ * 
  * @author BFH-Boys
  * 
  */
@@ -86,8 +89,6 @@ public interface VerticalTransporter {
 
 	/**
 	 * indicates if a transporter object is busy (moving)
-	 * 
-	 * @return
 	 */
 	public boolean isBusy();
 
@@ -105,7 +106,7 @@ public interface VerticalTransporter {
 	/**
 	 * Gives a list of actions to perform
 	 * 
-	 * @param action
+	 * @param actions
 	 *            Actions with movement parameters (StartLevel should not equal
 	 *            the EndLevel). This method sets the values of two variables
 	 *            timestampStarted and timeStampEnded in each action
@@ -121,22 +122,61 @@ public interface VerticalTransporter {
 	 */
 	void stop();
 
+	/**
+	 * 
+	 * @param speed
+	 *            Sets the simulation speed
+	 */
 	public void setSimulationSpeed(int speed);
 
+	/**
+	 * 
+	 * @return Current amount of people in this transporter
+	 */
 	public int getCurrentPeople();
 
+	/**
+	 * Resets all the statistics (drivenlevels, transported peoples, etc)
+	 */
 	public void resetStatistics();
 
+	/**
+	 * 
+	 * @return Current speed of the elevator
+	 */
 	public double getCurrentSpeed();
 
+	/**
+	 * 
+	 * @return Returns a unique ID
+	 */
 	public int getIdentityNumber();
-	
+
+	/**
+	 * 
+	 * @return Indicates if the transporter is empty
+	 */
 	public boolean isLoaded();
 
+	/**
+	 * Adds statistic information of this transporter to an XML-Element
+	 * 
+	 * @param createElement
+	 *            Element in which the statistic nodes should be added
+	 * @return Node with the statistic of this elevator
+	 */
 	public Node getXML(Element createElement);
 
+	/**
+	 * 
+	 * @param milliseconds Adds time in motion to the statistics
+	 */
 	public void addTimeInMotion(int milliseconds);
 
+	/**
+	 * 
+	 * @param milliseconds Adds time in motion with no people loaded to the statistics
+	 */
 	public void addTimeInMotionEmpty(int milliseconds);
 
 }

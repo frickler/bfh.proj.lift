@@ -300,7 +300,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 		while (selectedFiles < 2) {
 
-			//todo nicht nur für kaeserst
+			//todo nicht nur fuer kaeserst
 			JFileChooser fc = new JFileChooser("C:\\Users\\kaeserst\\Documents\\My Dropbox\\bfh\\Projekt1_7301\\Lift_feuzc1_kases1_chiller12");
 			fc.setName("Select XML-Result file");
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);

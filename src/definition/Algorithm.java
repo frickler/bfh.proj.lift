@@ -6,7 +6,6 @@ package definition;
  * implements {@link Controller}
  * 
  * @author BFH-Boys
- * 
  */
 public abstract class Algorithm implements Runnable {
 
@@ -25,7 +24,6 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @return controller assigned to this algorithm
 	 */
 	protected Controller getController() {
@@ -33,7 +31,6 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @return The building currently assigned to the algorithm
 	 */
 	public Building getBuilding() {
@@ -48,7 +45,6 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @return The current state of the algorithm
 	 */
 	public boolean isRunning() {
@@ -56,7 +52,6 @@ public abstract class Algorithm implements Runnable {
 	}
 
 	/**
-	 * 
 	 * @param isRunning
 	 *            sets the current state
 	 */

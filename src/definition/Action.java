@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.plaf.basic.BasicSliderUI.ActionScroller;
-
 /**
  * An action is a movement from a level X to another Y where X <> Y with a
  * certain amount of people. It also has a timestamp with the beginning and the
@@ -32,14 +30,13 @@ public abstract class Action implements ActionObservable {
 	// when the action is done the people had left the elevator
 	private Date timestampElevatorLeft;
 
-
 	/**
 	 * 
 	 * @param startLevel
 	 *            Level where the button is pressed and the people want to enter
 	 * @param endLevel
 	 *            Destination
-	 * @param pepoleAmount
+	 * @param peopleAmount
 	 *            Amount of people moving from startLevel to endLevel
 	 */
 	public Action(int startLevel, int endLevel, int peopleAmount) {
@@ -88,9 +85,8 @@ public abstract class Action implements ActionObservable {
 
 	/**
 	 * 
-	 * @param timestampCreated
-	 *            Timestamp in milliseconds when the action was put in the
-	 *            {@link Controller} datastructure
+	 * @param timestampElevatorCalled
+	 *            Timestamp in milliseconds when the elevator was called
 	 */
 	public void setTimestampElevatorCalled(Date timestampElevatorCalled) {
 		this.timestampElevatorCalled = timestampElevatorCalled;
@@ -107,7 +103,7 @@ public abstract class Action implements ActionObservable {
 
 	/**
 	 * 
-	 * @param Sets
+	 * @param timestampElevatorLeft
 	 *            the timestamp (in milliseconds) when the action is done
 	 *            processing
 	 */
@@ -127,7 +123,7 @@ public abstract class Action implements ActionObservable {
 
 	/**
 	 * 
-	 * @param Sets
+	 * @param timestampElevatorEntered
 	 *            the timestamp (in milliseconds) when the action was started
 	 *            processing
 	 */
@@ -178,9 +174,13 @@ public abstract class Action implements ActionObservable {
 
 	}
 
+	/**
+	 * 
+	 * @return Returns an XML-String with some trace information
+	 */
 	public String toXML() {
-		// TODO Auto-generated method stub
-		return "<Action startLevel=\""+startLevel+"\" endLevel=\""+endLevel+"\" peopleAmount=\""+peopleAmount+"\" />";
+		return "<Action startLevel=\"" + startLevel + "\" endLevel=\""
+				+ endLevel + "\" peopleAmount=\"" + peopleAmount + "\" />";
 	}
 
 }

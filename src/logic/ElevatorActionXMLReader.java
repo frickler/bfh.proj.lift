@@ -38,15 +38,15 @@ public class ElevatorActionXMLReader extends XMLReader {
 			e.printStackTrace();
 		}
 	}
-/**
- * 
- * @param defaultSpeed (if not set in xml)
- * @return new simulationspeed
- */
+
+	/**
+	 * 
+	 * @return new simulationspeed
+	 */
 	public int getSimulationSpeed() {
-			return this.simulationSpeed;		
+		return this.simulationSpeed;
 	}
-	
+
 	public Building getBuilding() {
 		return this.building;
 	}
@@ -66,11 +66,13 @@ public class ElevatorActionXMLReader extends XMLReader {
 		if (document == null) {
 			return;
 		}
-		
+
 		NamedNodeMap m = document.getDocumentElement().getAttributes();
-		try{
-		this.simulationSpeed = Integer.parseInt(getValue("simulationSpeed", m));
-		}catch(Exception e){}
+		try {
+			this.simulationSpeed = Integer.parseInt(getValue("simulationSpeed",
+					m));
+		} catch (Exception e) {
+		}
 		NodeList nodes_i = document.getDocumentElement().getChildNodes();
 		for (int i = 0; i < nodes_i.getLength(); i++) {
 			if (nodes_i.item(i).getNodeName() == "Building") {
@@ -107,7 +109,8 @@ public class ElevatorActionXMLReader extends XMLReader {
 					return new DelayedElevatorAction(startLevel, endLevel,
 							peopleAmount, delay);
 				} catch (Exception ex) {
-					return new ElevatorAction(startLevel, endLevel,peopleAmount);
+					return new ElevatorAction(startLevel, endLevel,
+							peopleAmount);
 				}
 			}
 		} catch (Exception ex) {

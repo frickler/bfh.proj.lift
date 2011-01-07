@@ -8,12 +8,9 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.sun.jmx.snmp.Timestamp;
-
 import definition.Action;
 import definition.Direction;
 import definition.MovementObserver;
-import definition.MovementObserverable;
 import definition.PeopleLoadedObserver;
 import definition.VerticalTransporter;
 import exceptions.ElevatorConfigException;
@@ -80,7 +77,7 @@ public class Elevator implements VerticalTransporter {
 	 *            must be higher than minLevel
 	 * @param maxPeople
 	 *            must be bigger than one
-	 * @param currentLevel
+	 * @param startLevel
 	 *            must be between minLevel and maxLevel
 	 * @param maxSpeed
 	 *            must be between 20 and 80
@@ -135,8 +132,8 @@ public class Elevator implements VerticalTransporter {
 	 * This method is called when an action is performed on a elevator to update
 	 * his data/statistics
 	 * 
-	 * @param Performed
-	 *            action
+	 * @param action
+	 *            Performed action
 	 */
 	public void moved(Action action) {
 		if (action.getPeopleAmount() == 0) { // Lift ran empty
@@ -276,7 +273,7 @@ public class Elevator implements VerticalTransporter {
 				peopleOut, this.simulationSpeed, new MovementObserver() {
 
 					@Override
-					public void moved(MovementObserverable object) {
+					public void moved(Movement movement) {
 						move();
 					}
 
@@ -322,7 +319,7 @@ public class Elevator implements VerticalTransporter {
 				new MovementObserver() {
 
 					@Override
-					public void moved(MovementObserverable object) {
+					public void moved(Movement movement) {
 						drivenLevelsEmpty += Math.abs(levelsStarted);
 						drivenLevels += Math.abs(levelsStarted);
 						Elevator.this.move();

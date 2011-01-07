@@ -16,15 +16,14 @@ import definition.VerticalTransporter;
 /**
  * This algorithm is similar to the FifoAlgorithm, with the slight difference
  * that people with the same start level can enter the elevator as well. So
- * people who arrive late in a floor can profite from a person who pressed the
- * elevator button erlier. TODO Better description
+ * people who arrive late in a floor can profit from a person who pressed the
+ * elevator button earlier. 
  * 
  * @author krigu
  * 
  */
 public class PickUpFifoAlgorithm extends Algorithm {
 	
-
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
@@ -33,7 +32,7 @@ public class PickUpFifoAlgorithm extends Algorithm {
 	}
 
 	/**
-	 * 
+	 * Starts the processing of the actions
 	 */
 	@Override
 	public void run() {
@@ -76,6 +75,9 @@ public class PickUpFifoAlgorithm extends Algorithm {
 
 	}
 
+	/**
+	 * Waits for 100 milliseconds to continue
+	 */
 	private void hold() {
 		try {
 			Thread.sleep(100);

@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The building is a wrapper for a list of elevators.
+ * Each building has at least one elevators. The size
+ * of the building depends on the endlevel (higest floor)
+ * and the startlevel (lowest floor)
+ * 
  * 
  * @author BFH-Boys
  *
  */
 public abstract class Building {
 
-	// all elevators of the building
+	/**
+	 * A list of all transporters attached to the building
+	 */
 	private List<VerticalTransporter> transporters;
 
 	/**
@@ -93,6 +100,11 @@ public abstract class Building {
 		return maxLevel;
 	}
 
+	/**
+	 * Sets the simulation speed of all elevators attached to this building
+	 * 
+	 * @param speed Simulationspeed
+	 */
 	public void setSimulationSpeed(int speed) {
 		for(VerticalTransporter e : transporters){
 			e.setSimulationSpeed(speed);

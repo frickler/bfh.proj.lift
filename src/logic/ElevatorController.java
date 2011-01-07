@@ -201,7 +201,7 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public void addDoneAction(Action a) {
-		this.actions.add(a);
+		this.doneActions.add(a);
 	}
 
 	@Override

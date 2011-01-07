@@ -6,14 +6,14 @@ import java.util.List;
 import org.xml.sax.SAXException;
 
 /**
+ * XMLReader is able to read a list of given actions and configuration settings
+ * from an XML-File
  * 
  * @author BFH-Boys
- * 
  */
 public abstract class XMLReader {
 
 	/**
-	 * 
 	 * @return A Building
 	 */
 	public abstract Building getBuilding();
@@ -26,7 +26,7 @@ public abstract class XMLReader {
 
 	/**
 	 * 
-	 * @param xmlPath
+	 * @param xmlPath Path to read
 	 * @throws SAXException
 	 * @throws IOException
 	 */
@@ -35,7 +35,7 @@ public abstract class XMLReader {
 
 	/**
 	 * 
-	 * @param xmlStructure
+	 * @param xmlStructure Structure to read
 	 * @throws SAXException
 	 * @throws IOException
 	 */

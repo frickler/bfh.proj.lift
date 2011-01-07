@@ -3,19 +3,41 @@ package logic;
 import org.apache.log4j.Logger;
 
 import definition.MovementObserver;
-import definition.MovementObserverable;
 import definition.PeopleLoadedObserver;
-import definition.PeopleLoadedObserverable;
 import definition.VerticalTransporter;
 
-public class Movement extends Thread implements MovementObserverable {
+/**
+ * A Movement represents a motion. There can be different action
+ * involved in this motion. 
+ * <br>
+ * An example:
+ * <ul>
+ *     <li>Action1 with StartLevel 1 and EndLevel 10</li>
+ *     <li>Action2 with StartLevel 1 and EndLevel 5</li>
+ *</ul>
+ * Lets assume the elevator is now in level 8. So there will be
+ * 3 movement generated: 
+ * <ol>
+ * 	<li>Movement: Move elevator from level 8 to level 1 (move to start)</li>
+ *  <li>Movement: Move elevator from level 1 to level 5</li>
+ *  <li>Movement: Move elevator from level 4 to level 10</li>
+ *  </ol>
+ * So a movement is not the same as an action, but they are related. From a movement, 
+ * multiple actions can profit.
+ *  			 	
+ * 
+ * @author BFH-Boys
+ *
+ */
+public class Movement extends Thread {
 
+	// Logger
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
+	
 	// Time for one person to enter/exit the elevator in milliseconds
 	private final int TIME_TO_EXIT = 10000;
 	// Time for one level
 	private final int TICK_TIME = 400;
-
-	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	private VerticalTransporter elevator;
 	private MovementObserver movedObserver;
@@ -30,6 +52,17 @@ public class Movement extends Thread implements MovementObserverable {
 	// Variable to indicate if the stopMovement-Method is called
 	private boolean move;
 
+	/**
+	 * 
+	 * @param elevator Elevator who will be moved
+	 * @param startLevel Startlevel of this movement
+	 * @param endLevel Endlevel of this movement
+	 * @param peopleIn Amount of people enter the elevator in the startlevel
+	 * @param peopleOut Amount of people exit the elevator in the startlevel
+	 * @param simulationSpeed Speed of the simulation. Affects both the time to enter/exit and the movement speed
+	 * @param movedObserver This observer gets called after each step/movement the elevator does (callback)
+	 * @param peopleLoadedObserver This observer gets called after people enter/exit the elevator
+	 */
 	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
 			int peopleIn, int peopleOut, int simulationSpeed,
 			MovementObserver movedObserver,
@@ -46,28 +79,29 @@ public class Movement extends Thread implements MovementObserverable {
 		this.simulationSpeed = simulationSpeed;
 	}
 
+	/**
+	 * 
+	 * @param elevator Elevator who will be moved
+	 * @param startLevel Startlevel of this movement
+	 * @param endLevel Endlevel of this movement
+	 * @param simulationSpeed Speed of the simulation. Affects both the time to enter/exit and the movement speed
+	 * @param movementObserver This observer gets called after each step/movement the elevator does (callback)
+	 */
 	public Movement(Elevator elevator, int startLevel, int endLevel,
 			int simulationSpeed, MovementObserver movementObserver) {
 		this(elevator, startLevel, endLevel, 0, 0, simulationSpeed,
 				movementObserver, null);
 	}
 
-	@Override
+	/**
+	 * Starts loading the people and moving the elevator
+	 */
+	@Override	
 	public void run() {
-		// wait until the elevator is not busy any more
-		// while (elevator.isBusy()) {
-		// try {
-		// Thread.sleep(100);
-		// } catch (InterruptedException e) {
-		// }
-		//
-		// }
 
 		log4j.debug("Moving elevator " + elevator.hashCode() + " from "
 				+ startLevel + " to " + endLevel);
 
-		// action.setTimestampStarted(new Date(System.currentTimeMillis()));
-		// loadPeople();
 		loadPeople();
 		move();
 
@@ -76,7 +110,8 @@ public class Movement extends Thread implements MovementObserverable {
 	}
 
 	/**
-	 * @ToDo: ueberpruefen
+	 * Loads and unloads the people in one level.
+	 * This takes a certain amount of time
 	 */
 	private void loadPeople() {
 
@@ -105,8 +140,7 @@ public class Movement extends Thread implements MovementObserverable {
 	}
 
 	/**
-	 * @param sourceLevel
-	 * @param targetLevel
+	 * Moves the elevator from the sourceLevel to the targetLevel
 	 */
 	private void move() {
 		int sourceLevel = startLevel;
@@ -164,6 +198,9 @@ public class Movement extends Thread implements MovementObserverable {
 		movedObserver.updateSpeed(0);
 	}
 
+	/**
+	 * Stops processing this movement
+	 */
 	public void stopMovement() {
 		this.move = false;
 	}

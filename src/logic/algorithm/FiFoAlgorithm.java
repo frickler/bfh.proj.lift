@@ -21,12 +21,17 @@ public class FiFoAlgorithm extends Algorithm {
 
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
+	/**
+	 * 
+	 * @param building the algorithm should work with
+	 * @param controller holding the list of actions
+	 */
 	public FiFoAlgorithm(Building building, Controller controller) {
 		super(building, controller);
 	}
 
 	/**
-	 * 
+	 * Starts the processing of the actions
 	 */
 	@Override
 	public void run() {
@@ -58,6 +63,9 @@ public class FiFoAlgorithm extends Algorithm {
 
 	}
 
+	/**
+	 * Waits for 100 milliseconds
+	 */
 	private void hold() {
 		try {
 			Thread.sleep(100);

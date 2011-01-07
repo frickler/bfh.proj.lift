@@ -1,7 +1,11 @@
 package definition;
 
-import logic.Elevator;
-
+/**
+ * Observerable interface for the PeopleLoadedObserver. 
+ * 
+ * @author BFH-Boys
+ *
+ */
 public interface PeopleLoadedObserverable {
 	
 	/**
