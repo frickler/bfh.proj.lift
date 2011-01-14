@@ -187,7 +187,10 @@ public class Elevator implements VerticalTransporter {
 						&& act.getEndLevel() > getCurrentLevel()) {
 					nextLevel = act.getEndLevel();
 				}
-			}	
+			}
+			if (nextLevel == Integer.MAX_VALUE){
+				nextLevel = this.getMaxLevel();
+			}
 		}
 		return nextLevel;
 	}
@@ -214,6 +217,16 @@ public class Elevator implements VerticalTransporter {
 						&& act.getEndLevel() < getCurrentLevel()) {
 					nextLevel = act.getEndLevel();
 				}
+			}
+			if (nextLevel == Integer.MIN_VALUE){
+				
+				log4j.error("Invalid range: "+ this.direction);
+				for(int i = 0; i < actions.size(); i++){
+					actions.get(i).setTimestampElevatorEntered(new Date());
+				
+					log4j.debug(this.getName() + "" + actions.get(i));					
+				}
+				nextLevel = this.getMinLevel();
 			}
 		}
 		return nextLevel;
@@ -254,8 +267,8 @@ public class Elevator implements VerticalTransporter {
 				peopleOut += a.getPeopleAmount();
 				// currentPeople -= a.getPeopleAmount();
 				a.setTimestampElevatorLeft(new Date());
-				moved(a);
 				actions.remove(a);
+				moved(a);				
 				log4j.debug("Elevator " + this.hashCode() + " Action done: "
 						+ a + " left: " + actions.size());
 			}
@@ -269,6 +282,10 @@ public class Elevator implements VerticalTransporter {
 		if (getCurrentLevel() == target && actions.isEmpty()) {
 			isBusy = false;
 			return;
+		}
+		
+		if (getCurrentLevel() == target){
+			log4j.error(this.getName() + " - " + this  + ": Same Level");
 		}
 
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
@@ -350,7 +367,9 @@ public class Elevator implements VerticalTransporter {
 		this.setDirection(direction);
 		for(int i = 0; i < actions.size(); i++){
 			actions.get(i).setTimestampElevatorEntered(new Date());
+			log4j.debug(this.getName() + "" + actions.get(i));
 		}
+		
 		this.actions.addAll(actions);
 		moveToStart(startLevel);
 	}

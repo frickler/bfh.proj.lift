@@ -7,33 +7,32 @@ import definition.PeopleLoadedObserver;
 import definition.VerticalTransporter;
 
 /**
- * A Movement represents a motion. There can be different action
- * involved in this motion. 
- * <br>
+ * A Movement represents a motion. There can be different action involved in
+ * this motion. <br>
  * An example:
  * <ul>
- *     <li>Action1 with StartLevel 1 and EndLevel 10</li>
- *     <li>Action2 with StartLevel 1 and EndLevel 5</li>
- *</ul>
- * Lets assume the elevator is now in level 8. So there will be
- * 3 movement generated: 
+ * <li>Action1 with StartLevel 1 and EndLevel 10</li>
+ * <li>Action2 with StartLevel 1 and EndLevel 5</li>
+ * </ul>
+ * Lets assume the elevator is now in level 8. So there will be 3 movement
+ * generated:
  * <ol>
- * 	<li>Movement: Move elevator from level 8 to level 1 (move to start)</li>
- *  <li>Movement: Move elevator from level 1 to level 5</li>
- *  <li>Movement: Move elevator from level 4 to level 10</li>
- *  </ol>
- * So a movement is not the same as an action, but they are related. From a movement, 
- * multiple actions can profit.
- *  			 	
+ * <li>Movement: Move elevator from level 8 to level 1 (move to start)</li>
+ * <li>Movement: Move elevator from level 1 to level 5</li>
+ * <li>Movement: Move elevator from level 4 to level 10</li>
+ * </ol>
+ * So a movement is not the same as an action, but they are related. From a
+ * movement, multiple actions can profit.
+ * 
  * 
  * @author BFH-Boys
- *
+ * 
  */
 public class Movement extends Thread {
 
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
-	
+
 	// Time for one person to enter/exit the elevator in milliseconds
 	private final int TIME_TO_EXIT = 10000;
 	// Time for one level
@@ -54,14 +53,24 @@ public class Movement extends Thread {
 
 	/**
 	 * 
-	 * @param elevator Elevator who will be moved
-	 * @param startLevel Startlevel of this movement
-	 * @param endLevel Endlevel of this movement
-	 * @param peopleIn Amount of people enter the elevator in the startlevel
-	 * @param peopleOut Amount of people exit the elevator in the startlevel
-	 * @param simulationSpeed Speed of the simulation. Affects both the time to enter/exit and the movement speed
-	 * @param movedObserver This observer gets called after each step/movement the elevator does (callback)
-	 * @param peopleLoadedObserver This observer gets called after people enter/exit the elevator
+	 * @param elevator
+	 *            Elevator who will be moved
+	 * @param startLevel
+	 *            Startlevel of this movement
+	 * @param endLevel
+	 *            Endlevel of this movement
+	 * @param peopleIn
+	 *            Amount of people enter the elevator in the startlevel
+	 * @param peopleOut
+	 *            Amount of people exit the elevator in the startlevel
+	 * @param simulationSpeed
+	 *            Speed of the simulation. Affects both the time to enter/exit
+	 *            and the movement speed
+	 * @param movedObserver
+	 *            This observer gets called after each step/movement the
+	 *            elevator does (callback)
+	 * @param peopleLoadedObserver
+	 *            This observer gets called after people enter/exit the elevator
 	 */
 	public Movement(VerticalTransporter elevator, int startLevel, int endLevel,
 			int peopleIn, int peopleOut, int simulationSpeed,
@@ -81,11 +90,18 @@ public class Movement extends Thread {
 
 	/**
 	 * 
-	 * @param elevator Elevator who will be moved
-	 * @param startLevel Startlevel of this movement
-	 * @param endLevel Endlevel of this movement
-	 * @param simulationSpeed Speed of the simulation. Affects both the time to enter/exit and the movement speed
-	 * @param movementObserver This observer gets called after each step/movement the elevator does (callback)
+	 * @param elevator
+	 *            Elevator who will be moved
+	 * @param startLevel
+	 *            Startlevel of this movement
+	 * @param endLevel
+	 *            Endlevel of this movement
+	 * @param simulationSpeed
+	 *            Speed of the simulation. Affects both the time to enter/exit
+	 *            and the movement speed
+	 * @param movementObserver
+	 *            This observer gets called after each step/movement the
+	 *            elevator does (callback)
 	 */
 	public Movement(Elevator elevator, int startLevel, int endLevel,
 			int simulationSpeed, MovementObserver movementObserver) {
@@ -96,12 +112,11 @@ public class Movement extends Thread {
 	/**
 	 * Starts loading the people and moving the elevator
 	 */
-	@Override	
+	@Override
 	public void run() {
 
-		log4j.debug("Moving "+elevator.getName() + " from "
-				+ startLevel + " to " + endLevel);
-
+		log4j.debug("Moving " + elevator.getName() + " from " + startLevel
+				+ " to " + endLevel);
 		loadPeople();
 		move();
 
@@ -110,12 +125,13 @@ public class Movement extends Thread {
 	}
 
 	/**
-	 * Loads and unloads the people in one level.
-	 * This takes a certain amount of time
+	 * Loads and unloads the people in one level. This takes a certain amount of
+	 * time
 	 */
 	private void loadPeople() {
 
-		log4j.debug(elevator.getName()+" LoadPeople - In: " + peopleIn + " Out: " + peopleOut);
+		log4j.debug(elevator.getName() + " LoadPeople - In: " + peopleIn
+				+ " Out: " + peopleOut);
 
 		for (int i = 0; i < peopleOut; i++) {
 			try {
@@ -179,7 +195,7 @@ public class Movement extends Thread {
 						.getMaxSpeed() : currentSpeed;
 			}
 			movedObserver.updateSpeed(currentSpeed);
-			
+
 			milage += currentSpeed;
 			// log4j.debug((sign * currentSpeed) / 100);
 			movedObserver.stepDone(this, ((sign * currentSpeed) / 100));
@@ -187,10 +203,10 @@ public class Movement extends Thread {
 			try {
 				Thread.sleep((int) (TICK_TIME / simulationSpeed));
 				elevator.addTimeInMotion(TICK_TIME);
-				if(!elevator.isLoaded()){
+				if (!elevator.isLoaded()) {
 					elevator.addTimeInMotionEmpty(TICK_TIME);
 				}
-				
+
 			} catch (InterruptedException e) {
 
 			}

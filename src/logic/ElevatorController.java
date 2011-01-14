@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import logic.algorithm.BetterFiFoAlgorithm;
 import logic.algorithm.BetterPickupFifoAlgorithm;
 import logic.algorithm.FiFoAlgorithm;
 import logic.algorithm.PickUpFifoAlgorithm;
@@ -57,6 +58,8 @@ public class ElevatorController implements Controller {
 			this.algorithm = new PickUpFifoAlgorithm(building, this);
 		} else if (name.equalsIgnoreCase("BetterPickupFifoAlgorithm")) {
 			this.algorithm = new BetterPickupFifoAlgorithm(building, this);
+		} else if (name.equalsIgnoreCase("BetterFifoAlgorithm")) {
+			this.algorithm = new BetterFiFoAlgorithm(building, this);
 		} else {
 			this.algorithm = new FiFoAlgorithm(building, this);
 		}
@@ -249,6 +252,7 @@ public class ElevatorController implements Controller {
 			simulation.setSimulationSpeed(this.simulationSpeed);
 			simulation.setPath(path);
 			building.setSimulationSpeed(simulationSpeed);
+			startController();
 			simulation.addAction(actions);
 			simulation.start();
 		} catch (IllegalActionException e) {

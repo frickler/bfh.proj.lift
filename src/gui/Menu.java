@@ -77,7 +77,7 @@ public class Menu {
 			}
 		});
 		menu.add(menuItem);
-		
+
 		// a group of JMenuItems
 		menuItem = new JMenuItem("Simulation", KeyEvent.VK_S);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -312,25 +312,38 @@ public class Menu {
 				ActionEvent.ALT_MASK));
 		btnGroup.add(rbMenuItem);
 		submenu.add(rbMenuItem);
-		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("FifoAlgorithm"));
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase(
+				"FifoAlgorithm"));
 		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
 				"FifoAlgorithm"));
 
-		rbMenuItem = new JRadioButtonMenuItem("Pickup FiFo Algorithm");
+		rbMenuItem = new JRadioButtonMenuItem("Better FiFo Algorithm");
 		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6,
 				ActionEvent.ALT_MASK));
 		btnGroup.add(rbMenuItem);
 		submenu.add(rbMenuItem);
-		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("PickupFifoAlgorithm"));
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase(
+				"BetterFifoAlgorithm"));
 		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
-				"PickupFifoAlgorithm"));
+				"BetterFifoAlgorithm"));
 
-		rbMenuItem = new JRadioButtonMenuItem("Better Pickup FiFo Algorithm");
+		rbMenuItem = new JRadioButtonMenuItem("Pickup FiFo Algorithm");
 		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7,
 				ActionEvent.ALT_MASK));
 		btnGroup.add(rbMenuItem);
 		submenu.add(rbMenuItem);
-		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase("BetterPickupFifoAlgorithm"));
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase(
+				"PickupFifoAlgorithm"));
+		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
+				"PickupFifoAlgorithm"));
+
+		rbMenuItem = new JRadioButtonMenuItem("Better Pickup FiFo Algorithm");
+		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8,
+				ActionEvent.ALT_MASK));
+		btnGroup.add(rbMenuItem);
+		submenu.add(rbMenuItem);
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase(
+				"BetterPickupFifoAlgorithm"));
 		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
 				"BetterPickupFifoAlgorithm"));
 

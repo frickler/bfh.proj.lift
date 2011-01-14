@@ -208,6 +208,8 @@ public class FrameMain extends JFrame implements Runnable {
 		if (resetEvaluation) {
 			resetEvaluations();
 		}
+		
+		controller.stopController();
 
 		if (tower != null) {
 			Building old = controller.getBuilding();
