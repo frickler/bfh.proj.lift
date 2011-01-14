@@ -19,7 +19,6 @@ import exceptions.ElevatorConfigException;
 import exceptions.IllegalRangeException;
 import exceptions.IllegalStartLevelException;
 
-
 public class Elevator implements VerticalTransporter {
 
 	// Logger
@@ -65,7 +64,7 @@ public class Elevator implements VerticalTransporter {
 	private int identityNumber;
 
 	public static int elevatorCounter = 0;
-	
+
 	public Elevator(int minLevel, int maxLevel, int maxPeople, int startLevel)
 			throws Exception {
 		this(minLevel, maxLevel, maxPeople, startLevel, 40f, 0.5f);
@@ -99,7 +98,7 @@ public class Elevator implements VerticalTransporter {
 		this.maxPeople = maxPeople;
 		this.currentPosition = startLevel;
 		this.maxSpeed = maxSpeed;
-		this.acceleration = acceleration;		
+		this.acceleration = acceleration;
 		this.actions = new LinkedList<Action>();
 	}
 
@@ -188,9 +187,6 @@ public class Elevator implements VerticalTransporter {
 					nextLevel = act.getEndLevel();
 				}
 			}
-			if (nextLevel == Integer.MAX_VALUE){
-				nextLevel = this.getMaxLevel();
-			}
 		}
 		return nextLevel;
 	}
@@ -218,16 +214,6 @@ public class Elevator implements VerticalTransporter {
 					nextLevel = act.getEndLevel();
 				}
 			}
-			if (nextLevel == Integer.MIN_VALUE){
-				
-				log4j.error("Invalid range: "+ this.direction);
-				for(int i = 0; i < actions.size(); i++){
-					actions.get(i).setTimestampElevatorEntered(new Date());
-				
-					log4j.debug(this.getName() + "" + actions.get(i));					
-				}
-				nextLevel = this.getMinLevel();
-			}
 		}
 		return nextLevel;
 	}
@@ -237,10 +223,10 @@ public class Elevator implements VerticalTransporter {
 		int target;
 
 		if (direction == Direction.UP) {
-			log4j.debug(getName()+" Direction = Up");
+			log4j.debug(getName() + " Direction = Up");
 			target = getNextHigherLevel();
 		} else {
-			log4j.debug(getName()+" Direction = Down");
+			log4j.debug(getName() + " Direction = Down");
 			target = getNextLowerLevel();
 		}
 
@@ -257,8 +243,6 @@ public class Elevator implements VerticalTransporter {
 		// Amount of people enter/leave elevator on this floor
 		int peopleIn = 0;
 		int peopleOut = 0;
-		// get target floor
-		int target = getTarget();
 
 		// Remove processed actions
 		for (int i = actions.size() - 1; i >= 0; i--) {
@@ -268,24 +252,22 @@ public class Elevator implements VerticalTransporter {
 				// currentPeople -= a.getPeopleAmount();
 				a.setTimestampElevatorLeft(new Date());
 				actions.remove(a);
-				moved(a);				
+				moved(a);
 				log4j.debug("Elevator " + this.hashCode() + " Action done: "
 						+ a + " left: " + actions.size());
 			}
 			if (a.getStartLevel() == getCurrentLevel()) {
 				peopleIn += a.getPeopleAmount();
 				// currentPeople += a.getPeopleAmount();
-				a.setTimestampElevatorEntered(new Date()); //todo new date?
+				a.setTimestampElevatorEntered(new Date()); // todo new date?
 			}
 		}
-
-		if (getCurrentLevel() == target && actions.isEmpty()) {
-			isBusy = false;
-			return;
-		}
 		
-		if (getCurrentLevel() == target){
-			log4j.error(this.getName() + " - " + this  + ": Same Level");
+		// get target floor
+		int target = getTarget();
+
+		if (actions.isEmpty()) {
+			target = getCurrentLevel();
 		}
 
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
@@ -299,12 +281,12 @@ public class Elevator implements VerticalTransporter {
 					@Override
 					public void stepDone(Movement movement, double stepSize) {
 						currentPosition += stepSize;
-						//log4j.debug("Current Position: " + currentPosition);
+						// log4j.debug("Current Position: " + currentPosition);
 					}
 
 					@Override
 					public void updateSpeed(double speed) {
-						currentSpeed = speed;						
+						currentSpeed = speed;
 					}
 
 				}, new PeopleLoadedObserver() {
@@ -334,17 +316,17 @@ public class Elevator implements VerticalTransporter {
 			return;
 		}
 		final int levelsStarted = getCurrentLevel() - startLevel;
-		this.movement = new Movement(this, getCurrentLevel(), startLevel, this.simulationSpeed, 
-				new MovementObserver() {
+		this.movement = new Movement(this, getCurrentLevel(), startLevel,
+				this.simulationSpeed, new MovementObserver() {
 
 					@Override
 					public void moved(Movement movement) {
 						drivenLevelsEmpty += Math.abs(levelsStarted);
 						drivenLevels += Math.abs(levelsStarted);
 						Elevator.this.move();
-							
+
 					}
-					
+
 					@Override
 					public void updateSpeed(double speed) {
 						currentSpeed = speed;
@@ -352,9 +334,9 @@ public class Elevator implements VerticalTransporter {
 					}
 
 					@Override
-					public void stepDone(Movement movement, double stepSize) {	
+					public void stepDone(Movement movement, double stepSize) {
 						currentPosition += stepSize;
-						}
+					}
 				});
 
 		this.movement.start();
@@ -365,11 +347,11 @@ public class Elevator implements VerticalTransporter {
 	public void move(List<Action> actions, int startLevel, Direction direction) {
 		this.isBusy = true;
 		this.setDirection(direction);
-		for(int i = 0; i < actions.size(); i++){
+		for (int i = 0; i < actions.size(); i++) {
 			actions.get(i).setTimestampElevatorEntered(new Date());
 			log4j.debug(this.getName() + "" + actions.get(i));
 		}
-		
+
 		this.actions.addAll(actions);
 		moveToStart(startLevel);
 	}
@@ -513,22 +495,23 @@ public class Elevator implements VerticalTransporter {
 
 	/**
 	 * Add on the Element @e all attributes of the elevator class as attributes
+	 * 
 	 * @param e
 	 */
 	public Node getXML(Element e) {
-		e.setAttribute("simulationSpeed",simulationSpeed+"");
-		e.setAttribute("minLevel",minLevel+"");
-		e.setAttribute("maxLevel",maxLevel+"");
-		e.setAttribute("currentPosition",currentPosition+"");
-		e.setAttribute("maxSpeed",maxSpeed+"");
-		e.setAttribute("maxPeople",maxPeople+"");
-		e.setAttribute("transportedPeople",transportedPeople+"");
-		e.setAttribute("timeInMotion",timeInMotion+"");
-		e.setAttribute("timeInMotionEmpty",timeInMotionEmpty+"");
-		//todo add simulation time as parameter
-		e.setAttribute("timeSillStand",getTimeSillStand(-1)+"");
-		e.setAttribute("drivenLevels",drivenLevels+"");
-		e.setAttribute("drivenLevelsEmpty",drivenLevelsEmpty+"");
+		e.setAttribute("simulationSpeed", simulationSpeed + "");
+		e.setAttribute("minLevel", minLevel + "");
+		e.setAttribute("maxLevel", maxLevel + "");
+		e.setAttribute("currentPosition", currentPosition + "");
+		e.setAttribute("maxSpeed", maxSpeed + "");
+		e.setAttribute("maxPeople", maxPeople + "");
+		e.setAttribute("transportedPeople", transportedPeople + "");
+		e.setAttribute("timeInMotion", timeInMotion + "");
+		e.setAttribute("timeInMotionEmpty", timeInMotionEmpty + "");
+		// todo add simulation time as parameter
+		e.setAttribute("timeSillStand", getTimeSillStand(-1) + "");
+		e.setAttribute("drivenLevels", drivenLevels + "");
+		e.setAttribute("drivenLevelsEmpty", drivenLevelsEmpty + "");
 		return e;
 	}
 
@@ -550,36 +533,38 @@ public class Elevator implements VerticalTransporter {
 
 	@Override
 	public String getName() {
-		return "Elevator"+getIdentityNumber()+" "+hashCode();
+		return "Elevator" + getIdentityNumber() + " " + hashCode();
 	}
 
 	@Override
 	public int getTimeSillStand(int TotalTime) {
 		// TODO check if correct (what s with the people loading time
-		return (int)(TotalTime - getTimeInMotion());
+		return (int) (TotalTime - getTimeInMotion());
 	}
 
 	@Override
 	public int getAuslastung(int i) {
-		
-		return (int)(getTimeInMotion()/i * 100);
+
+		return (int) (getTimeInMotion() / i * 100);
 	}
 
 	/***
 	 * Check if the elevator is not busy and the action's end- and startlevel
 	 * are in the area of the elevator
-	 * @param a Action to check
+	 * 
+	 * @param a
+	 *            Action to check
 	 * @return if the elevator is able to perform the action
 	 */
 	public boolean canPerformAction(Action a) {
-		
-		if(isBusy())
+
+		if (isBusy())
 			return false;
-		
-		if(getMinLevel() <= a.getStartLevel()
-		&& getMaxLevel() >= a.getStartLevel()
-		&& getMinLevel() <= a.getEndLevel()
-		&& getMaxLevel() >= a.getEndLevel()){
+
+		if (getMinLevel() <= a.getStartLevel()
+				&& getMaxLevel() >= a.getStartLevel()
+				&& getMinLevel() <= a.getEndLevel()
+				&& getMaxLevel() >= a.getEndLevel()) {
 			return true;
 		}
 		return false;

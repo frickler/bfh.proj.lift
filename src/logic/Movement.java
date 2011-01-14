@@ -118,7 +118,9 @@ public class Movement extends Thread {
 		log4j.debug("Moving " + elevator.getName() + " from " + startLevel
 				+ " to " + endLevel);
 		loadPeople();
-		move();
+		if (startLevel != endLevel) {
+			move();
+		}
 
 		// update statistics
 		movedObserver.moved(this);
