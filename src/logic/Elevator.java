@@ -532,4 +532,10 @@ public class Elevator implements VerticalTransporter {
 		return "Elevator"+getIdentityNumber()+" "+hashCode();
 	}
 
+	@Override
+	public int getTimeSillStand(int TotalTime) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

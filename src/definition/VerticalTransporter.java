@@ -68,6 +68,12 @@ public interface VerticalTransporter {
 	 * @return sum of all driven levels
 	 */
 	public int getDrivenLevels();
+	
+	/**
+	 * 
+	 * @return the time the elevator doesn't move
+	 */
+	public int getTimeSillStand(int TotalTime);
 
 	/**
 	 * 

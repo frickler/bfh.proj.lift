@@ -99,8 +99,8 @@ public class StatisticAction extends Statistic {
 			log4j.debug("from " + from + " to " + to);
 			log4j.debug("From: " + getDateTime(ia, to).getTime());
 			log4j.debug("To: " + getDateTime(ia, from).getTime());
-			int spaninseconds = (int) ((getDateTime(ia, to).getTime() - getDateTime(
-					ia, from).getTime()) / 1000);
+			int spaninseconds = (int) (getDateTime(ia, to).getTime() - getDateTime(
+					ia, from).getTime());
 			if (spaninseconds > max) {
 				max = spaninseconds;
 			}

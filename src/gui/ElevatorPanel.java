@@ -143,6 +143,8 @@ public class ElevatorPanel extends JPanel {
 		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();
 		sInfo += "<br/>Levels driven: "+elevator.getDrivenLevels()+" empty: "+elevator.getDrivenLevelsEmpty();
 		sInfo += "<br/>TimeInMotion: "+Math.round(elevator.getTimeInMotion()/1000)+" empty: "+Math.round(elevator.getTimeInMotionEmpty()/1000);
+		sInfo += "<br/>People transported: "+elevator.getTransportedPeople();
+		
 		sInfo +=  "</h4></html>";
 				
 		infolabel.setText(sInfo);
