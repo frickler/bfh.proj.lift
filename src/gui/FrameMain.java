@@ -279,7 +279,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 				Element root = s.getXMLSimulation();
 				SimpleDateFormat dateformat = new SimpleDateFormat(
-						"yyyy-MM-dd_hh_mm_ss");
+						"yyyy-MM-dd_HH_mm_ss");
 
 				String pathName = s.getPath() + dateformat.format(new Date())
 						+ "_SimulationResult.xml";

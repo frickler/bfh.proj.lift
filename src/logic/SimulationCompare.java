@@ -58,7 +58,7 @@ public class SimulationCompare {
 			trans = transFact.newTransformer(xsltSource);
 
 			SimpleDateFormat dateformat = new SimpleDateFormat(
-					"yyyy-MM-dd_hh_mm_ss");
+					"yyyy-MM-dd_HH_mm_ss");
 			String pathName = xslFile.getParentFile() +"\\"+ dateformat.format(new Date())
 					+ "_CompareResult.html";
 			trans.transform(source, new StreamResult(pathName));

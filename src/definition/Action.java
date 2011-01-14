@@ -43,6 +43,9 @@ public abstract class Action implements ActionObservable {
 		if(peopleAmount <= 0){
 			throw new IllegalArgumentException("peopleAmount cannot be zero");
 		}
+		if(startLevel == endLevel){
+			throw new IllegalArgumentException("endLevel cannot be same as startLevel");
+		}
 		this.startLevel = startLevel;
 		this.endLevel = endLevel;
 		this.peopleAmount = peopleAmount;

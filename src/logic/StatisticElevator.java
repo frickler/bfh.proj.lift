@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import definition.VerticalTransporter;
 import definition.Statistic;
 
@@ -49,18 +47,29 @@ public class StatisticElevator extends Statistic {
 		summary.append(getSubTitle("Summary"));
 		try {
 
-			summary.append(getFormattedText("=>Total driven levels", getSummaryOf(Attriubte.DrivenLevel),
-					"levels"));
-			summary.append(getFormattedText("=>Total driven levels filled,", getSummaryOf(Attriubte.DrivenLevelFilled),
-			"levels"));
+			summary.append(getFormattedText("=>Total driven levels", 
+					getSummaryOf(Attriubte.DrivenLevel),"levels"));
+			
+			summary.append(getFormattedText("=>Total driven levels filled,", 
+					getSummaryOf(Attriubte.DrivenLevelFilled),"levels"));
+			
 			summary.append(getFormattedText("=>Total driven levels empty",
 					getSummaryOf(Attriubte.DrivenLevelEmpty), "levels"));
-			summary.append(getFormattedText("=>Total time in motion", getSummaryOf(Attriubte.TimeInMotion),
-					"seconds"));
-			summary.append(getFormattedText("=>Total time in motion empty",
+			
+			summary.append(getFormattedText("=>Total time in motion (ms)", 
+					getSummaryOf(Attriubte.TimeInMotion),"seconds"));
+			
+			summary.append(getFormattedText("=>Total time in motion empty (ms)",
 					getSummaryOf(Attriubte.TimeInMotionEmpty), "seconds"));
-			summary.append(getFormattedText("=>Total transported people", getSummaryOf(Attriubte.TrasportedPepole),
+			
+			summary.append(getFormattedText("=>Total transported people (ms)", 
+					getSummaryOf(Attriubte.TrasportedPepole),
 					"people"));
+			
+			summary.append(getFormattedText("=>Auslastung (%)", 
+					getSummaryOf(Attriubte.Auslastung),
+					"%"));
+			
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			summary.append(e1.getMessage());
@@ -75,7 +84,7 @@ public class StatisticElevator extends Statistic {
 	 *
 	 */
 	public enum Attriubte {
-		TrasportedPepole, DrivenLevel,DrivenLevelFilled, DrivenLevelEmpty, TimeInMotion,TimeInMotionFilled, TimeInMotionEmpty
+		TrasportedPepole, DrivenLevel,DrivenLevelFilled, DrivenLevelEmpty, TimeInMotion,TimeInMotionFilled, TimeInMotionEmpty, TimeStillStand, Auslastung
 	};
 /**
  * Gets a summary (min,max,avg,sum) of the attribute @a
@@ -132,6 +141,12 @@ public class StatisticElevator extends Statistic {
 			return (int) (e.getTimeInMotion() - e.getTimeInMotionEmpty());	
 		case TimeInMotionEmpty:
 			return (int) (e.getTimeInMotionEmpty());
+		case TimeStillStand:
+			//todo use simulation duration as parameter
+			return (int) (e.getTimeSillStand((int)e.getTimeInMotion()*2));
+		case Auslastung:
+			//todo use simulation duration as parameter
+			return (int) (e.getAuslastung((int)e.getTimeInMotion()*2));
 		}
 		throw new Exception("Actions datetype not defined");
 	}
@@ -169,19 +184,31 @@ public class StatisticElevator extends Statistic {
 
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
 					"Total gefahrene Stockwerke",getSummaryOf(Attriubte.DrivenLevel)));
+			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
 					"Total gefahrene Stockwerke beladen",getSummaryOf(Attriubte.DrivenLevelFilled)));
+			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
 					"Stockwerke leer gefahren",getSummaryOf(Attriubte.DrivenLevelEmpty)));
+			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
-					"Totale Bewegungszeit",getSummaryOf(Attriubte.TimeInMotion)));
+					"Totale Bewegungszeit (ms)",getSummaryOf(Attriubte.TimeInMotion)));
+			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
-					"Totale Bewegungszeit beladen",getSummaryOf(Attriubte.TimeInMotionFilled)));
+					"Totale Bewegungszeit beladen (ms)",getSummaryOf(Attriubte.TimeInMotionFilled)));
+			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
-					"Total Bewegungszeit unbeladen",getSummaryOf(Attriubte.TimeInMotionEmpty)));
-			sum.appendChild(getMeasureElement(
-					doc.createElement("Measure"),
+					"Total Bewegungszeit unbeladen (ms)",getSummaryOf(Attriubte.TimeInMotionEmpty)));
+			
+			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
+					"Stillstandzeit (ms)",getSummaryOf(Attriubte.TimeStillStand)));
+			
+			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
+					"Auslastung %",getSummaryOf(Attriubte.Auslastung)));
+			
+			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
 					"Transportierte Personen",getSummaryOf(Attriubte.TrasportedPepole)));
+			
 			n.appendChild(sum);
 			
 			for(VerticalTransporter e : elevators){

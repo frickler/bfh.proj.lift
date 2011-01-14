@@ -55,7 +55,7 @@ public class ElevatorPanel extends JPanel {
 		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
 		infolabel.setFont(f);
 		infolabel.setVerticalTextPosition(JLabel.TOP);
-		infolabel.setBounds(0, 0, 200, 180);	
+		infolabel.setBounds(0, 0, 240, 180);	
 		this.setLayout(null);
 		this.add(infolabel);
 		background.setBackground(backGroundColor);

@@ -2,6 +2,7 @@ package logic;
 
 import java.io.Console;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,18 +72,23 @@ public class Simulation extends Thread {
 		while (isRunning()) {
 			if (elevatorController.getDoneActions().size() != actionsToDo) {
 				for (int i = 0; i < actions.size(); i++) {
+					log4j.debug("Action to give the controller "+actions.size());
 					Boolean add = false;
 					if (actions.get(i) instanceof DelayedElevatorAction) {
 
 						DelayedElevatorAction di = (DelayedElevatorAction) actions
 								.get(i);
-						Calendar d = Calendar.getInstance();
-						d.setTimeInMillis(System.currentTimeMillis());
-						d.add(Calendar.SECOND, di.getDelayInSeconds()
+						Calendar addTime = Calendar.getInstance();
+						addTime.setTime(this.startTime);
+						addTime.add(Calendar.SECOND, di.getDelayInSeconds()
 								/ simulationSpeed);
-						Calendar start = Calendar.getInstance();
-						start.setTime(this.startTime);
-						if (d.after(start)) {
+						Calendar currentTime = Calendar.getInstance();
+						currentTime.setTimeInMillis(System.currentTimeMillis());
+						
+						SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss");
+						
+						log4j.debug("Compare (ActionAddTime):"+dateformat.format(addTime.getTime())+" to CurrentTime():"+dateformat.format(currentTime.getTime()));
+						if (currentTime.after(addTime)) {
 							add = true;
 						}
 					} else {
@@ -108,21 +114,21 @@ public class Simulation extends Thread {
 			} else {
 				stopSimulation();
 				log4j.debug("Simulator stopped: all action are completed by the controller");
-				int spaninseconds = getDurationInSeconds();
+				
 				this.result = "Started @ " + this.startTime.toString()
 						+ " and ended @" + this.endTime.toString();
-				this.result += "\nIt took " + spaninseconds
-						+ " seconds to complete all actions";
+				this.result += "\nIt took " + getDurationInMilliSeconds()
+						+ " miliseconds to complete all actions";
 				this.result += "\nSimulation speed was: " + simulationSpeed
-						+ " in real time the simulation would have taken "
-						+ spaninseconds * simulationSpeed + " seconds";
+						+ " in real time the simulation would have taken: "
+						+ getRealTimeDurationFormatted();
 				log4j.debug(this.result);
 			}
 		}
 	}
 
-	private int getDurationInSeconds() {
-		return (int) (this.endTime.getTime() - this.startTime.getTime()) / 1000;
+	private int getDurationInMilliSeconds() {
+		return (int) (this.endTime.getTime() - this.startTime.getTime());
 	}
 
 	public void setRunning(Boolean running) {
@@ -181,10 +187,31 @@ public class Simulation extends Thread {
 		Element n = doc.createElement("simluation");
 		n.setAttribute("startDate", startTime.toString());
 		n.setAttribute("endDate", endTime.toString());
-		n.setAttribute("durationInSec", getDurationInSeconds() + "");
+		n.setAttribute("durationRealTime", getRealTimeDuration() + "");
+		n.setAttribute("durationRealTimeFormatted", getRealTimeDurationFormatted() + "");
+		n.setAttribute("durationInMiliSec", getDurationInMilliSeconds() + "");
 		n.setAttribute("simluationSpeed", this.simulationSpeed + "");
 		n.setAttribute("algorithm", elevatorController.getAlgorithmName() + "");
 		return n;
+	}
+
+	private String getRealTimeDurationFormatted() {
+		int timeSec = getRealTimeDuration()/1000;
+
+		if(timeSec > 3600*24){ // grösser als ein tag
+			return timeSec / 3600 +" hour(s)";
+		}
+		
+		if(timeSec > 3600){ // grösser als eine stunde
+			return timeSec / 60 +" minute(s)";
+		}
+		
+		// grösser als eine minute
+			return timeSec +" seconds(s)";
+	}
+
+	private int getRealTimeDuration() {
+		return this.getDurationInMilliSeconds()*simulationSpeed;
 	}
 
 	public Element getXMLSimulation() throws ParserConfigurationException {

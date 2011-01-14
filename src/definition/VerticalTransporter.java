@@ -185,6 +185,12 @@ public interface VerticalTransporter {
 	 */
 	public void addTimeInMotionEmpty(int milliseconds);
 
+	/**
+	 * 
+	 * @return gets the name of the parameter
+	 */
 	public String getName();
+
+	public int getAuslastung(int i);
 
 }

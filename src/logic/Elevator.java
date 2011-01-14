@@ -8,6 +8,8 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import definition.Action;
 import definition.Direction;
 import definition.MovementObserver;
@@ -468,7 +470,6 @@ public class Elevator implements VerticalTransporter {
 
 	@Override
 	public int getCurrentPeople() {
-		// return this.currentPeople; TODO use this return
 		return currentPeople;
 	}
 
@@ -505,6 +506,8 @@ public class Elevator implements VerticalTransporter {
 		e.setAttribute("transportedPeople",transportedPeople+"");
 		e.setAttribute("timeInMotion",timeInMotion+"");
 		e.setAttribute("timeInMotionEmpty",timeInMotionEmpty+"");
+		//todo add simulation time as parameter
+		e.setAttribute("timeSillStand",getTimeSillStand(-1)+"");
 		e.setAttribute("drivenLevels",drivenLevels+"");
 		e.setAttribute("drivenLevelsEmpty",drivenLevelsEmpty+"");
 		return e;
@@ -528,14 +531,19 @@ public class Elevator implements VerticalTransporter {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return "Elevator"+getIdentityNumber()+" "+hashCode();
 	}
 
 	@Override
 	public int getTimeSillStand(int TotalTime) {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO check if correct (what s with the people loading time
+		return (int)(TotalTime - getTimeInMotion());
+	}
+
+	@Override
+	public int getAuslastung(int i) {
+		
+		return (int)(getTimeInMotion()/i * 100);
 	}
 
 }
