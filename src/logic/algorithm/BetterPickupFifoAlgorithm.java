@@ -44,6 +44,7 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 					if (action.getStartLevel() > action.getEndLevel()) {
 						dir = Direction.DOWN;
 					}
+					checkCombination(ele, action);
 					List<Action> acts = getController().getActions(
 							action.getStartLevel(), action.getEndLevel(),
 							ele.getMaxPeople() - action.getPeopleAmount());

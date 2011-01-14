@@ -565,4 +565,24 @@ public class Elevator implements VerticalTransporter {
 		return (int)(getTimeInMotion()/i * 100);
 	}
 
+	/***
+	 * Check if the elevator is not busy and the action's end- and startlevel
+	 * are in the area of the elevator
+	 * @param a Action to check
+	 * @return if the elevator is able to perform the action
+	 */
+	public boolean canPerformAction(Action a) {
+		
+		if(isBusy())
+			return false;
+		
+		if(getMinLevel() <= a.getStartLevel()
+		&& getMaxLevel() >= a.getStartLevel()
+		&& getMinLevel() <= a.getEndLevel()
+		&& getMaxLevel() >= a.getEndLevel()){
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -42,6 +42,7 @@ public class BetterFiFoAlgorithm extends Algorithm {
 			Action action = getController().getActionWithHighestPriority();
 			while (action != null) {
 				Elevator ele = getController().getClosestFreeElevator(action);
+				checkCombination(ele, action);
 				if (ele != null) {
 					ele.move(action);
 					action = null;

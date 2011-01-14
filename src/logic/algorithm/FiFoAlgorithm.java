@@ -42,13 +42,9 @@ public class FiFoAlgorithm extends Algorithm {
 				for (VerticalTransporter i : getBuilding().getElevators()) {
 
 					Elevator ele = (Elevator) i;
-					// Look for a non-busy elevator with a fitting range
-					// (MinLevel & MaxLevel)
-					if (!i.isBusy()
-							&& ele.getMinLevel() <= action.getStartLevel()
-							&& ele.getMaxLevel() >= action.getStartLevel()
-							&& ele.getMinLevel() <= action.getEndLevel()
-							&& ele.getMaxLevel() >= action.getEndLevel()) {
+					// Look for a non-busy elevator with a fitting range (MinLevel & MaxLevel)
+					if (ele.canPerformAction(action)) {
+						checkCombination(ele, action);
 						ele.move(action);
 						action = null;
 						break;

@@ -45,15 +45,12 @@ public class PickUpFifoAlgorithm extends Algorithm {
 					Elevator ele = (Elevator) i;
 					// Look for a non-busy elevator with a fitting range
 					// (MinLevel & MaxLevel)
-					if (!i.isBusy()
-							&& ele.getMinLevel() <= action.getStartLevel()
-							&& ele.getMaxLevel() >= action.getStartLevel()
-							&& ele.getMinLevel() <= action.getEndLevel()
-							&& ele.getMaxLevel() >= action.getEndLevel()) {
+					if (ele.canPerformAction(action)) {
 						Direction dir = Direction.UP;
 						if (action.getStartLevel() > action.getEndLevel()) {
 							dir = Direction.DOWN;
 						}
+						checkCombination(ele, action);
 						List<Action> acts = getController().getActions(
 								action.getStartLevel(), action.getEndLevel(),
 								ele.getMaxPeople() - action.getPeopleAmount());

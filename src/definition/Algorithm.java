@@ -1,5 +1,8 @@
 package definition;
 
+import exceptions.IllegalActionException;
+import logic.ElevatorAction;
+
 /**
  * Abstract class which provides a skeleton of an algorithm. Each algorithm runs
  * as a separate thread and is typically controlled by an object which
@@ -57,6 +60,26 @@ public abstract class Algorithm implements Runnable {
 	 */
 	protected void setRunning(boolean isRunning) {
 		this.isRunning = isRunning;
+	}
+	
+	/**
+	 * If the allocated Action @a has more than the MaxPeople limit of
+	 * the elevator @e, we generate a new action with the superfluous peolple
+	 * @param e the Elevator witch perform the action
+	 * @param a the Action to perform
+	 */
+	protected void checkCombination(VerticalTransporter e,Action a){
+		
+		if(e.getMaxPeople() < a.getPeopleAmount()){
+			int pepoleLeft  = a.getPeopleAmount()-e.getMaxPeople();
+			a.setPeopleAmount(a.getPeopleAmount()-pepoleLeft);
+			try {
+				controller.performAction(new ElevatorAction(a.getStartLevel(), a.getEndLevel(), pepoleLeft));
+			} catch (IllegalActionException e1) {				
+				e1.printStackTrace();
+			}
+		}
+		
 	}
 
 }
