@@ -1,6 +1,5 @@
 package logic;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -164,21 +163,27 @@ public class ElevatorController implements Controller {
 					// ensure that action goes in the same directory as the
 					// elevator
 					if ((action.getStartLevel() < action.getEndLevel()) == up) {
-						// ensure that the elevator is not overloaded
-						if (action.getPeopleAmount() > remainingCapacity) {
-							log4j.debug("Remaining capacity"
-									+ remainingCapacity);
-							// Split action so that only a few people move
-							int splitedPeopleAmount = action.getPeopleAmount()
-									- remainingCapacity;
-							splitedAction = new ElevatorAction(
-									action.getStartLevel(),
-									action.getEndLevel(), splitedPeopleAmount);
-							action.setPeopleAmount(remainingCapacity);
+						// Ensure elevator range
+						if ((action.getEndLevel() <= endlevel && up)
+								|| (action.getEndLevel() >= endlevel && !up)) {
+
+							// ensure that the elevator is not overloaded
+							if (action.getPeopleAmount() > remainingCapacity) {
+								log4j.debug("Remaining capacity"
+										+ remainingCapacity);
+								// Split action so that only a few people move
+								int splitedPeopleAmount = action
+										.getPeopleAmount() - remainingCapacity;
+								splitedAction = new ElevatorAction(
+										action.getStartLevel(),
+										action.getEndLevel(),
+										splitedPeopleAmount);
+								action.setPeopleAmount(remainingCapacity);
+							}
+							// Descend the free spaces in the elevator
+							remainingCapacity -= action.getPeopleAmount();
+							actionsOfLevel.add(action);
 						}
-						// Descend the free spaces in the elevator
-						remainingCapacity -= action.getPeopleAmount();
-						actionsOfLevel.add(action);
 					}
 				}
 			}

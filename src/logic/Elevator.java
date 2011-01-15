@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 import definition.Action;
 import definition.Direction;
@@ -269,6 +268,10 @@ public class Elevator implements VerticalTransporter {
 		if (actions.isEmpty()) {
 			target = getCurrentLevel();
 		}
+
+                if (target > getMaxLevel()){
+                    log4j.error("Target Level > maxLevel");
+                }
 
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
 				peopleOut, this.simulationSpeed, new MovementObserver() {
