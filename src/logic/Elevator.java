@@ -269,9 +269,9 @@ public class Elevator implements VerticalTransporter {
 			target = getCurrentLevel();
 		}
 
-                if (target > getMaxLevel()){
-                    log4j.error("Target Level > maxLevel");
-                }
+		if (target > getMaxLevel()) {
+			log4j.error("Target Level > maxLevel");
+		}
 
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
 				peopleOut, this.simulationSpeed, new MovementObserver() {
