@@ -10,18 +10,19 @@ import javax.swing.JPanel;
 import definition.Building;
 import definition.Controller;
 
-
 /**
  * 
  * @author BFH-Boys
- *
+ * 
  */
 public class LevelPanel extends JPanel {
 	private static final long serialVersionUID = 7151223026491488177L;
 
 	/**
-	 * @param building the building this instance is created for
-	 * @param controller the controller used for this building
+	 * @param building
+	 *            the building this instance is created for
+	 * @param controller
+	 *            the controller used for this building
 	 */
 	public LevelPanel(Building building, Controller controller) {
 		// create a GridLayout with the number of levels
@@ -33,17 +34,23 @@ public class LevelPanel extends JPanel {
 		for (int i = building.getMaxLevel(); i >= building.getMinLevel(); i--) {
 			JPanel panelLevelMain = new JPanel();
 			panelLevelMain.setLayout(new GridLayout(2, 1));
-			
+
 			JPanel panelLevelAndPersons = new JPanel();
-			panelLevelAndPersons.add(new JLabel("level: " + String.valueOf(i) + " / persons: "));
-			
+			panelLevelAndPersons.add(new JLabel("level: " + String.valueOf(i)
+					+ " / persons: "));
+
 			JComboBox comboBoxPersons = new JComboBox();
-			for(int persons = 1; persons < 10; persons++){
+			for (int persons = 1; persons < 10; persons++) {
 				comboBoxPersons.addItem(persons);
 			}
 			panelLevelAndPersons.add(comboBoxPersons);
-			
-			panelLevelMain.add(new LevelButtonPanel(i, building, controller, comboBoxPersons));
+
+			// if the building contains more than 10 buildings, other panels are
+			// used to display elevator target level
+			if (building.getMaxLevel() - building.getMinLevel() + 1 > 10) {
+				panelLevelMain.add(new TooManyLevelButtonPanel(i, building,
+						controller, comboBoxPersons));
+			}
 			panelLevelMain.add(panelLevelAndPersons);
 			this.add(panelLevelMain);
 		}
