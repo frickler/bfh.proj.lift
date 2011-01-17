@@ -70,7 +70,7 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 	 */
 	private void hold() {
 		try {
-			Thread.sleep(100);
+			Thread.sleep(100); // todo too looong?
 		} catch (InterruptedException e) {
 		}
 	}

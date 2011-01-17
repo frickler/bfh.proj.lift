@@ -1,5 +1,6 @@
 package logic;
 
+import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.w3c.dom.Node;
 
 
 import definition.Action;
+import definition.Algorithm;
 import definition.Direction;
 import definition.MovementObserver;
 import definition.PeopleLoadedObserver;
@@ -61,6 +63,8 @@ public class Elevator implements VerticalTransporter {
 	private int currentPeople;
 	// unique number for each elevator
 	private int identityNumber;
+
+	public AlgorithmListener listener;
 
 	public static int elevatorCounter = 0;
 
@@ -232,7 +236,9 @@ public class Elevator implements VerticalTransporter {
 		return target;
 	}
 
-	private void move() {
+	public enum Caller { StartLevel, EndLevel, Between };
+	
+	private void move(Caller enCaller) {
 
 		if (actions.isEmpty()) {
 			isBusy = false;
@@ -242,7 +248,17 @@ public class Elevator implements VerticalTransporter {
 		// Amount of people enter/leave elevator on this floor
 		int peopleIn = 0;
 		int peopleOut = 0;
-
+		int minmaxLevel = (direction == Direction.UP) ? getMaxLevel() : getMinLevel();
+		
+		/* if the Caller is StartLevel, then we don't have to load more action 
+		 * because they are already loaded at the selected algortihm
+		 */
+		if(listener != null && enCaller == Caller.Between){
+			List<Action> as = listener.actionPerformed(getCurrentLevel(), minmaxLevel, getMaxPeople()-getCurrentPeople());
+			actions.addAll(as);
+		}
+		
+		
 		// Remove processed actions
 		for (int i = actions.size() - 1; i >= 0; i--) {
 			Action a = actions.get(i);
@@ -272,13 +288,13 @@ public class Elevator implements VerticalTransporter {
 		if (target > getMaxLevel()) {
 			log4j.error("Target Level > maxLevel");
 		}
-
+		final Direction d = getCurrentLevel() < target ? Direction.UP : Direction.DOWN;
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
 				peopleOut, this.simulationSpeed, new MovementObserver() {
 
 					@Override
 					public void moved(Movement movement) {
-						move();
+						move(Caller.Between);
 					}
 
 					@Override
@@ -315,7 +331,7 @@ public class Elevator implements VerticalTransporter {
 		currentPeople = 0;
 
 		if (startLevel == getCurrentLevel()) {
-			move();
+			move(Caller.StartLevel);
 			return;
 		}
 		final int levelsStarted = getCurrentLevel() - startLevel;
@@ -326,7 +342,7 @@ public class Elevator implements VerticalTransporter {
 					public void moved(Movement movement) {
 						drivenLevelsEmpty += Math.abs(levelsStarted);
 						drivenLevels += Math.abs(levelsStarted);
-						Elevator.this.move();
+						Elevator.this.move(Caller.StartLevel);
 
 					}
 
@@ -571,6 +587,13 @@ public class Elevator implements VerticalTransporter {
 			return true;
 		}
 		return false;
+	}
+
+	public void move(List<Action> acts, int startLevel, Direction dir,
+			AlgorithmListener actionListener) {
+		move(acts,startLevel,dir);
+		this.listener = actionListener;
+		
 	}
 
 }

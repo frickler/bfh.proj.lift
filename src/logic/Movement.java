@@ -2,6 +2,8 @@ package logic;
 
 import org.apache.log4j.Logger;
 
+import definition.Algorithm;
+import definition.Direction;
 import definition.MovementObserver;
 import definition.PeopleLoadedObserver;
 import definition.VerticalTransporter;

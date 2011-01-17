@@ -37,7 +37,6 @@ public class XMLSimulationReader extends XMLReader {
 		try {
 			builder = new DocumentBuilderFactoryImpl().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -135,22 +135,27 @@ public class ElevatorPanel extends JPanel {
 			rearrageImage(pixelPerLevel, pixelPerLevel);
 		}
 		String sInfo = "<html><h3>Elevator "+elevator.getIdentityNumber()+"</h3><h4>";
+		if(elevator.getCurrentPeople()<=elevator.getMaxPeople()){
 		sInfo += "People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople();
+		}else{
+			sInfo += "<font color=\"red\">People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople() +"</font>";
+		}
 		sInfo += "<br/>Speed max: "+elevator.getMaxSpeed();
 		sInfo += "<br/>Speed current: "+(double) Math.round(elevator.getCurrentSpeed()*100)/100;
 		sInfo += "<br/>Acceleration: "+elevator.getAcceleration();		
-		sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
+		if(elevator.getCurrentLevel() > elevator.getMaxLevel() || elevator.getCurrentLevel() < elevator.getMinLevel()){
+			sInfo += "<br/><font color=\"red\">Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100+"</font>";
+		}else{
+			sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
+		}
 		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();
 		sInfo += "<br/>Levels driven: "+elevator.getDrivenLevels()+" empty: "+elevator.getDrivenLevelsEmpty();
 		sInfo += "<br/>TimeInMotion: "+Math.round(elevator.getTimeInMotion()/1000)+" empty: "+Math.round(elevator.getTimeInMotionEmpty()/1000);
 		sInfo += "<br/>People transported: "+elevator.getTransportedPeople();
-		
 		sInfo +=  "</h4></html>";
-				
 		infolabel.setText(sInfo);
-		
-		int bottomPosition = this.getHeight() - icon.getIconHeight();
 
+		int bottomPosition = this.getHeight() - icon.getIconHeight();
 		// zero-based level of the current elevator
 		float relativeLevel = (float) elevator.getCurrentPosition()
 				- building.getMinLevel();

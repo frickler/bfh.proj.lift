@@ -7,6 +7,7 @@ import java.util.List;
 
 import logic.algorithm.BetterFiFoAlgorithm;
 import logic.algorithm.BetterPickupFifoAlgorithm;
+import logic.algorithm.EveryLevelPickUpAlgorithm;
 import logic.algorithm.FiFoAlgorithm;
 import logic.algorithm.PickUpFifoAlgorithm;
 
@@ -48,10 +49,14 @@ public class ElevatorController implements Controller {
 		this.doneActions = new ArrayList<Action>();
 		this.building = building;
 		this.simulation = new Simulation(this);
-		changeAlgorithm(algorithmName);
+		try {
+			changeAlgorithm(algorithmName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void changeAlgorithm(String name) {
+	private void changeAlgorithm(String name) throws Exception {
 
 		if (name.equalsIgnoreCase("PickUpFifoAlgorithm")) {
 			this.algorithm = new PickUpFifoAlgorithm(building, this);
@@ -59,10 +64,13 @@ public class ElevatorController implements Controller {
 			this.algorithm = new BetterPickupFifoAlgorithm(building, this);
 		} else if (name.equalsIgnoreCase("BetterFifoAlgorithm")) {
 			this.algorithm = new BetterFiFoAlgorithm(building, this);
-		} else {
+		} else if (name.equalsIgnoreCase("EveryLevelPickUpAlgorithm")) {
+			this.algorithm = new EveryLevelPickUpAlgorithm(building, this);
+		} else if (name.equalsIgnoreCase("FiFoAlgorithm")) {
 			this.algorithm = new FiFoAlgorithm(building, this);
+		} else {
+			throw new Exception("Algorithm not known: " + name);
 		}
-
 	}
 
 	/**
@@ -88,19 +96,19 @@ public class ElevatorController implements Controller {
 
 			@Override
 			public void actionStarted(Action action) {
-				// TODO Auto-generated method stub
-
+				
 			}
 
 			@Override
 			public void actionPerformed(Action action) {
-				doneActions.add(action);
-
+				synchronized (doneActions) {
+					doneActions.add(action);
+				}
 			}
 
 			@Override
 			public void actionPeopleLoaded(Action action) {
-				// TODO Auto-generated method stub
+				
 
 			}
 		});
@@ -139,10 +147,12 @@ public class ElevatorController implements Controller {
 	 */
 	@Override
 	public Action getActionWithHighestPriority() {
-		if (actions.isEmpty()) {
-			return null;
+		synchronized (actions) {
+			if (actions.isEmpty()) {
+				return null;
+			}
+			return actions.remove(0);
 		}
-		return actions.remove(0);
 	}
 
 	@Override
@@ -188,7 +198,10 @@ public class ElevatorController implements Controller {
 				}
 			}
 			// Remove actions which are processed
-			this.actions.removeAll(actionsOfLevel);
+			synchronized (actions) {
+				this.actions.removeAll(actionsOfLevel);
+			}
+			
 		}
 		if (splitedAction != null) {
 			try {
@@ -197,12 +210,11 @@ public class ElevatorController implements Controller {
 				log4j.error(e.getMessage(), e);
 			}
 		}
-
 		return actionsOfLevel;
 	}
 
-	/**
-	 * 
+	/*
+	 * removes an elevator by its id
 	 */
 	public boolean removeElevator(int removeId) {
 		try {
@@ -220,7 +232,9 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public void addDoneAction(Action a) {
-		this.doneActions.add(a);
+		synchronized (doneActions) {
+			this.doneActions.add(a);
+		}	
 	}
 
 	@Override
@@ -296,14 +310,18 @@ public class ElevatorController implements Controller {
 	 * Clears the list where all done actions are stored for evaluation
 	 */
 	public void resetDoneActions() {
-		doneActions.clear();
+		synchronized (doneActions) {
+			doneActions.clear();		
+		}
 	}
 
 	/*
 	 * Clears all actions with aren't perfom yet
 	 */
 	public void resetActions() {
-		actions.clear();
+		synchronized (actions) {
+			actions.clear();		
+		}
 	}
 
 	@Override
@@ -325,13 +343,20 @@ public class ElevatorController implements Controller {
 
 	@Override
 	public int getTodoActionsAmount() {
-		return this.actions.size();
+		synchronized (actions) {
+			return this.actions.size();
+				
+		}
 	}
 
 	@Override
 	public void setAlgorithmName(String name) {
 		stopController();
-		changeAlgorithm(name);
+		try {
+			changeAlgorithm(name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		startController();
 	}
 

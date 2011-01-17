@@ -1,7 +1,11 @@
 package definition;
 
+import java.util.List;
+
 import exceptions.IllegalActionException;
+import logic.Elevator;
 import logic.ElevatorAction;
+import logic.Movement;
 
 /**
  * Abstract class which provides a skeleton of an algorithm. Each algorithm runs
@@ -80,6 +84,16 @@ public abstract class Algorithm implements Runnable {
 			}
 		}
 		
+	}
+
+	/***
+	 *  the base algorithm doesn't do not thing at this point but this method can be overloaded.	
+	 * @param movement
+	 * @param elevator
+	 */
+	public List<Action> getActions(int currentLevel, int minmaxLevel, int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

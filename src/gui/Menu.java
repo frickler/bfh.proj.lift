@@ -346,6 +346,17 @@ public class Menu {
 				"BetterPickupFifoAlgorithm"));
 		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
 				"BetterPickupFifoAlgorithm"));
+		
+		rbMenuItem = new JRadioButtonMenuItem("EveryLevel Pickup Algorithm");
+		rbMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9,
+				ActionEvent.ALT_MASK));
+		btnGroup.add(rbMenuItem);
+		submenu.add(rbMenuItem);
+		rbMenuItem.setSelected(controller.getAlgorithmName().equalsIgnoreCase(
+				"EveryLevelPickUpAlgorithm"));
+		rbMenuItem.addActionListener(new AlgorithmChangeActionListener(
+				"EveryLevelPickUpAlgorithm"));
+		
 
 		menu.add(submenu);
 		menu.addSeparator();
