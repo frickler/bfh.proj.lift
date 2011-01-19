@@ -1,18 +1,15 @@
 package gui;
 
-import gui.statistic.ConsolePanel;
 import gui.statistic.StatisticFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FileDialog;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,29 +20,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import logic.Elevator;
-import logic.XMLSimulationReader;
 import logic.Helper;
 import logic.Simulation;
 import logic.SimulationCompare;
-import logic.StatisticAction;
-import logic.StatisticElevator;
 
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 import definition.Action;
 import definition.Building;
@@ -64,7 +46,6 @@ public class FrameMain extends JFrame implements Runnable {
 	private boolean isRunning;
 	private Building building;
 	private Controller controller;
-	private ConsolePanel consolePanel;
 	private JPanel panelElevatorsLevels;
 	private static final long serialVersionUID = -6897288117049912593L;
 	private List<ElevatorPanel> elevatorPanels = new ArrayList<ElevatorPanel>();
@@ -79,7 +60,7 @@ public class FrameMain extends JFrame implements Runnable {
 	 *             throws an exception if arguments are null
 	 */
 	public FrameMain(Building building, Controller controller) throws Exception {
-		
+
 		if (building == null)
 			throw new Exception("building can not be null");
 
@@ -162,7 +143,14 @@ public class FrameMain extends JFrame implements Runnable {
 			repaintElevatorsPanel = false;
 			panelElevatorsLevels.removeAll();
 
-			panelElevatorsLevels.add(new LevelPanel(building, controller));
+			// if the building contains more than 10 buildings, other panels are
+			// used to display elevator target level
+			if (building.getMaxLevel() - building.getMinLevel() + 1 > 10) {
+				panelElevatorsLevels.add(new SkyscraperLevelPanel(building,
+						controller));
+			} else {
+				panelElevatorsLevels.add(new LevelPanel(building, controller));
+			}
 			elevatorPanels = new ArrayList<ElevatorPanel>();
 
 			float gradient = 0.8f;
@@ -208,7 +196,7 @@ public class FrameMain extends JFrame implements Runnable {
 		if (resetEvaluation) {
 			resetEvaluations();
 		}
-		
+
 		controller.stopController();
 
 		if (tower != null) {
@@ -298,16 +286,15 @@ public class FrameMain extends JFrame implements Runnable {
 		}
 	}
 
-
-
 	public void compareSimulations() throws Exception {
 
 		int selectedFiles = -1;
 
 		while (selectedFiles < 2) {
 
-			//todo nicht nur fuer kaeserst
-			JFileChooser fc = new JFileChooser("C:\\Users\\kaeserst\\Documents\\My Dropbox\\bfh\\Projekt1_7301\\Lift_feuzc1_kases1_chiller12");
+			// todo nicht nur fuer kaeserst
+			JFileChooser fc = new JFileChooser(
+					"C:\\Users\\kaeserst\\Documents\\My Dropbox\\bfh\\Projekt1_7301\\Lift_feuzc1_kases1_chiller12");
 			fc.setName("Select XML-Result file");
 			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fc.setFileFilter(new CustomFileFilter("xml"));
@@ -317,7 +304,8 @@ public class FrameMain extends JFrame implements Runnable {
 
 				if (fc.getSelectedFiles().length > 1) {
 					selectedFiles = fc.getSelectedFiles().length;
-					JFileChooser fcXSLT = new JFileChooser(fc.getSelectedFiles()[0].getParent());
+					JFileChooser fcXSLT = new JFileChooser(fc
+							.getSelectedFiles()[0].getParent());
 					fcXSLT.setFileSelectionMode(JFileChooser.FILES_ONLY);
 					fcXSLT.setName("Select XSL-Transformation file");
 					fcXSLT.setFileFilter(new CustomFileFilter("xsl"));
@@ -325,9 +313,9 @@ public class FrameMain extends JFrame implements Runnable {
 					returnVal = fcXSLT.showOpenDialog(this);
 
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						SimulationCompare sc = new SimulationCompare(
-								fc.getCurrentDirectory(),
-								fc.getSelectedFiles(), fcXSLT.getSelectedFile());
+						SimulationCompare sc = new SimulationCompare(fc
+								.getCurrentDirectory(), fc.getSelectedFiles(),
+								fcXSLT.getSelectedFile());
 						StatisticFrame frm = new StatisticFrame(controller);
 						frm.compareSimulation(sc);
 					} else {
