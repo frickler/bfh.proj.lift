@@ -77,7 +77,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 		addWindowListenerToFrame();
 
-		this.setSize(1680, 1024); // TODO
+		this.setSize(1680, 1024);
 		this.setResizable(true);
 
 		// a panel with everything (LevelPanel / ElevatorPanel) except the
@@ -143,9 +143,9 @@ public class FrameMain extends JFrame implements Runnable {
 			repaintElevatorsPanel = false;
 			panelElevatorsLevels.removeAll();
 
-			// if the building contains more than 10 buildings, other panels are
+			// if the building contains more than 13 buildings, other panels are
 			// used to display elevator target level
-			if (building.getMaxLevel() - building.getMinLevel() + 1 > 10) {
+			if (building.getMaxLevel() - building.getMinLevel() + 1 > 13) {
 				panelElevatorsLevels.add(new SkyscraperLevelPanel(building,
 						controller));
 			} else {
@@ -165,8 +165,7 @@ public class FrameMain extends JFrame implements Runnable {
 				elevatorPanels.add(ePanel);
 			}
 
-			// TODO: Hack, damit das Frame neu gezeichnet wird, repaint()
-			// funktioniert nicht.
+			// Hack, damit das Frame neu gezeichnet wird, repaint() funktioniert nicht.
 			this.setSize(getWidth(), getHeight() - 1);
 			this.setSize(getWidth(), getHeight() + 1);
 		}
@@ -271,7 +270,7 @@ public class FrameMain extends JFrame implements Runnable {
 				SimpleDateFormat dateformat = new SimpleDateFormat(
 						"yyyy-MM-dd_HH_mm_ss");
 
-				String pathName = s.getPath() + dateformat.format(new Date())
+				String pathName = s.getPath() +"\\"+ dateformat.format(new Date())
 						+ "_SimulationResult.xml";
 
 				FileWriter fstream = new FileWriter(pathName);
@@ -281,7 +280,7 @@ public class FrameMain extends JFrame implements Runnable {
 				JOptionPane.showMessageDialog(this,
 						"Simulation result saved @ " + pathName);
 			} catch (Exception e) {// Catch exception if any
-				System.err.println("Error: " + e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -292,7 +291,7 @@ public class FrameMain extends JFrame implements Runnable {
 
 		while (selectedFiles < 2) {
 
-			// todo nicht nur fuer kaeserst
+			//TODO nicht nur fuer kaeserst
 			JFileChooser fc = new JFileChooser(
 					"C:\\Users\\kaeserst\\Documents\\My Dropbox\\bfh\\Projekt1_7301\\Lift_feuzc1_kases1_chiller12");
 			fc.setName("Select XML-Result file");

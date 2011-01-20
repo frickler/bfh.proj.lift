@@ -21,7 +21,6 @@ public class SimulationResultPanel extends ConsolePanel {
 			try {
 				addTextNewLine(controller.getSimulation().getResult());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				addTextNewLine(e.getStackTrace().toString());
 			}
 

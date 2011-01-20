@@ -73,7 +73,7 @@ public interface VerticalTransporter {
 	 * 
 	 * @return the time the elevator doesn't move
 	 */
-	public int getTimeSillStand(int TotalTime);
+	public int getTimeStillStand(int TotalTime);
 
 	/**
 	 * 
@@ -167,11 +167,11 @@ public interface VerticalTransporter {
 	/**
 	 * Adds statistic information of this transporter to an XML-Element
 	 * 
-	 * @param createElement
-	 *            Element in which the statistic nodes should be added
+	 * @param createElement Element in which the statistic nodes should be added
+	 * @param totalTime Total time of the simulation, to calculate the utalization        
 	 * @return Node with the statistic of this elevator
 	 */
-	public Node getXML(Element createElement);
+	public Node getXML(Element createElement,int totalTime);
 
 	/**
 	 * 
@@ -191,6 +191,22 @@ public interface VerticalTransporter {
 	 */
 	public String getName();
 
-	public int getAuslastung(int i);
+	/**
+	 * @param TotalTime of the Simulation
+	 * @return Gets the Utilization (Auslastung) of the elvator
+	 * witch is calcuateted by totalsimulation time @totalTime - timeInMotion - timePepoleLoad
+	 */
+	public int getUtilization(int totalTime);
+
+	/**
+	 * @return Gets the total time need for loading/deloading people
+	 * 
+	 */
+	public float getTimePeopleLoad();
+	/**
+	 * Adds the Time @timeInMilliSeconds to the total people load time
+	 * @param timeInMilliSeconds
+	 */
+	public void addTimePepoleLoad(int timeInMilliSeconds);
 
 }

@@ -70,7 +70,7 @@ public class Simulation extends Thread {
 	public void run() {
 		startSimulation();
 		while (isRunning()) {
-			if (elevatorController.getDoneActions().size() != actionsToDo) {
+			if (elevatorController.isBusy() || elevatorController.getTodoActionsAmount()>0 || actions.size() > 0) {
 				for (int i = 0; i < actions.size(); i++) {
 					log4j.debug("Action to give the controller "+actions.size());
 					Boolean add = false;
@@ -226,6 +226,7 @@ public class Simulation extends Thread {
 		root.appendChild(actions);
 
 		StatisticElevator se = new StatisticElevator();
+		se.setTotalSimuationTime(getRealTimeDuration());
 		se.addElevator(elevatorController.getBuilding().getElevators());
 		Element elevators = se.getXMLStatistic(doc);
 		root.appendChild(elevators);

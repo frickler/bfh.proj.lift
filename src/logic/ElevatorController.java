@@ -162,7 +162,7 @@ public class ElevatorController implements Controller {
 		int remainingCapacity = maxPerson;
 
 		Action splitedAction = null;
-		synchronized (actionsOfLevel) {
+		synchronized (actions) {
 			for (Action action : actions) {
 				// break if the elevator is full
 				if (remainingCapacity < 1) {
@@ -238,7 +238,6 @@ public class ElevatorController implements Controller {
 	}
 
 	@Override
-	// TODO Clone list
 	public void addElevator(Elevator e) {
 		e.setSimulationSpeed(this.simulationSpeed);
 		building.addElevator(e);
@@ -380,5 +379,14 @@ public class ElevatorController implements Controller {
 
 		}
 		return closestElevator;
+	}
+
+	@Override
+	public boolean isBusy() {
+		for(VerticalTransporter v : building.getElevators()){
+			if(v.isBusy()) 
+				return true;
+		}
+		return false;
 	}
 }

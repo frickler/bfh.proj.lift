@@ -50,12 +50,12 @@ public class ElevatorPanel extends JPanel {
 		jiconlabel = new JLabel(icon);
 		background = new JPanel();
 		this.add(jiconlabel);
-		
+
 		infolabel = new JLabel();
-		Font f = new Font(Font.SANS_SERIF,Font.PLAIN,16);
+		Font f = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 		infolabel.setFont(f);
 		infolabel.setVerticalTextPosition(JLabel.TOP);
-		infolabel.setBounds(0, 0, 240, 180);	
+		infolabel.setBounds(0, 0, 240, 180);
 		this.setLayout(null);
 		this.add(infolabel);
 		background.setBackground(backGroundColor);
@@ -76,35 +76,45 @@ public class ElevatorPanel extends JPanel {
 				height, 1);
 		icon.setImage(scaledImage);
 		jiconlabel.setSize(icon.getIconWidth(), icon.getIconHeight());
-		//log4j.debug("rescaled elevator icon to height:" + icon.getIconHeight() + " width:" + icon.getIconWidth());
+		// log4j.debug("rescaled elevator icon to height:" +
+		// icon.getIconHeight() + " width:" + icon.getIconWidth());
 	}
 
 	private ImageIcon GetImageIcon() {
-		// TODO Auto-generated method stub
 		int i = elevator.getCurrentPeople();
-		if(i>5){
-			
-		//return new ImageIcon("src/gui/icons/elevator_more.png");
-		return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_more.png"));
+		if (i > 5) {
+			return new ImageIcon(
+					ClassLoader
+							.getSystemResource("gui/icons/elevator_more.png"));
 
-		}else{
-			if(i <= 0){
-				//return new ImageIcon("src/gui/icons/elevator_0.png");
-				return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_0.png"));
-				
+		} else {
+			if (i <= 0) {
+				// return new ImageIcon("src/gui/icons/elevator_0.png");
+				return new ImageIcon(
+						ClassLoader
+								.getSystemResource("gui/icons/elevator_0.png"));
+
 			}
-			if(i != 1){
-				//return new ImageIcon("src/gui/icons/elevator_"+i+".png");
-				return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_"+i+".png"));
-			}else{		
-					int rand = new Random((int) (Math.random() * 10000)).nextInt(30);
-					if(rand == 26){
-						//return new ImageIcon("src/gui/icons/elevator_easteregg.png");
-						return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_easteregg.png"));
-					}else{
-						//return new ImageIcon("src/gui/icons/elevator_"+i+".png");
-						return new ImageIcon(ClassLoader.getSystemResource("gui/icons/elevator_"+i+".png"));
-					}
+			if (i != 1) {
+				// return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+				return new ImageIcon(
+						ClassLoader.getSystemResource("gui/icons/elevator_" + i
+								+ ".png"));
+			} else {
+				int rand = new Random((int) (Math.random() * 10000))
+						.nextInt(30);
+				if (rand == 26) {
+					// return new
+					// ImageIcon("src/gui/icons/elevator_easteregg.png");
+					return new ImageIcon(
+							ClassLoader
+									.getSystemResource("gui/icons/elevator_easteregg.png"));
+				} else {
+					// return new ImageIcon("src/gui/icons/elevator_"+i+".png");
+					return new ImageIcon(
+							ClassLoader.getSystemResource("gui/icons/elevator_"
+									+ i + ".png"));
+				}
 			}
 		}
 	}
@@ -116,43 +126,61 @@ public class ElevatorPanel extends JPanel {
 	 */
 	public void paint(Graphics g) {
 		super.paint(g);
-		
-		
 
 		pixelPerLevel = (int) Math.floor((float) this.getHeight()
 				/ (building.getMaxLevel() - building.getMinLevel() + 1));
 
-		background.setBounds(
-				0, 
-				pixelPerLevel * ((building.getMaxLevel() - elevator.getMaxLevel())), 
-				this.getWidth(), 
-				pixelPerLevel * (elevator.getMaxLevel() - elevator.getMinLevel() + 1)
-				);
+		background
+				.setBounds(
+						0,
+						pixelPerLevel
+								* ((building.getMaxLevel() - elevator
+										.getMaxLevel())),
+						this.getWidth(),
+						pixelPerLevel
+								* (elevator.getMaxLevel()
+										- elevator.getMinLevel() + 1));
 
 		// if icon height isn't as expected the image will be rescaled
-		if (pixelPerLevel != icon.getIconHeight() || displayedPeople != elevator.getCurrentPeople()) {
-			this.displayedPeople = elevator.getCurrentPeople();					
+		if (pixelPerLevel != icon.getIconHeight()
+				|| displayedPeople != elevator.getCurrentPeople()) {
+			this.displayedPeople = elevator.getCurrentPeople();
 			rearrageImage(pixelPerLevel, pixelPerLevel);
 		}
-		String sInfo = "<html><h3>Elevator "+elevator.getIdentityNumber()+"</h3><h4>";
-		if(elevator.getCurrentPeople()<=elevator.getMaxPeople()){
-		sInfo += "People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople();
-		}else{
-			sInfo += "<font color=\"red\">People LoadLevel: "+elevator.getCurrentPeople()+" of "+elevator.getMaxPeople() +"</font>";
+		String sInfo = "<html><h3>Elevator " + elevator.getIdentityNumber()
+				+ "</h3><h4>";
+		if (elevator.getCurrentPeople() <= elevator.getMaxPeople()) {
+			sInfo += "People LoadLevel: " + elevator.getCurrentPeople()
+					+ " of " + elevator.getMaxPeople();
+		} else {
+			sInfo += "<font color=\"red\">People LoadLevel: "
+					+ elevator.getCurrentPeople() + " of "
+					+ elevator.getMaxPeople() + "</font>";
 		}
-		sInfo += "<br/>Speed max: "+elevator.getMaxSpeed();
-		sInfo += "<br/>Speed current: "+(double) Math.round(elevator.getCurrentSpeed()*100)/100;
-		sInfo += "<br/>Acceleration: "+elevator.getAcceleration();		
-		if(elevator.getCurrentLevel() > elevator.getMaxLevel() || elevator.getCurrentLevel() < elevator.getMinLevel()){
-			sInfo += "<br/><font color=\"red\">Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100+"</font>";
-		}else{
-			sInfo += "<br/>Position: "+elevator.getCurrentLevel()+ "(L) "+(double) Math.round(elevator.getCurrentPosition()*100)/100;
+		sInfo += "<br/>Speed max: " + elevator.getMaxSpeed();
+		sInfo += "<br/>Speed current: "
+				+ (double) Math.round(elevator.getCurrentSpeed() * 100) / 100;
+		sInfo += "<br/>Acceleration: " + elevator.getAcceleration();
+		if (elevator.getCurrentLevel() > elevator.getMaxLevel()
+				|| elevator.getCurrentLevel() < elevator.getMinLevel()) {
+			sInfo += "<br/><font color=\"red\">Position: "
+					+ elevator.getCurrentLevel() + "(L) "
+					+ (double) Math.round(elevator.getCurrentPosition() * 100)
+					/ 100 + "</font>";
+		} else {
+			sInfo += "<br/>Position: " + elevator.getCurrentLevel() + "(L) "
+					+ (double) Math.round(elevator.getCurrentPosition() * 100)
+					/ 100;
 		}
-		sInfo += "<br/>LevelRange: "+elevator.getMinLevel()+" to "+elevator.getMaxLevel();
-		sInfo += "<br/>Levels driven: "+elevator.getDrivenLevels()+" empty: "+elevator.getDrivenLevelsEmpty();
-		sInfo += "<br/>TimeInMotion: "+Math.round(elevator.getTimeInMotion()/1000)+" empty: "+Math.round(elevator.getTimeInMotionEmpty()/1000);
-		sInfo += "<br/>People transported: "+elevator.getTransportedPeople();
-		sInfo +=  "</h4></html>";
+		sInfo += "<br/>LevelRange: " + elevator.getMinLevel() + " to "
+				+ elevator.getMaxLevel();
+		sInfo += "<br/>Levels driven: " + elevator.getDrivenLevels()
+				+ " empty: " + elevator.getDrivenLevelsEmpty();
+		sInfo += "<br/>TimeInMotion: "
+				+ Math.round(elevator.getTimeInMotion() / 1000) + " empty: "
+				+ Math.round(elevator.getTimeInMotionEmpty() / 1000);
+		sInfo += "<br/>People transported: " + elevator.getTransportedPeople();
+		sInfo += "</h4></html>";
 		infolabel.setText(sInfo);
 
 		int bottomPosition = this.getHeight() - icon.getIconHeight();

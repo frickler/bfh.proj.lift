@@ -24,7 +24,7 @@ public class StatisticFrame extends JFrame {
 	public StatisticFrame(Controller pcontroller) {
 		this.setTitle("Wo ist mein Lift? - Statistik");
 		controller = pcontroller;
-		this.setSize(800, 600); // TODO
+		this.setSize(800, 600);
 		this.setResizable(true);
 		
 		tabbedPane = new JTabbedPane();
@@ -63,10 +63,8 @@ public class StatisticFrame extends JFrame {
 			tabbedPane.addTab("Simulationvergleich", consolePanelSimuationCompare);
 			this.add(tabbedPane);
 			tabbedPane.setSelectedIndex(2);
-			this.setVisible(true);
-			
+			this.setVisible(true);		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,10 +77,8 @@ public class StatisticFrame extends JFrame {
 			tabbedPane.addTab("Statistik Simulation", consolePanelSimuation);
 			this.add(tabbedPane);		
 			tabbedPane.setSelectedIndex(2);
-			this.setVisible(true);
-			
+			this.setVisible(true);			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

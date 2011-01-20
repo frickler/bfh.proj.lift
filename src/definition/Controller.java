@@ -197,4 +197,10 @@ public interface Controller {
 	 */
 	public int getTodoActionsAmount();
 
+	/**
+	 * At least one verticaltransporter is still busy
+	 * @return if busy
+	 */
+	public boolean isBusy();
+
 }

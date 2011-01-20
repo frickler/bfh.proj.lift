@@ -140,6 +140,7 @@ public class Movement extends Thread {
 		for (int i = 0; i < peopleOut; i++) {
 			try {
 				Thread.sleep((int) (TIME_TO_EXIT / simulationSpeed));
+				elevator.addTimePepoleLoad(TIME_TO_EXIT);
 			} catch (InterruptedException e) {
 			}
 			if (peopleLoadedObserver != null) {
@@ -150,6 +151,7 @@ public class Movement extends Thread {
 		for (int i = 0; i < peopleIn; i++) {
 			try {
 				Thread.sleep((int) (TIME_TO_EXIT / simulationSpeed));
+				elevator.addTimePepoleLoad(TIME_TO_EXIT);
 			} catch (InterruptedException e) {
 			}
 			if (peopleLoadedObserver != null) {

@@ -10,8 +10,7 @@ public class AlgorithmListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+			// the base implementation does nothing
 	}
 	
 	public List<Action> actionPerformed(int currentLevel, int minmaxLevel, int remaningCapacity) {

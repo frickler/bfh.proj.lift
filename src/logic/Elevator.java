@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 import definition.Action;
 import definition.Algorithm;
@@ -49,6 +50,8 @@ public class Elevator implements VerticalTransporter {
 	private int drivenLevelsEmpty;
 	// time in second the elevator moved
 	private float timeInMotion;
+	// time in second the elevator load and deload people
+	private float timePeopleLoad;
 	// time in second the elevator moved without any passangers.
 	private float timeInMotionEmpty;
 	// Movement currently processing
@@ -159,9 +162,11 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private List<Action> getActionsWithDestination(int targetLevel) {
 		List<Action> matchingActions = new LinkedList<Action>();
-		for (Action action : actions) {
-			if (action.getEndLevel() == targetLevel) {
-				matchingActions.add(action);
+		synchronized (actions) {
+			for (Action action : actions) {
+				if (action.getEndLevel() == targetLevel) {
+					matchingActions.add(action);
+				}
 			}
 		}
 		return matchingActions;
@@ -173,21 +178,24 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private int getNextHigherLevel() {
 		int nextLevel = getCurrentLevel();
-		if (actions.isEmpty()) {
-			return nextLevel;
-		}
-		for (Action act : actions) {
-			if (act.getStartLevel() > nextLevel
-					&& act.getStartLevel() > getCurrentLevel()) {
-				nextLevel = act.getStartLevel();
+		synchronized (actions) {
+
+			if (actions.isEmpty()) {
+				return nextLevel;
 			}
-		}
-		if (nextLevel == getCurrentLevel()) {
-			nextLevel = Integer.MAX_VALUE;
 			for (Action act : actions) {
-				if (act.getEndLevel() < nextLevel
-						&& act.getEndLevel() > getCurrentLevel()) {
-					nextLevel = act.getEndLevel();
+				if (act.getStartLevel() > nextLevel
+						&& act.getStartLevel() > getCurrentLevel()) {
+					nextLevel = act.getStartLevel();
+				}
+			}
+			if (nextLevel == getCurrentLevel()) {
+				nextLevel = Integer.MAX_VALUE;
+				for (Action act : actions) {
+					if (act.getEndLevel() < nextLevel
+							&& act.getEndLevel() > getCurrentLevel()) {
+						nextLevel = act.getEndLevel();
+					}
 				}
 			}
 		}
@@ -200,21 +208,23 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private int getNextLowerLevel() {
 		int nextLevel = getCurrentLevel();
-		if (actions.isEmpty()) {
-			return nextLevel;
-		}
-		for (Action act : actions) {
-			if (act.getStartLevel() < nextLevel
-					&& act.getStartLevel() < getCurrentLevel()) {
-				nextLevel = act.getStartLevel();
+		synchronized (actions) {		
+			if (actions.isEmpty()) {
+				return nextLevel;
 			}
-		}
-		if (nextLevel == getCurrentLevel()) {
-			nextLevel = Integer.MIN_VALUE;
 			for (Action act : actions) {
-				if (act.getEndLevel() > nextLevel
-						&& act.getEndLevel() < getCurrentLevel()) {
-					nextLevel = act.getEndLevel();
+				if (act.getStartLevel() < nextLevel
+						&& act.getStartLevel() < getCurrentLevel()) {
+					nextLevel = act.getStartLevel();
+				}
+			}
+			if (nextLevel == getCurrentLevel()) {
+				nextLevel = Integer.MIN_VALUE;
+				for (Action act : actions) {
+					if (act.getEndLevel() > nextLevel
+							&& act.getEndLevel() < getCurrentLevel()) {
+						nextLevel = act.getEndLevel();
+					}
 				}
 			}
 		}
@@ -236,59 +246,71 @@ public class Elevator implements VerticalTransporter {
 		return target;
 	}
 
-	public enum Caller { StartLevel, EndLevel, Between };
-	
-	private void move(Caller enCaller) {
+	public enum Caller {
+		StartLevel, EndLevel, Between
+	};
 
-		if (actions.isEmpty()) {
-			isBusy = false;
-			return;
+	private void move(Caller enCaller) {
+		synchronized (actions) {
+			if (actions.isEmpty()) {
+				isBusy = false;
+				return;
+			}
 		}
 
 		// Amount of people enter/leave elevator on this floor
 		int peopleIn = 0;
 		int peopleOut = 0;
-		int minmaxLevel = (direction == Direction.UP) ? getMaxLevel() : getMinLevel();
-		
-		/* if the Caller is StartLevel, then we don't have to load more action 
+		int minmaxLevel = (direction == Direction.UP) ? getMaxLevel()
+				: getMinLevel();
+
+		/*
+		 * if the Caller is StartLevel, then we don't have to load more action
 		 * because they are already loaded at the selected algortihm
 		 */
-		if(listener != null && enCaller == Caller.Between){
-			List<Action> as = listener.actionPerformed(getCurrentLevel(), minmaxLevel, getMaxPeople()-getCurrentPeople());
-			actions.addAll(as);
-		}
-		
-		
-		// Remove processed actions
-		for (int i = actions.size() - 1; i >= 0; i--) {
-			Action a = actions.get(i);
-			if (a.getEndLevel() == getCurrentLevel()) {
-				peopleOut += a.getPeopleAmount();
-				// currentPeople -= a.getPeopleAmount();
-				a.setTimestampElevatorLeft(new Date());
-				actions.remove(a);
-				moved(a);
-				log4j.debug("Elevator " + this.hashCode() + " Action done: "
-						+ a + " left: " + actions.size());
-			}
-			if (a.getStartLevel() == getCurrentLevel()) {
-				peopleIn += a.getPeopleAmount();
-				// currentPeople += a.getPeopleAmount();
-				a.setTimestampElevatorEntered(new Date()); // todo new date?
+		if (listener != null && enCaller == Caller.Between) {
+			List<Action> as = listener.actionPerformed(getCurrentLevel(),
+					minmaxLevel, getMaxPeople() - getCurrentPeople());
+			synchronized (actions) {
+				actions.addAll(as);
 			}
 		}
-		
+
+		synchronized (actions) {
+			// Remove processed actions
+			for (int i = actions.size() - 1; i >= 0; i--) {
+				Action a = actions.get(i);
+				if (a.getEndLevel() == getCurrentLevel()) {
+					peopleOut += a.getPeopleAmount();
+					// currentPeople -= a.getPeopleAmount();
+					a.setTimestampElevatorLeft(new Date());
+					actions.remove(a);
+					moved(a);
+					log4j.debug("Elevator " + this.hashCode()
+							+ " Action done: " + a + " left: " + actions.size());
+				}
+				if (a.getStartLevel() == getCurrentLevel()) {
+					peopleIn += a.getPeopleAmount();
+					// currentPeople += a.getPeopleAmount();
+					a.setTimestampElevatorEntered(new Date()); // todo new date?
+				}
+			}
+		}
+
 		// get target floor
 		int target = getTarget();
-
-		if (actions.isEmpty()) {
-			target = getCurrentLevel();
+		synchronized (actions) {
+			if (actions.isEmpty()) {
+				target = getCurrentLevel();
+			}
 		}
 
 		if (target > getMaxLevel()) {
-			log4j.error("Target Level > maxLevel");
+			log4j.error("Target Level (" + target + ") > maxLevel ("
+					+ getMaxLevel() + ")"+actions.size()+direction);
 		}
-		final Direction d = getCurrentLevel() < target ? Direction.UP : Direction.DOWN;
+		final Direction d = getCurrentLevel() < target ? Direction.UP
+				: Direction.DOWN;
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
 				peopleOut, this.simulationSpeed, new MovementObserver() {
 
@@ -321,11 +343,6 @@ public class Elevator implements VerticalTransporter {
 		this.movement.start();
 	}
 
-	/**
-	 * TODO Add statistics
-	 * 
-	 * @param startLevel
-	 */
 	private void moveToStart(int startLevel) {
 
 		currentPeople = 0;
@@ -366,12 +383,24 @@ public class Elevator implements VerticalTransporter {
 	public void move(List<Action> actions, int startLevel, Direction direction) {
 		this.isBusy = true;
 		this.setDirection(direction);
-		for (int i = 0; i < actions.size(); i++) {
-			actions.get(i).setTimestampElevatorEntered(new Date());
-			log4j.debug(this.getName() + "" + actions.get(i));
-		}
+		synchronized (actions) {
+			for (int i = 0; i < actions.size(); i++) {
+				actions.get(i).setTimestampElevatorEntered(new Date());
+				log4j.debug(this.getName() + "" + actions.get(i));
+			}
 
-		this.actions.addAll(actions);
+			this.actions.addAll(actions);
+			for (Action a : actions) {
+				if (getMinLevel() <= a.getStartLevel()
+						&& getMaxLevel() >= a.getStartLevel()
+						&& getMinLevel() <= a.getEndLevel()
+						&& getMaxLevel() >= a.getEndLevel()) {
+
+				} else {
+					new Exception("illegal action").printStackTrace();
+				}
+			}
+		}
 		moveToStart(startLevel);
 	}
 
@@ -500,11 +529,11 @@ public class Elevator implements VerticalTransporter {
 		this.timeInMotion = 0;
 		this.timeInMotionEmpty = 0;
 		this.transportedPeople = 0;
+		this.timePeopleLoad = 0;
 	}
 
 	@Override
 	public double getCurrentSpeed() {
-		// TODO Auto-generated method stub
 		return this.currentSpeed;
 	}
 
@@ -517,7 +546,7 @@ public class Elevator implements VerticalTransporter {
 	 * 
 	 * @param e
 	 */
-	public Node getXML(Element e) {
+	public Node getXML(Element e, int totalTime) {
 		e.setAttribute("simulationSpeed", simulationSpeed + "");
 		e.setAttribute("minLevel", minLevel + "");
 		e.setAttribute("maxLevel", maxLevel + "");
@@ -527,16 +556,19 @@ public class Elevator implements VerticalTransporter {
 		e.setAttribute("transportedPeople", transportedPeople + "");
 		e.setAttribute("timeInMotion", timeInMotion + "");
 		e.setAttribute("timeInMotionEmpty", timeInMotionEmpty + "");
-		// todo add simulation time as parameter
-		e.setAttribute("timeSillStand", getTimeSillStand(-1) + "");
+		e.setAttribute("timePeopleLoad", timePeopleLoad + "");
+		if (totalTime > 0) {
+			e.setAttribute("timeStillStand", getTimeStillStand(totalTime) + "");
+		}
+		e.setAttribute("utalization", getUtilization(totalTime) + "");
 		e.setAttribute("drivenLevels", drivenLevels + "");
+		e.setAttribute("drivenLevelsEmpty", drivenLevelsEmpty + "");
 		e.setAttribute("drivenLevelsEmpty", drivenLevelsEmpty + "");
 		return e;
 	}
 
 	@Override
 	public boolean isLoaded() {
-		// TODO Auto-generated method stub
 		return (currentPeople > 0);
 	}
 
@@ -556,15 +588,14 @@ public class Elevator implements VerticalTransporter {
 	}
 
 	@Override
-	public int getTimeSillStand(int TotalTime) {
+	public int getTimeStillStand(int TotalTime) {
 		// TODO check if correct (what s with the people loading time
 		return (int) (TotalTime - getTimeInMotion());
 	}
 
 	@Override
-	public int getAuslastung(int i) {
-
-		return (int) (getTimeInMotion() / i * 100);
+	public int getUtilization(int totalTime) {
+		return (int) ((getTimeInMotion() + getTimePeopleLoad()) / totalTime * 100);
 	}
 
 	/***
@@ -591,9 +622,20 @@ public class Elevator implements VerticalTransporter {
 
 	public void move(List<Action> acts, int startLevel, Direction dir,
 			AlgorithmListener actionListener) {
-		move(acts,startLevel,dir);
+		move(acts, startLevel, dir);
 		this.listener = actionListener;
-		
+
+	}
+
+	@Override
+	public void addTimePepoleLoad(int timeInMilliSeconds) {
+		timePeopleLoad += timeInMilliSeconds;
+
+	}
+
+	@Override
+	public float getTimePeopleLoad() {
+		return timePeopleLoad;
 	}
 
 }

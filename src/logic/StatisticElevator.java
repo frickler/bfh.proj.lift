@@ -10,6 +10,8 @@ import definition.Statistic;
 
 public class StatisticElevator extends Statistic {
 
+	private int totalTime = -1;
+	
 	private ArrayList<VerticalTransporter> elevators = new ArrayList<VerticalTransporter>();
 
 	/**
@@ -20,6 +22,10 @@ public class StatisticElevator extends Statistic {
 		elevators.addAll(list);
 	}
 
+	public void setTotalSimuationTime(int milliSeconds){
+		this.totalTime = milliSeconds;
+	}
+	
 	/**
 	 * Adds elevators for the statistics
 	 * @param elevator
@@ -65,10 +71,11 @@ public class StatisticElevator extends Statistic {
 			summary.append(getFormattedText("=>Total transported people (ms)", 
 					getSummaryOf(Attriubte.TrasportedPepole),
 					"people"));
-			
+			if(this.totalTime > 0){
 			summary.append(getFormattedText("=>Auslastung (%)", 
-					getSummaryOf(Attriubte.Auslastung),
+					getSummaryOf(Attriubte.Utalization),
 					"%"));
+			}
 			
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -84,7 +91,7 @@ public class StatisticElevator extends Statistic {
 	 *
 	 */
 	public enum Attriubte {
-		TrasportedPepole, DrivenLevel,DrivenLevelFilled, DrivenLevelEmpty, TimeInMotion,TimeInMotionFilled, TimeInMotionEmpty, TimeStillStand, Auslastung
+		TrasportedPepole, DrivenLevel,DrivenLevelFilled, DrivenLevelEmpty, TimeInMotion,TimeInMotionFilled, TimeInMotionEmpty, TimeStillStand, Utalization
 	};
 /**
  * Gets a summary (min,max,avg,sum) of the attribute @a
@@ -142,11 +149,9 @@ public class StatisticElevator extends Statistic {
 		case TimeInMotionEmpty:
 			return (int) (e.getTimeInMotionEmpty());
 		case TimeStillStand:
-			//todo use simulation duration as parameter
-			return (int) (e.getTimeSillStand((int)e.getTimeInMotion()*2));
-		case Auslastung:
-			//todo use simulation duration as parameter
-			return (int) (e.getAuslastung((int)e.getTimeInMotion()*2));
+			return (int) (e.getTimeStillStand(this.totalTime));
+		case Utalization:
+			return (int) (e.getUtilization(this.totalTime));
 		}
 		throw new Exception("Actions datetype not defined");
 	}
@@ -204,7 +209,7 @@ public class StatisticElevator extends Statistic {
 					"Stillstandzeit (ms)",getSummaryOf(Attriubte.TimeStillStand)));
 			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
-					"Auslastung %",getSummaryOf(Attriubte.Auslastung)));
+					"Auslastung %",getSummaryOf(Attriubte.Utalization)));
 			
 			sum.appendChild(getMeasureElement(doc.createElement("Measure"),
 					"Transportierte Personen",getSummaryOf(Attriubte.TrasportedPepole)));
@@ -212,7 +217,7 @@ public class StatisticElevator extends Statistic {
 			n.appendChild(sum);
 			
 			for(VerticalTransporter e : elevators){
-				n.appendChild(e.getXML(doc.createElement("Elevator")));
+				n.appendChild(e.getXML(doc.createElement("Elevator"),this.totalTime));
 			}
 
 		} catch (Exception e1) {

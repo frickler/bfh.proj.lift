@@ -92,7 +92,6 @@ public abstract class Algorithm implements Runnable {
 	 * @param elevator
 	 */
 	public List<Action> getActions(int currentLevel, int minmaxLevel, int i) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
