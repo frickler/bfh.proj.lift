@@ -83,7 +83,8 @@ public abstract class Algorithm implements Runnable {
 	 * @param a the Action to perform
 	 */
 	protected void checkCombination(VerticalTransporter e,Action a){
-		
+		if(e == null || a == null)
+			return;
 		if(e.getMaxPeople() < a.getPeopleAmount()){
 			int pepoleLeft  = a.getPeopleAmount()-e.getMaxPeople();
 			a.setPeopleAmount(a.getPeopleAmount()-pepoleLeft);
