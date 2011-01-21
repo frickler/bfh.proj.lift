@@ -292,12 +292,13 @@ public class Elevator implements VerticalTransporter {
 				}
 			}
 		}
-
-		// get target floor
-		int target = getTarget();
+		int target = 0;
 		synchronized (actions) {
+		// get target floor
 			if (actions.isEmpty()) {
 				target = getCurrentLevel();
+			}else{
+				target =  getTarget();
 			}
 		}
 
