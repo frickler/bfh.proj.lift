@@ -204,7 +204,7 @@ public class Elevator implements VerticalTransporter {
 	 */
 	private int getNextLowerLevel() {
 		int nextLevel = getCurrentLevel();
-		synchronized (actions) {		
+		synchronized (actions) {
 			if (actions.isEmpty()) {
 				return nextLevel;
 			}
@@ -302,10 +302,16 @@ public class Elevator implements VerticalTransporter {
 		}
 
 		if (target > getMaxLevel()) {
-			log4j.error("Elevator " + this.getName()  + " Target Level (" + target + ") > maxLevel ("
-					+ getMaxLevel() + ")"+actions.size()+direction);
+			log4j.error("Elevator " + this.getName() + " Target Level ("
+					+ target + ") > maxLevel (" + getMaxLevel() + ")"
+					+ actions.size() + direction);
 			
+			target = maxLevel;
 		}
+		if (target < getMinLevel()){
+			target = minLevel;
+		}
+		
 		final Direction d = getCurrentLevel() < target ? Direction.UP
 				: Direction.DOWN;
 		this.movement = new Movement(this, getCurrentLevel(), target, peopleIn,
@@ -380,11 +386,11 @@ public class Elevator implements VerticalTransporter {
 	public void move(List<Action> actions, int startLevel, Direction direction) {
 		this.isBusy = true;
 		this.setDirection(direction);
-		synchronized (actions) {			
+		synchronized (actions) {
 			for (int i = 0; i < actions.size(); i++) {
 				actions.get(i).setTimestampElevatorEntered(new Date());
 				log4j.debug(this.getName() + "" + actions.get(i));
-			}			
+			}
 
 			this.actions.addAll(actions);
 			for (Action a : actions) {
@@ -634,10 +640,10 @@ public class Elevator implements VerticalTransporter {
 	public float getTimePeopleLoad() {
 		return timePeopleLoad;
 	}
-	
+
 	@Override
-	public void setBusy(Boolean busy){
-		this.isBusy = busy;		
+	public void setBusy(Boolean busy) {
+		this.isBusy = busy;
 	}
 
 }
