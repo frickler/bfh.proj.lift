@@ -26,7 +26,8 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	public BetterPickupFifoAlgorithm(Building building, Controller controller) {
-		super(building, controller);		
+		super(building, controller);
+		log4j.debug("BetterPickupFifoAlgorithm");
 	}
 
 	/**
@@ -34,10 +35,12 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 	 */
 	@Override
 	public void run() {
+		log4j.debug(" run() called!");
 		setRunning(true);
+		log4j.debug("should run now: "+this.isRunning());
 		while (isRunning()) {
 			Action action = getController().getActionWithHighestPriority();
-			while (action != null) {
+			while (action != null && isRunning()) {
 				Elevator ele = getController().getClosestFreeElevator(action);
 				if (ele != null) {
 					Direction dir = Direction.UP;
@@ -55,6 +58,7 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 
 					action = null;
 					break;
+					
 				}
 				// No elevator is free.. wait
 				hold();
@@ -62,7 +66,8 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 			// No action is available.. wait
 			hold();
 		}
-
+		log4j.debug(" run() left!");
+		this.isEnded = true;
 	}
 
 	/**

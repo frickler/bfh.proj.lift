@@ -29,9 +29,11 @@ public class EveryLevelPickUpAlgorithm extends Algorithm {
 
 	// Logger
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
+	
 
 	public EveryLevelPickUpAlgorithm(Building building, Controller controller) {
 		super(building, controller);
+		log4j.debug("EveryLevelPickUpAlgorithm");
 	}
 
 	/**
@@ -39,10 +41,12 @@ public class EveryLevelPickUpAlgorithm extends Algorithm {
 	 */
 	@Override
 	public void run() {
+		log4j.debug(" run() called!");
 		setRunning(true);
+		log4j.debug("should run now: "+this.isRunning());
 		while (isRunning()) {
 			Action action = getController().getActionWithHighestPriority();
-			while (action != null) {
+			while (action != null && isRunning()) {
 				Elevator ele = getController().getClosestFreeElevator(action);
 				if (ele != null) {
 					Direction dir = Direction.UP;
@@ -74,7 +78,8 @@ public class EveryLevelPickUpAlgorithm extends Algorithm {
 			// No action is available.. wait
 			hold();
 		}
-
+		log4j.debug(" run() left!");
+		this.isEnded = true;
 	}
 
 	/**

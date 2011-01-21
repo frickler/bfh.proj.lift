@@ -21,6 +21,7 @@ public abstract class Algorithm implements Runnable {
 	private Building building;
 	private Controller controller;
 	private boolean isRunning;
+	protected boolean isEnded = false;
 	
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
@@ -62,13 +63,17 @@ public abstract class Algorithm implements Runnable {
 	public boolean isRunning() {
 		return isRunning;
 	}
+	
+	public boolean isEnded() {
+		return isEnded;
+	}
 
 	/**
 	 * @param isRunning
 	 *            sets the current state
 	 */
-	protected void setRunning(boolean isRunning) {
-		this.isRunning = isRunning;
+	protected void setRunning(boolean isRun) {
+		this.isRunning = isRun;
 	}
 	
 	/**

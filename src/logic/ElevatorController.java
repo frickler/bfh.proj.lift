@@ -137,7 +137,16 @@ public class ElevatorController implements Controller {
 	@Override
 	public void stopController() {
 		algorithm.stop();
-
+		log4j.debug("stopController call!");
+		while(!algorithm.isEnded()){
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				log4j.debug("stopController wait.....!");
+				e.printStackTrace();
+			}
+		}
+		log4j.debug(algorithm.isRunning());
 	}
 
 	@Override
@@ -265,20 +274,21 @@ public class ElevatorController implements Controller {
 	public void stopRandomSimulation() {
 		simulation.stopSimulation();
 		simulation.clearActions();
-		algorithm.stop();
+
 	}
 
 	@Override
 	public void startSimulation(String path, int speed, List<Action> actions) {
 		try {
+			//stopController();
 			simulationSpeed = speed;
 			simulation = new Simulation(this);
 			simulation.setSimulationSpeed(this.simulationSpeed);
 			simulation.setPath(path);
 			building.setSimulationSpeed(simulationSpeed);
-			startController();
 			simulation.addAction(actions);
 			simulation.start();
+			//startController();
 		} catch (IllegalActionException e) {
 			e.printStackTrace();
 		}
