@@ -96,7 +96,7 @@ public class StatisticElevator extends Statistic {
 /**
  * Gets a summary (min,max,avg,sum) of the attribute @a
  * @param a
- * @return
+ * @return the summary (min,max,avg,sum)
  * @throws Exception
  */
 	public int[] getSummaryOf(Attriubte a) throws Exception {

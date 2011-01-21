@@ -28,7 +28,7 @@ public abstract class Statistic {
 	 * Formats the statistic result. the default entity is seconds
 	 * @param title of the measure
 	 * @param summary result of the measure
-	 * @return
+	 * @return string of the summary
 	 */
 	public String getFormattedText(String title, int[] summary) {		
 		return getFormattedText(title,summary,"seconds");
@@ -39,7 +39,7 @@ public abstract class Statistic {
 	 * @param title title of the measure
 	 * @param summary result of the measure
 	 * @param entity the unit of the measure
-	 * @return
+	 * @return formatted summary
 	 */
 	public String getFormattedText(String title, int[] summary,String entity) {
 		StringBuilder text = new StringBuilder();
@@ -91,7 +91,7 @@ public abstract class Statistic {
 	 *            Name of the measure
 	 * @param results
 	 *            the results of the measure
-	 * @return
+	 * @return the dom element of the meausre
 	 */
 	public org.w3c.dom.Element getMeasureElement(org.w3c.dom.Element e,
 			String string, int[] results) {

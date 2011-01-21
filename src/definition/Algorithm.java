@@ -99,10 +99,12 @@ public abstract class Algorithm implements Runnable {
 
 	/***
 	 *  the base algorithm doesn't do not thing at this point but this method can be overloaded.	
-	 * @param movement
-	 * @param elevator
+	 * @param currentLevel of the elevator
+	 * @param minmaxLevel min or max level the elevator can reach
+	 * @param intCapacity the capacity remaining in the elevator
 	 */
-	public List<Action> getActions(int currentLevel, int minmaxLevel, int i) {
+
+	public List<Action> getActions(int currentLevel, int minmaxLevel, int intCapacity) {
 		return null;
 	}
 

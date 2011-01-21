@@ -192,7 +192,7 @@ public interface VerticalTransporter {
 	public String getName();
 
 	/**
-	 * @param TotalTime of the Simulation
+	 * @param totalTime of the Simulation
 	 * @return Gets the Utilization (Auslastung) of the elvator
 	 * witch is calcuateted by totalsimulation time @totalTime - timeInMotion - timePepoleLoad
 	 */
@@ -211,8 +211,8 @@ public interface VerticalTransporter {
 	public void addTimePepoleLoad(int timeInMilliSeconds);
 	
 	/**
-	 * Adds the Time @timeInMilliSeconds to the total people load time
-	 * @param timeInMilliSeconds
+	 * sets the busy state of the elevator
+	 * @param busy isBusy
 	 */
 	public void setBusy(Boolean busy);	
 
