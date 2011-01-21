@@ -73,10 +73,16 @@ public class EveryLevelPickUpAlgorithm extends Algorithm {
 					break;
 				}
 				// No elevator is free.. wait
-				hold();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+				}
 			}
 			// No action is available.. wait
-			hold();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
 		}
 		log4j.debug(" run() left!");
 		this.isEnded = true;
@@ -86,10 +92,7 @@ public class EveryLevelPickUpAlgorithm extends Algorithm {
 	 * Waits for 100 milliseconds to continue
 	 */
 	private void hold() {
-		try {
-			Thread.sleep(100); // todo too looong?
-		} catch (InterruptedException e) {
-		}
+
 	}
 	/*
 	@Override

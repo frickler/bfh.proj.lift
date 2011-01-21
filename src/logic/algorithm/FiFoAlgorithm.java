@@ -51,10 +51,16 @@ public class FiFoAlgorithm extends Algorithm {
 					}
 				}
 				// No elevator is free.. wait
-				hold();
+				try {
+					Thread.sleep(100); // todo too looong?
+				} catch (InterruptedException e) {
+				}
 			}
 			// No action is available.. wait
-			hold();
+			try {
+				Thread.sleep(100); // todo too looong?
+			} catch (InterruptedException e) {
+			}
 		}
 
 	}
