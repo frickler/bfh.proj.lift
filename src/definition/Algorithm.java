@@ -2,6 +2,8 @@ package definition;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import exceptions.IllegalActionException;
 import logic.Elevator;
 import logic.ElevatorAction;
@@ -19,6 +21,8 @@ public abstract class Algorithm implements Runnable {
 	private Building building;
 	private Controller controller;
 	private boolean isRunning;
+	
+	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	/**
 	 * 
@@ -28,6 +32,7 @@ public abstract class Algorithm implements Runnable {
 	public Algorithm(Building building, Controller controller) {
 		this.building = building;
 		this.controller = controller;
+		log4j.debug("Constructor call!");
 	}
 
 	/**

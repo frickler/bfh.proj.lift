@@ -26,7 +26,7 @@ public class BetterPickupFifoAlgorithm extends Algorithm {
 	static Logger log4j = Logger.getLogger("ch.bfh.proj1.elevator");
 
 	public BetterPickupFifoAlgorithm(Building building, Controller controller) {
-		super(building, controller);
+		super(building, controller);		
 	}
 
 	/**

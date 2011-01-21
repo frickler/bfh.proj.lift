@@ -203,10 +203,17 @@ public interface VerticalTransporter {
 	 * 
 	 */
 	public float getTimePeopleLoad();
+	
 	/**
 	 * Adds the Time @timeInMilliSeconds to the total people load time
 	 * @param timeInMilliSeconds
 	 */
 	public void addTimePepoleLoad(int timeInMilliSeconds);
+	
+	/**
+	 * Adds the Time @timeInMilliSeconds to the total people load time
+	 * @param timeInMilliSeconds
+	 */
+	public void setBusy(Boolean busy);	
 
 }

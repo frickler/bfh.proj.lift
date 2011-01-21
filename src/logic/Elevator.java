@@ -1,6 +1,5 @@
 package logic;
 
-import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,10 +8,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import definition.Action;
-import definition.Algorithm;
 import definition.Direction;
 import definition.MovementObserver;
 import definition.PeopleLoadedObserver;
@@ -61,7 +57,7 @@ public class Elevator implements VerticalTransporter {
 	// direction
 	private Direction direction;
 	// indicates if the elevator is busy
-	private boolean isBusy;
+	private boolean isBusy = false;
 	// current people loaded
 	private int currentPeople;
 	// unique number for each elevator
@@ -306,8 +302,9 @@ public class Elevator implements VerticalTransporter {
 		}
 
 		if (target > getMaxLevel()) {
-			log4j.error("Target Level (" + target + ") > maxLevel ("
+			log4j.error("Elevator " + this.getName()  + " Target Level (" + target + ") > maxLevel ("
 					+ getMaxLevel() + ")"+actions.size()+direction);
+			
 		}
 		final Direction d = getCurrentLevel() < target ? Direction.UP
 				: Direction.DOWN;
@@ -383,11 +380,11 @@ public class Elevator implements VerticalTransporter {
 	public void move(List<Action> actions, int startLevel, Direction direction) {
 		this.isBusy = true;
 		this.setDirection(direction);
-		synchronized (actions) {
+		synchronized (actions) {			
 			for (int i = 0; i < actions.size(); i++) {
 				actions.get(i).setTimestampElevatorEntered(new Date());
 				log4j.debug(this.getName() + "" + actions.get(i));
-			}
+			}			
 
 			this.actions.addAll(actions);
 			for (Action a : actions) {
@@ -636,6 +633,11 @@ public class Elevator implements VerticalTransporter {
 	@Override
 	public float getTimePeopleLoad() {
 		return timePeopleLoad;
+	}
+	
+	@Override
+	public void setBusy(Boolean busy){
+		this.isBusy = busy;		
 	}
 
 }

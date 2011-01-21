@@ -45,10 +45,10 @@ public class SkyscraperLevelPanel extends JPanel {
 			comboBoxEndLevel.addItem(i);
 		}
 
-		this.add(new JLabel("start level: "));
+		this.add(new JLabel("Start level: "));
 		this.add(comboBoxStartLevel);
 		this.add(getNewLineLabel());
-		this.add(new JLabel("end level: "));
+		this.add(new JLabel("End level: "));
 		this.add(comboBoxEndLevel);
 		this.add(getNewLineLabel());
 		this.add(new JLabel("persons: "));

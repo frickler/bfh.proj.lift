@@ -57,6 +57,12 @@ public class ElevatorController implements Controller {
 	}
 
 	private void changeAlgorithm(String name) throws Exception {
+		
+		
+		this.algorithm = null;
+		if (algorithm != null){
+			this.algorithm.stop();
+		}
 
 		if (name.equalsIgnoreCase("PickUpFifoAlgorithm")) {
 			this.algorithm = new PickUpFifoAlgorithm(building, this);
@@ -371,12 +377,18 @@ public class ElevatorController implements Controller {
 					&& ele.getMaxLevel() >= action.getStartLevel()
 					&& ele.getMinLevel() <= action.getEndLevel()
 					&& ele.getMaxLevel() >= action.getEndLevel()) {
-				if (Math.abs(ele.getCurrentLevel() - action.getStartLevel()) <= Math
+				if (closestElevator == null || Math.abs(ele.getCurrentLevel() - action.getStartLevel()) <= Math
 						.abs(ele.getCurrentLevel() - action.getStartLevel())) {
+					//ele.setBusy(true);
+					//return ele;
+					//closestElevator.setBusy(true);
 					closestElevator = ele;
 				}
 			}
 
+		}
+		if (closestElevator != null){
+			closestElevator.setBusy(true);
 		}
 		return closestElevator;
 	}
