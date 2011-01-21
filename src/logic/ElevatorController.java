@@ -140,6 +140,7 @@ public class ElevatorController implements Controller {
 		log4j.debug("stopController call!");
 		while(!algorithm.isEnded()){
 			try {
+				algorithm.stop();
 				Thread.sleep(200);
 				log4j.debug("stopController waiting.....!");
 			} catch (InterruptedException e) {
