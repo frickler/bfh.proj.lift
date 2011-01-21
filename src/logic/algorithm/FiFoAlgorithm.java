@@ -35,16 +35,18 @@ public class FiFoAlgorithm extends Algorithm {
 	 */
 	@Override
 	public void run() {
-		setRunning(true);
-		while (isRunning()) {
+		setRunning(true); // threads is running now
+		while (isRunning()) { // as long as the thread is running he process the actions
 			Action action = getController().getActionWithHighestPriority();
 			while (action != null) {
+				// loop the elevators for a free one
 				for (VerticalTransporter i : getBuilding().getElevators()) {
-
 					Elevator ele = (Elevator) i;
 					// Look for a non-busy elevator with a fitting range (MinLevel & MaxLevel)
 					if (ele.canPerformAction(action)) {
 						checkCombination(ele, action);
+						// the action is now in the responisibility of the elevator
+						// the elevator process the action
 						ele.move(action);
 						action = null;
 						break;
