@@ -88,7 +88,7 @@ public class ElevatorController implements Controller {
 	}
 
 	@Override
-	public void performAction(Action action) throws IllegalActionException {
+	public void performAction(Action action) throws MinLevelActionException,MaxLevelActionException {
 		if (action.getStartLevel() < building.getMinLevel()) {
 			throw new MinLevelActionException(action);
 		}

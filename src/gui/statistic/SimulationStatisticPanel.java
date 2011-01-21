@@ -36,8 +36,6 @@ public class SimulationStatisticPanel extends JPanel {
 	public void setFile(String urlpath){					  
 			  try {
 				  String html = readFile(urlpath);
-				  //todo hack do otherwise
-				  
 				  tp.setText(Helper.convertToHtml(html));
 			    } 
 			  catch (Exception e) {

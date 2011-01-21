@@ -110,10 +110,10 @@ public class ControllerTest {
 		// Create building
 		Building building = new Tower(new Elevator(0, 25, 20, 0));
 		// add for elevators
-		building.addElevator(new Elevator(5, 15, 10, 0));
+		building.addElevator(new Elevator(5, 15, 10, 10));
 		building.addElevator(new Elevator(-5, 20, 10, 0));
-		building.addElevator(new Elevator(1, 11, 10, 0));
-		building.addElevator(new Elevator(20, 40, 10, 0));
+		building.addElevator(new Elevator(1, 11, 10, 2));
+		building.addElevator(new Elevator(20, 40, 10, 25));
 		
 		// Create algorithm
 		//FiFoAlgorithm fifo = new FiFoAlgorithm(building);
@@ -141,10 +141,10 @@ public class ControllerTest {
 		// Create building
 		Building building = new Tower(new Elevator(0, 25, 20, 0));
 		// add for elevators
-		building.addElevator(new Elevator(5, 15, 10, 0));
+		building.addElevator(new Elevator(5, 15, 10, 10));
 		building.addElevator(new Elevator(-5, 20, 10, 0));
-		building.addElevator(new Elevator(1, 11, 10, 0));
-		building.addElevator(new Elevator(20, 40, 10, 0));
+		building.addElevator(new Elevator(1, 11, 10, 10));
+		building.addElevator(new Elevator(20, 40, 10, 23));
 		
 		// Create algorithm
 		//FiFoAlgorithm fifo = new FiFoAlgorithm(building);

@@ -288,7 +288,7 @@ public class Elevator implements VerticalTransporter {
 				if (a.getStartLevel() == getCurrentLevel()) {
 					peopleIn += a.getPeopleAmount();
 					// currentPeople += a.getPeopleAmount();
-					a.setTimestampElevatorEntered(new Date()); // todo new date?
+					a.setTimestampElevatorEntered(new Date());
 				}
 			}
 		}
@@ -421,9 +421,6 @@ public class Elevator implements VerticalTransporter {
 	}
 
 	public int getCurrentLevel() {
-		// ToDo: Floor
-		// log4j.debug("CurrentPosition:" + currentPosition);
-		// log4j.debug("getCurrentLevel:" + Math.round(currentPosition) );
 		return (int) Math.round(currentPosition);
 	}
 
@@ -587,8 +584,7 @@ public class Elevator implements VerticalTransporter {
 
 	@Override
 	public int getTimeStillStand(int TotalTime) {
-		// TODO check if correct (what s with the people loading time
-		return (int) (TotalTime - getTimeInMotion());
+		return (int) (TotalTime - getTimeInMotion()-getTimePeopleLoad());
 	}
 
 	@Override
