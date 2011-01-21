@@ -48,7 +48,7 @@ public class FileDialogFrame extends JFrame {
 			int input = JOptionPane
 					.showConfirmDialog(
 							framemain,
-							"Doyou wanna reset all statistics of the elevators and the actions?",
+							"Do you wanna reset all statistics of the elevators and the actions?",
 							"Reset statistics", JOptionPane.YES_NO_OPTION);
 
 			fm.startSimulation(xmlReader.getBuilding(), xmlReader.getActions(),

@@ -134,7 +134,7 @@ public class Movement extends Thread {
 	 */
 	private void loadPeople() {
 
-		log4j.debug(elevator.getName() + " LoadPeople - In: " + peopleIn
+		log4j.debug(elevator.getName() +"CurrentPeople"+elevator.getCurrentPeople() +" LoadPeople - In: " + peopleIn
 				+ " Out: " + peopleOut);
 
 		for (int i = 0; i < peopleOut; i++) {
